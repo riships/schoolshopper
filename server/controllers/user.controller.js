@@ -6,17 +6,16 @@ export const createUser = async (req, res) => {
         ...req.body
     });
     try {
-        await user.save();
+        (await user.save());
         res.status(201).send({ success: true, data: user });
     } catch (error) {
-        res.status(500
-        ).send({ success: false, message: error.message });
+        res.status(500).send({ success: false, message: error.message });
     }
 }
 
 export const getUsers = async (req, res) => {
     try {
-        const users = await User.find();
+        const users = await User.find().select('-password');
         res.send({ success: true, data: users });
     } catch (error) {
         res.status(500).send({ success: false, message: error.message });
