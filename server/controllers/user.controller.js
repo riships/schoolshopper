@@ -1,5 +1,6 @@
 import User from "../models/users.model.js";
 import jwt from 'jsonwebtoken';
+import ErrorHandler from "../middelwares/Error.js";
 
 export const createUser = async (req, res) => {
     const user = new User({
@@ -9,7 +10,7 @@ export const createUser = async (req, res) => {
         (await user.save());
         res.status(201).send({ success: true, data: user });
     } catch (error) {
-        res.status(500).send({ success: false, message: error.message });
+        new ErrorHandler(error.message, 500);
     }
 }
 
@@ -18,7 +19,7 @@ export const getUsers = async (req, res) => {
         const users = await User.find().select('-password');
         res.send({ success: true, data: users });
     } catch (error) {
-        res.status(500).send({ success: false, message: error.message });
+        new ErrorHandler(error.message, 500);
     }
 }
 
@@ -30,7 +31,7 @@ export const getUser = async (req, res) => {
         }
         res.send({ success: true, data: user });
     } catch (error) {
-        res.status(500).send({ success: false, message: error.message });
+        new ErrorHandler(error.message, 500);
     }
 }
 
@@ -42,7 +43,7 @@ export const updateUser = async (req, res) => {
         }
         res.send({ success: true, data: user });
     } catch (error) {
-        res.status(500).send({ success: false, message: error.message });
+        new ErrorHandler(error.message, 500);
     }
 }
 
@@ -54,7 +55,7 @@ export const deleteUser = async (req, res) => {
         }
         res.send({ success: true, data: user });
     } catch (error) {
-        res.status(500).send({ success: false, message: error.message });
+        new ErrorHandler(error.message, 500);
     }
 }
 
@@ -75,6 +76,6 @@ export const loginUser = async (req, res) => {
         );
         res.send({ success: true, data: { user, token } });
     } catch (error) {
-        res.status(500).send({ success: false, message: error.message });
+        new ErrorHandler(error.message, 500);
     }
 }
