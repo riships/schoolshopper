@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import validator from 'validator';
 import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -88,7 +89,16 @@ const userSchema = new mongoose.Schema({
     bio: {
         type: String,
         maxlength: 500
+    },
+    resetPasswordToken: {
+        type: String
+    },
+    resetPasswordExpire: {
+        type: Date
     }
+}, {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
 });
 
 userSchema.pre('save', async function (next) {
@@ -105,15 +115,13 @@ userSchema.methods.comparePassword = function (password) {
     return bcrypt.compareSync(password, this.password);
 };
 
-userSchema.pre('findOneAndUpdate', function (next) {
-    this.set({ updatedAt: Date.now() });
-    next();
-});
+userSchema.methods.getResetPasswordToken = function () {
+    const resetToken = crypto.randomBytes(20).toString('hex');
+    this.resetPasswordToken = resetToken;
+    this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
+    return resetToken;
+}
 
-userSchema.pre('update', function (next) {
-    this.set({ updatedAt: Date.now() });
-    next();
-});
 
 
 const User = mongoose.model('User', userSchema, 'users');
