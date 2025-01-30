@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import validator from 'validator';
 import bcrypt from 'bcryptjs';
-import crypto from 'crypto';
+import crypto, { verify } from 'crypto';
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -35,8 +35,12 @@ const userSchema = new mongoose.Schema({
         enum: ['user', 'admin']
     },
     status: {
-        type: Boolean,
+        type: String,
         default: true
+    },
+    verified: {
+        type: Boolean,
+        default: false
     },
     createdAt: {
         type: Date,
@@ -90,6 +94,12 @@ const userSchema = new mongoose.Schema({
         type: String,
         maxlength: 500
     },
+    otp: {
+        type: String
+    },
+    otpExpiry: {
+        type: Date
+    },
     resetPasswordToken: {
         type: String
     },
@@ -120,6 +130,14 @@ userSchema.methods.getResetPasswordToken = function () {
     this.resetPasswordToken = resetToken;
     this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
     return resetToken;
+}
+
+userSchema.methods.getOtpToken = function () {
+    let otp = Math.floor(1000 + Math.random() * 9999);
+    const hashedOtp = bcrypt.hashSync(toString(otp), 8);
+    this.otp = hashedOtp;
+    this.otpExpiry = Date.now() + 1 * 60 * 1000;
+    return otp;
 }
 
 

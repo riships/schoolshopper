@@ -5,11 +5,35 @@ import bcrypt from 'bcryptjs';
 
 export const createUser = async (req, res, next) => {
     const user = new User({
+        dateofbirth: new Date(req.body.dateofbirth),
         ...req.body
     });
     try {
-        (await user.save());
+        let otp = user.getOtpToken();
+        await user.save();
+        console.log(otp);
         res.status(201).send({ success: true, data: user });
+    } catch (error) {
+        next(new ErrorHandler(error.message, 500));
+    }
+}
+
+export const verifyUserWithOtp = async (req, res, next) => {
+    try {
+        const { otp, email } = req.body;
+        const user = await User.findOne({ email })
+        if (!user) {
+            return next(new ErrorHandler("User not found", 404));
+        }
+        const isMatch = await bcrypt.compare(otp, user.otp);
+        const isExpire = user.otpExpiry > Date.now();
+        if (!isMatch && !isExpire) {
+            return next(new ErrorHandler("Invalid OTP", 400));
+        }
+        user.verified = true;
+        user.otp = undefined;
+        user.otpExpiry = undefined;
+        res.status(200).json({ success: true, message: "OTP verified successfully" });
     } catch (error) {
         next(new ErrorHandler(error.message, 500));
     }
@@ -73,7 +97,7 @@ export const loginUser = async (req, res, next) => {
         const token = jwt.sign(
             { userId: user._id },
             process.env.JWT_SECRET,
-            { expiresIn: '24h' }
+            { expiresIn: '1h' }
         );
         res.send({ success: true, data: { user, token } });
     } catch (error) {
