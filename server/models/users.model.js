@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import validator from 'validator';
 import bcrypt from 'bcryptjs';
-import crypto, { verify } from 'crypto';
+import crypto from 'crypto';
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -22,12 +22,14 @@ const userSchema = new mongoose.Schema({
     },
     dateofbirth: {
         type: Date,
-        required: true
     },
     password: {
         type: String,
         required: true,
         minlength: 8
+    },
+    designation: {
+        type: String,
     },
     role: {
         type: String,

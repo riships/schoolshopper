@@ -2,6 +2,7 @@ import User from "../models/users.model.js";
 import jwt from 'jsonwebtoken';
 import ErrorHandler from "../utils/errorHandler.js";
 import bcrypt from 'bcryptjs';
+import { sendEmail } from "../utils/mailer.js";
 
 export const createUser = async (req, res, next) => {
     const user = new User({
@@ -11,8 +12,26 @@ export const createUser = async (req, res, next) => {
     try {
         let otp = user.getOtpToken();
         await user.save();
-        console.log(otp);
-        res.status(201).send({ success: true, data: user });
+        let otpContent = `
+        <div style="font-family: Arial, sans-serif; max-width: 400px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
+          <h2 style="color: #4CAF50; text-align: center;">Your OTP Code</h2>
+          <p style="font-size: 16px; text-align: center;">
+            Use the following OTP to proceed with your request:
+          </p>
+          <div style="font-size: 24px; font-weight: bold; text-align: center; color: #333; padding: 10px; border: 2px dashed #4CAF50; border-radius: 5px;">
+            ${otp}
+          </div>
+          <p style="font-size: 14px; text-align: center; color: #777;">
+            This OTP is valid for 1 minutes. Do not share it with anyone.
+          </p>
+          <hr style="margin: 20px 0; border: none; border-top: 1px solid #ddd;">
+          <p style="font-size: 12px; text-align: center; color: #999;">
+            If you did not request this, please ignore this email.
+          </p>
+        </div>
+      `
+        let sendOtp = await sendEmail('rishi.edunext@gmail.com', user.email, 'Your OTP Code', otpContent);
+        res.status(201).send({ success: true, data: sendOtp });
     } catch (error) {
         next(new ErrorHandler(error.message, 500));
     }

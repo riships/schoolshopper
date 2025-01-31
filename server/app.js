@@ -5,6 +5,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 import userRouter from './routes/user.routes.js';
 import productRouter from './routes/product.routes.js';
+import invoiceRouter from './routes/invoice.routes.js';
+import dashboardRouter from './routes/dashboard.routes.js';
 connectDb();
 
 app.use(express.json());
@@ -12,6 +14,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/api', userRouter);
 app.use('/api', productRouter);
+app.use('/api', invoiceRouter);
+app.use('/api', dashboardRouter);
 
 
 

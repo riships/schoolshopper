@@ -1,4 +1,4 @@
-import Product from "../models/product.modal.js";
+import Product from "../models/product.model.js";
 import ErrorHandler from '../utils/errorHandler.js';
 
 export const createProduct = async (req, res, next) => {

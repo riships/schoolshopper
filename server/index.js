@@ -1,5 +1,5 @@
 import { app } from './app.js'
-const port = 3000 || 3001 || 3002 || 3003
+const port = 5500
 
 app.listen(port, (err) => {
     if (!err) {
