@@ -7,28 +7,48 @@ export const salesOverview = async (req, res, next) => {
         const { date } = req.query;
 
         const startDate = new Date(date);
-        startDate.setHours(0, 0, 0, 0); // Start of the day
+        startDate.setUTCHours(0, 0, 0, 0);
 
-        const endDate = new Date(date);
-        endDate.setHours(23, 59, 59, 999); // End of the day
+        const endDate = new Date(startDate);
+        endDate.setUTCHours(23, 59, 59, 999);
 
-        const totalNumberOfInvoices = await Invoice.aggregate([
+        const totalNumberOfInvoices = await Invoice.countDocuments({
+            invoiceDate: {
+                $gte: startDate,
+                $lte: endDate
+            }
+        });
+
+        const totalSales = await Invoice.aggregate([
             {
                 $match: {
                     invoiceDate: {
                         $gte: startDate,
-                        $lt: endDate
+                        $lte: endDate
                     }
                 }
             },
             {
-                $count: 'totalNumberOfInvoices'
+                $group: {
+                    _id: null,
+                    totalSales: { $sum: '$amount' }
+                }
             }
         ]);
 
 
+        const netProfit = totalSales[0].totalSales;
 
-        res.status(200).json({ success: true, totalNumberOfInvoices });
+        const cancelledOrders = await Invoice.countDocuments({
+            invoiceDate: {
+                $gte: startDate,
+                $lte: endDate
+            },
+            status: 'cancelled'
+        });
+
+        res.status(200).json({ success: true, totalNumberOfInvoices, totalSales: totalSales[0].totalSales, netProfit, cancelledOrders });
+
     } catch (error) {
         next(new ErrorHandler(error.message, 500));
     }
