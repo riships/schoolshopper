@@ -20,6 +20,14 @@ const invoiceSchema = new mongoose.Schema({
         required: true,
         min: [0, 'Amount must be a positive value']
     },
+    gstAmount: {
+        type: Number,
+        default: 0
+    },
+    netAmount: {
+        type: Number,
+        default: 0
+    },
     status: {
         type: String,
         default: 'unpaid',

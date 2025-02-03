@@ -6,11 +6,16 @@ import ErrorHandler from '../utils/errorHandler.js';
 export const createInvoice = async (req, res, next) => {
     try {
         const { invoiceNumber, invoiceDate, dueDate, amount, status, customer } = req.body;
+        const GST_RATE = 0.18; // 18% GST
+        const gstAmount = amount * GST_RATE; // Calculate GST
+        const netAmount = amount - gstAmount; // Amount without GST
 
         const invoice = await Invoice.create({
             invoiceNumber,
             invoiceDate,
             dueDate,
+            gstAmount,
+            netAmount,
             amount,
             status,
             customer

@@ -9,18 +9,15 @@ const productSchema = mongoose.Schema({
     product_price: {
         type: Number,
         required: [true, 'Product price cannot be empty'],
-        trim: true
     },
     product_description: {
         type: String,
         required: [true, 'Product description cannot be empty'],
         trim: true
     },
-    product_image: {
+    product_image: [{
         type: String,
-        required: [true, 'Product image cannot be empty'],
-        trim: true
-    },
+    }],
     product_category: {
         type: String,
         required: [true, 'Product category cannot be empty'],

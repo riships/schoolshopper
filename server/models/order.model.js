@@ -10,6 +10,33 @@ const orderSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
+    items: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Item',
+        quantity: {
+            type: Number,
+            required: true
+        },
+        oruPrice: {
+            type: Number,
+            required: true
+        },
+        totalPrice: {
+            type: Number,
+            required: true
+        },
+        discount: {
+            type: Number,
+            required: true
+        },
+        tax: {
+            type: Number,
+        },
+        totalAmount: {
+            type: Number,
+        },
+        required: true
+    }],
     deliveryDate: {
         type: Date,
         required: true
@@ -18,10 +45,15 @@ const orderSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    invoice: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Invoice',
+        required: true
+    },
     status: {
         type: String,
         default: 'pending',
-        enum: ['delivered', 'pending']
+        enum: ['delivered', 'pending', 'cancelled']
     },
     customer: {
         type: mongoose.Schema.Types.ObjectId,
