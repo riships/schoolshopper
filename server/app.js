@@ -4,7 +4,7 @@ import connectDb from './config/db.js';
 import dotenv from 'dotenv';
 dotenv.config();
 import userRouter from './routes/user.routes.js';
-import productRouter from './routes/product.routes.js';
+import itemRouter from './routes/item.routes.js';
 import invoiceRouter from './routes/invoice.routes.js';
 import dashboardRouter from './routes/dashboard.routes.js';
 import path from 'path';
@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/public/uploads/', express.static(path.join(__dirname, '/public/uploads/')));
 
 app.use('/api', userRouter);
-app.use('/api', productRouter);
+app.use('/api', itemRouter);
 app.use('/api', invoiceRouter);
 app.use('/api', dashboardRouter);
 

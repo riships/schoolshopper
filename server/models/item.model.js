@@ -1,42 +1,42 @@
 import mongoose, { Schema } from "mongoose";
 
-const productSchema = mongoose.Schema({
-    product_name: {
+const itemSchema = mongoose.Schema({
+    item_name: {
         type: String,
-        required: [true, 'Product name cannot be empty'],
+        required: [true, 'Item name cannot be empty'],
         trim: true
     },
-    product_price: {
+    item_price: {
         type: Number,
-        required: [true, 'Product price cannot be empty'],
+        required: [true, 'Item price cannot be empty'],
     },
-    product_description: {
+    item_description: {
         type: String,
-        required: [true, 'Product description cannot be empty'],
+        required: [true, 'Item description cannot be empty'],
         trim: true
     },
-    product_image: [{
+    item_image: [{
         type: String,
     }],
-    product_category: {
+    item_category: {
         type: String,
-        required: [true, 'Product category cannot be empty'],
+        required: [true, 'Item category cannot be empty'],
         trim: true
     },
-    product_stock: {
+    item_stock: {
         type: Number,
-        required: [true, 'Product stock cannot be empty'],
+        required: [true, 'Item stock cannot be empty'],
         trim: true
     },
-    product_status: {
+    item_status: {
         type: Boolean,
         default: true
     },
-    product_rating: {
+    item_rating: {
         type: Number,
         default: 0
     },
-    product_review: {
+    item_review: {
         type: Number,
         default: 0
     },
@@ -64,5 +64,5 @@ const productSchema = mongoose.Schema({
     },
 });
 
-const Product = mongoose.model('Product', productSchema, 'products');
-export default Product;
+const Item = mongoose.model('Item', itemSchema, 'items');
+export default Item;

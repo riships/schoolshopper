@@ -12,9 +12,9 @@ const reviewSchema = new mongoose.Schema({
         min: 1,
         max: 5
     },
-    product: {
+    item: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product',
+        ref: 'Item',
         required: true
     },
     user: {
