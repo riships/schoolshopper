@@ -7,7 +7,7 @@ const router = Router();
 router.post('/item/createItem', protect, authorize('admin'), upload.array('photos', 6), createItem);
 router.get('/item/allItem', getItems);
 router.get('/item/itemByGroup', itemsByGroup);
-router.put('/item/adjustItem/:productId', protect, authorize('admin'), adjustStock)
+router.put('/item/adjustStock', protect, authorize('admin'), adjustStock)
 
 export default router;
 

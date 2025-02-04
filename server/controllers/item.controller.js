@@ -1,39 +1,23 @@
 import Item from "../models/item.model.js";
 import ErrorHandler from '../utils/errorHandler.js';
 import StockAdjustment from "../models/stockAdjustment.model.js";
+import User from "../models/users.model.js";
 
 
 export const createItem = async (req, res, next) => {
     try {
-        const item_images = [];
-        req.files.map((file) => (
-            item_images.push('/' + file.destination + file.filename)
-        ));
-
-        const {
-            item_name,
-            item_price,
-            item_description,
-            item_category,
-            item_status,
-            item_stock,
-            item_rating
-        } = req.body;
-
-
+        const item_images = req.files.map((file) => "/" + file.destination + file.filename);
         const item = new Item({
-            item_name,
-            item_price,
-            item_description,
-            item_image: item_images,
-            item_category,
-            item_stock,
-            item_status,
-            item_rating,
-            createdBy: req.user.userId,
+            item_name: req.body.item_name,
+            item_price: Number(req.body.item_price) || 0,
+            item_description: req.body.item_description?.trim(),
+            item_image: item_images,  // Assuming item_images is an array of image paths
+            item_category: req.body.item_category?.trim(),
+            item_stock: Number(req.body.item_stock) || 0,
+            item_status: req.body.item_status?.trim(),
+            item_rating: Number(req.body.item_rating) || 0,
+            createdBy: req.user.userId, // Assuming req.user.userId is available
         });
-
-
         const data = await item.save();
         res.status(201).json({ success: true, data });
     } catch (error) {
@@ -112,24 +96,38 @@ export const deleteItem = async (req, res, next) => {
 
 export const adjustStock = async (req, res, next) => {
     try {
-        const { productId } = req.params;
-        const { userId } = req.user;
         const {
-            item_name,
+            itemId,
             adjustMent_type,
             reason,
-            quantity
+            quantity,
+            remark
         } = req.body;
+        const { userId } = req.user;
+        const item = await Item.findById(itemId);
 
-        console.log(productId);
-        console.log(userId);
-
-
+        const adjustedStock = new StockAdjustment({
+            item: itemId,
+            adjustMent_type,
+            quantity,
+            reason,
+            remark,
+            adjustedBy: userId
+        });
+        await adjustedStock.save();
+        item.item_stock = quantity;
+        await item.save();
+        res.status(201).json({ success: false, message: "Stock adjusted successfully" })
     } catch (error) {
         next(new ErrorHandler(error.message, 500));
     }
 }
 
-const ob = {
 
-}
+// export const lowStock = async (req, res, next) => {
+//     try {
+//         const 
+//     } catch (error) {
+        
+//     }
+// }
