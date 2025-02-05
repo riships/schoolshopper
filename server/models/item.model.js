@@ -20,6 +20,11 @@ const itemSchema = mongoose.Schema({
         required: [true, 'Item SKU cannot be empty'],
         trim: true
     },
+    item_hsn: {
+        type: String,
+        required: [true, "Item HSN cannot be empty"],
+        trim: true
+    },
     item_dimensions: {
         type: String,
         trim: true
@@ -69,7 +74,10 @@ const itemSchema = mongoose.Schema({
         type: Number,
         default: 0
     },
-
+    item_group: {
+        type: Schema.Types.ObjectId,
+        ref: 'Item_Group',
+    },
     item_description: {
         type: String,
         required: [true, 'Item description cannot be empty'],
