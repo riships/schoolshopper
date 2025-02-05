@@ -15,6 +15,11 @@ const itemSchema = mongoose.Schema({
         type: String,
         trim: true
     },
+    item_sku: {
+        type: String,
+        required: [true, 'Item SKU cannot be empty'],
+        trim: true
+    },
     item_dimensions: {
         type: String,
         trim: true
