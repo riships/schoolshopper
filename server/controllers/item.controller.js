@@ -1,17 +1,15 @@
 import Item from "../models/item.model.js";
 import ErrorHandler from '../utils/errorHandler.js';
 import StockAdjustment from "../models/stockAdjustment.model.js";
-import User from "../models/users.model.js";
 
 
 export const createItem = async (req, res, next) => {
     try {
-        const item_images = req.files.map((file) => "/" + file.destination + file.filename);
         const item = new Item({
             item_name: req.body.item_name,
             item_price: Number(req.body.item_price) || 0,
             item_description: req.body.item_description?.trim(),
-            item_image: item_images,  // Assuming item_images is an array of image paths
+            item_image: req.files,  // Assuming item_images is an array of image paths
             item_category: req.body.item_category?.trim(),
             item_stock: Number(req.body.item_stock) || 0,
             item_status: req.body.item_status?.trim(),
@@ -124,10 +122,26 @@ export const adjustStock = async (req, res, next) => {
 }
 
 
-// export const lowStock = async (req, res, next) => {
-//     try {
-//         const 
-//     } catch (error) {
-        
-//     }
-// }
+export const lowStock = async (req, res, next) => {
+    try {
+        const lowStockItems = await Item.find({ item_stock: { $gt: 0, $lte: 5 } });
+        if (lowStockItems.length === 0 || !lowStockItems) {
+            return res.status(400).send({ success: false, message: "Not Item Found" })
+        }
+        res.status(200).json(lowStockItems);
+    } catch (error) {
+        next(new ErrorHandler(error.message, 500));
+    }
+}
+
+export const outOfStock = async (req, res, next) => {
+    try {
+        const lowStockItems = await Item.find({ item_stock: { $lte: 0 } });
+        if (lowStockItems.length === 0 || !lowStockItems) {
+            return res.status(400).send({ success: false, message: "Not Item Found" })
+        }
+        res.status(200).json(lowStockItems);
+    } catch (error) {
+        next(new ErrorHandler(error.message, 500));
+    }
+}
