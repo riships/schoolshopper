@@ -61,7 +61,7 @@ export const verifyUserWithOtp = async (req, res, next) => {
 export const getUsers = async (req, res, next) => {
     try {
         const users = await User.find().select('-password');
-        res.send({ success: true, data: users });
+        res.status(200).send({ success: true, data: users });
     } catch (error) {
         next(new ErrorHandler(error.message, 500));
     }
@@ -73,7 +73,7 @@ export const getUser = async (req, res, next) => {
         if (!user) {
             return res.status(404).send({ success: false, message: 'User not found' });
         }
-        res.send({ success: true, data: user });
+        res.status(200).send({ success: true, data: user });
     } catch (error) {
         next(new ErrorHandler(error.message, 500));
     }
@@ -85,7 +85,7 @@ export const updateUser = async (req, res, next) => {
         if (!user) {
             return res.status(404).send({ success: false, message: 'User not found' });
         }
-        res.send({ success: true, data: user });
+        res.status(200).send({ success: true, data: user });
     } catch (error) {
         next(new ErrorHandler(error.message, 500));
     }
@@ -97,7 +97,7 @@ export const deleteUser = async (req, res, next) => {
         if (!user) {
             return res.status(404).send({ success: false, message: 'User not found' });
         }
-        res.send({ success: true, message: 'User Deleted Successfully' });
+        res.status(200).send({ success: true, message: 'User Deleted Successfully' });
     } catch (error) {
         next(new ErrorHandler(error.message, 500));
     }
@@ -118,7 +118,7 @@ export const loginUser = async (req, res, next) => {
             process.env.JWT_SECRET,
             { expiresIn: '1h' }
         );
-        res.send({ success: true, data: { user, token } });
+        res.status(200).send({ success: true, token });
     } catch (error) {
         next(new ErrorHandler(error.message, 500));
     }
@@ -136,7 +136,7 @@ export const forgetPassword = async (req, res, next) => {
         }
         const resetToken = user.getResetPasswordToken();
         await user.save();
-        res.send({ success: true, data: resetToken });
+        res.status(200).send({ success: true, data: resetToken });
     } catch (error) {
         next(new ErrorHandler(error.message, 500));
     }
@@ -155,7 +155,7 @@ export const resetPassword = async (req, res, next) => {
         user.resetPasswordToken = undefined;
         user.resetPasswordExpire = undefined;
         await user.save();
-        res.send({ success: true, message: 'Password Reset Successfull' });
+        res.status(200).send({ success: true, message: 'Password Reset Successfull' });
     } catch (error) {
         next(new ErrorHandler(error.message, 500));
     }

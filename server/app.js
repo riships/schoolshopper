@@ -9,10 +9,13 @@ import invoiceRouter from './routes/invoice.routes.js';
 import dashboardRouter from './routes/dashboard.routes.js';
 import path from 'path';
 const __dirname = path.resolve();
+import cors from 'cors';
 connectDb();
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 app.use('/public/uploads/', express.static(path.join(__dirname, '/public/uploads/')));
 
