@@ -1,10 +1,13 @@
 import axios from "axios";
 import { useState } from "react";
 import Cookies from 'js-cookie';
+import loginLeftImg from '../assets/images/login.png';
+import logo from '../assets/images/logo.png';
+import { Row, Col, Button } from 'react-bootstrap'
 const url = import.meta.env.VITE_API_URL;
 
 
-function LoginForm() {
+function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -32,45 +35,35 @@ function LoginForm() {
     }
 
     return (
-        <div className="flex justify-center items-center bg-gray-100 min-h-screen">
-            <div className="bg-white shadow-lg p-8 rounded-2xl w-96">
-                <h2 className="mb-6 font-bold text-2xl text-center text-gray-700">Login</h2>
-                <form onSubmit={handleSubmit}>
-                    <div className="mb-4">
-                        <label className="block mb-1 font-medium text-gray-600">Email</label>
-                        <input
-                            type="email"
-                            placeholder="Enter Your Email"
-                            className="border-gray-300 p-3 border rounded-lg focus:ring-2 focus:ring-indigo-400 w-full outline-none"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block mb-1 font-medium text-gray-600">Password</label>
-                        <input
-                            type="password"
-                            placeholder="Enter Your Password"
-                            className="border-gray-300 p-3 border rounded-lg focus:ring-2 focus:ring-indigo-400 w-full outline-none"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <button
-                        type="submit"
-                        className="bg-indigo-600 hover:bg-indigo-700 p-3 rounded-lg w-full font-medium text-white transition duration-300"
-                    >
-                        Login
-                    </button>
-                </form>
-                <p className="mt-4 text-center text-gray-500 text-sm">
-                    Don't have an account? <a href="#" className="text-indigo-600 hover:underline">Sign up</a>
-                </p>
-            </div>
-        </div>
-    );
+        <Row className=''>
+            <Col md={8}>
+                <img className='img-fluid min-vh-100' src={loginLeftImg} />
+            </Col>
+            <Col md={4}>
+                <div className='text-center d-flex align-item-center justify-content-center flex-column h-100 px-5'>
+                    <img src={logo} className="mb-4 mx-auto w-50 img-fluid" alt="logo icon" />
+                    <h5 className='mb-3'>Welcome to School Shopper</h5>
+                    <h6 className='mb-1'>LOGIN TO YOUR ACCOUNT</h6>
+                    <p>Enter your registered email and password to login to your account</p>
+                    <form action="" onSubmit={handleSubmit}>
+                        <input type="text" onClick={(e) => setEmail(e.target.value)} name="email" className='form-control mb-3' placeholder='Enter Username' />
+                        <input type="password" onClick={(e) => setPassword(e.target.value)} name="password" className='form-control mb-1' placeholder='Enter Username' />
+                        <div className='d-flex align-item-center justify-content-between'>
+                            <div>
+                                <input type="checkbox" className='me-2' />
+                                <label htmlFor="">Remember Me</label>
+                            </div>
+                            <div>
+                                <a href="#" className='text-primary text-decoration-none'>Forget Password?</a>
+                            </div>
+                        </div>
+                        <Button className='btn btn-dark w-100 mt-3'>Login to Continue </Button>
+                    </form>
+                </div>
+            </Col>
+        </Row>
+    )
+
 }
 
-export default LoginForm;
+export default Login;
