@@ -118,7 +118,7 @@ export const loginUser = async (req, res, next) => {
             process.env.JWT_SECRET,
             { expiresIn: '1h' }
         );
-        res.status(200).send({ success: true, token });
+        res.status(200).send({ success: true, message: "Login successfully", token });
     } catch (error) {
         next(new ErrorHandler(error.message, 500));
     }
