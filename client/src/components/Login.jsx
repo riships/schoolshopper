@@ -1,40 +1,26 @@
-import axios from "axios";
 import { useState } from "react";
-import Cookies from 'js-cookie';
 import loginLeftImg from '../assets/images/login.png';
 import logo from '../assets/images/logo.png';
 import { Row, Col, Button } from 'react-bootstrap'
-const url = import.meta.env.VITE_API_URL;
 import { ToastContainer, toast } from 'react-toastify';
-
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from "../context/AuthContext";
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
+    const auth = useAuth();
 
     const handleSubmit = async (e) => {
-        try {
-            e.preventDefault();
-            const userCredentials = {
-                email,
-                password,
+        e.preventDefault();
+        if (email || password) {
+            const login = await auth.loginAction({ email, password });
+            if (login) {
+                navigate('/home');
             }
-            console.log(email, password);
-
-            const response = await axios.post(`${url}/api/users/login`, userCredentials,
-                {
-                    withCredentials: true,
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-auth-token': `${Cookies.get('token')}` || ''
-                    }
-                }
-            );
-            Cookies.set("token", response.data.token, { expires: 60 * 60 * 1000 });
-            console.log(response.data);
-            toast.success(response.data.message);
-        } catch (error) {
-            toast.error(error.response.data.message)
+        } else {
+            toast.error('Please fill all fields');
         }
     }
 
