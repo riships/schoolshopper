@@ -17,20 +17,25 @@ function ForgotPassword() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (email) {
+            verifyUser()
+        } else {
+            toast.error('Please enter your email address');
+        }
     }
 
     const verifyUser = async () => {
         try {
             const verify = await axios.post(url + "/api/users/forgetpassword", { email });
-            if (verify.data.status === 200) {
+            if (verify.data.success) {
                 toast.success("Email sent successfully");
                 navigate('/verifyOtp');
             } else {
                 toast.error("Invalid email");
             }
-
         } catch (error) {
-            toast.error(error.response.data.message);
+            console.log(error.message);
+            toast.error(error.message);
         }
     }
 
@@ -46,7 +51,7 @@ function ForgotPassword() {
                     <h5 className='mb-3 text-[#212529]' style={{ fontWeight: '700' }}>Forgot Password?</h5>
                     <h6 className='mb-1' style={{ fontWeight: '700' }}>ENTER YOUR EMAIL ADDRESS</h6>
                     <p className="text-gray-500">Enter your registered email address and we'll send an OTP for verification</p>
-                    <form onSubmit={verifyUser}>
+                    <form onSubmit={handleSubmit}>
                         <input type="text" onChange={(e) => setEmail(e.target.value)} name="email" className='form-control mb-3' placeholder='Enter Username' />
                         <Button type="submit" className='mt-3 w-100 btn btn-dark'>Send OTP</Button>
                     </form>

@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 
-function OtpInput({ otplength = 6, otpvalue = '', onOtpChange }) {
+function OtpInput({ otplength = 6, onOtpChange }) {
     const [otp, setOtp] = useState(new Array(otplength).fill(""));// default otp value is empty
     const inputRefs = useRef([]);
 
@@ -22,8 +22,15 @@ function OtpInput({ otplength = 6, otpvalue = '', onOtpChange }) {
     }
 
     const handleKeyDown = (index, e) => {
-        if (e.key === "Backspace" && !otp[index] && index > 0) {
-            inputRefs.current[index - 1].focus();
+        if (e.key === "Backspace") {
+            const newOtp = [...otp];
+
+            if (newOtp[index]) {
+                newOtp[index] = "";
+                setOtp(newOtp);
+            } else if (index > 0) {
+                inputRefs.current[index - 1].focus();
+            }
         }
     };
 
@@ -34,13 +41,13 @@ function OtpInput({ otplength = 6, otpvalue = '', onOtpChange }) {
                 otp.map((item, index) => (
                     <input
                         key={index}
-                        type="number"
+                        type="text"
                         maxLength={1}
                         value={item}
                         onChange={(e) => handleChange(index, e)}
                         onKeyDown={(e) => handleKeyDown(index, e)}
                         ref={(el) => (inputRefs.current[index] = el)}
-                        className="form-control"
+                        className="form-control text-center"
                     />
                 ))
             }
