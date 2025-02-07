@@ -69,11 +69,12 @@ export const getUsers = async (req, res, next) => {
 
 export const getUser = async (req, res, next) => {
     try {
-        const user = await User.findById(req.params.id);
+        const id = req.user.userId;
+        const user = await User.findById({ _id: id }).select('-password');
         if (!user) {
             return res.status(404).send({ success: false, message: 'User not found' });
         }
-        res.status(200).send({ success: true, data: user });
+        res.status(200).send({ success: true, user });
     } catch (error) {
         next(new ErrorHandler(error.message, 500));
     }
@@ -121,7 +122,17 @@ export const loginUser = async (req, res, next) => {
             process.env.JWT_SECRET,
             { expiresIn: '1h' }
         );
-        res.status(200).send({ success: true, message: "Login successfully", token });
+        const user_details = {
+            id: user?._id,
+            name: user?.name || "N/A",
+            img_url: user?.avatar || "default-avatar.png",
+            bio: user?.bio || "",
+            email: user?.email || "N/A",
+            gender: user?.gender || "N/A",
+            phone: user?.phone || "N/A",
+            dateofbirth: user?.dateofbirth || "N/A",
+        };
+        res.status(200).send({ success: true, message: "Login successfully", token, user: user_details });
     } catch (error) {
         next(new ErrorHandler(error.message, 500));
     }

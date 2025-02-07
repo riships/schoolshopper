@@ -6,7 +6,7 @@ const router = Router();
 router.post("/users", protect, authorize('admin'), createUser);
 router.post("/users/verify", verifyUserWithOtp);
 router.get("/users", protect, authorize('admin'), getUsers);
-router.get("/users/:id", protect, getUser);
+router.get("/users/user", protect, getUser);
 router.put('/users/:id', protect, updateUser);
 router.delete('/users/:id', protect, deleteUser);
 router.post('/users/login', loginUser);
