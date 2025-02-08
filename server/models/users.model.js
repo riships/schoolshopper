@@ -130,17 +130,19 @@ userSchema.methods.comparePassword = function (password) {
 userSchema.methods.getResetPasswordToken = function () {
     const resetToken = crypto.randomBytes(20).toString('hex');
     this.resetPasswordToken = resetToken;
-    this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
+    this.resetPasswordExpire = Date.now() + 150 * 1000; // 150 second expiry
     return resetToken;
 }
 
 userSchema.methods.getOtpToken = function () {
-    let otp = Math.floor(1000 + Math.random() * 9999);
-    const hashedOtp = bcrypt.hashSync(toString(otp), 8);
+    let otp = Math.floor(100000 + Math.random() * 900000); // Ensures a 6-digit OTP
+    const hashedOtp = bcrypt.hashSync(otp.toString(), 8); // Fix: Use `otp.toString()`
+
     this.otp = hashedOtp;
-    this.otpExpiry = Date.now() + 1 * 60 * 1000;
+    this.otpExpiry = Date.now() + 150 * 1000; // 150 seconds expiry
+
     return otp;
-}
+};
 
 
 
