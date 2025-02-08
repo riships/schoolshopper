@@ -43,8 +43,8 @@ function Login() {
                     <h6 className='mb-1' style={{ fontWeight: '700' }}>LOGIN TO YOUR ACCOUNT</h6>
                     <p className="text-gray-500">Enter your registered email and password to login to your account</p>
                     <form onSubmit={handleSubmit}>
-                        <input type="text" onChange={(e) => setEmail(e.target.value)} name="email" className='form-control mb-3' placeholder='Enter Username' />
-                        <input type="password" onChange={(e) => setPassword(e.target.value)} name="password" className='form-control mb-1' placeholder='Enter Username' />
+                        <input type="text" onChange={(e) => setEmail(e.target.value)} name="email" className='form-control mb-3' placeholder='Enter Email' />
+                        <input type="password" onChange={(e) => setPassword(e.target.value)} name="password" className='form-control mb-1' placeholder='Enter Password' />
                         <div className='d-flex justify-content-between align-item-center'>
                             <div>
                                 <input type="checkbox" className='me-2' />

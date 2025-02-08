@@ -116,10 +116,6 @@ export const loginUser = async (req, res, next) => {
     }
 }
 
-export const logoutUser = async (req, res, next) => {
-    res.send({ success: true, message: "Logout Successfull", });
-}
-
 export const forgetPassword = async (req, res, next) => {
     try {
         const user = await User.findOne({ email: req.body.email });
@@ -156,6 +152,12 @@ export const forgetPassword = async (req, res, next) => {
 export const verifyUserWithOtp = async (req, res, next) => {
     try {
         const { otp, email } = req.body;
+        if (!otp && !email) {
+            return res.status(400).send({
+                success: false,
+                message: 'Please provide both otp and email'
+            });
+        }
         const user = await User.findOne({ email })
         if (!user) {
             return next(new ErrorHandler("User not found", 404));
@@ -168,8 +170,11 @@ export const verifyUserWithOtp = async (req, res, next) => {
         user.verified = true;
         user.otp = undefined;
         user.otpExpiry = undefined;
-        res.status(200).json({ success: true, message: "OTP verified successfully", token });
+        let resetToken = await user.getResetPasswordToken();
+        await user.save();
+        res.status(200).json({ success: true, message: "OTP verified successfully", token: resetToken });
     } catch (error) {
+        console.log(error);
         next(new ErrorHandler(error.message, 500));
     }
 }

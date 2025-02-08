@@ -7,6 +7,7 @@ import AuthProvider from "./context/AuthContext";
 import ProtectedRoute from "./context/ProtectedRoute";
 import ForgotPassword from "./components/ForgotPassword";
 import VerifyOtp from "./components/VerifyOtp";
+import ResetPassword from "./components/ResetPassword";
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/forgetPassword" element={<ForgotPassword />} />
           <Route path="/verifyOtp" element={<VerifyOtp />} />
+          <Route path="/resetPassword" element={<ResetPassword />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/home" element={<Home />} />
             <Route path="/profile" element={<Profile />} />

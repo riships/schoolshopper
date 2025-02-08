@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import loginLeftImg from '../assets/images/login.png';
 import logo from '../assets/images/logo.png';
 import { Row, Col, Button } from 'react-bootstrap'
@@ -7,37 +7,51 @@ import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import OtpInput from "./OtpInput";
+import { useLocation } from "react-router-dom";
 const url = import.meta.env.VITE_API_URL;
 
-function VerifyOtp({ email }) {
+function VerifyOtp() {
     const navigate = useNavigate();
     const auth = useAuth();
+    const location = useLocation()
+    const email = location?.state?.email || null;
+
     useEffect(() => {
         if (auth.user) {
             navigate('/home');
+        } else if (!email) {
+            navigate('/');
         }
     }, [auth.user]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (email) {
+            onOtpChange();
+        }
     }
 
     const onOtpChange = async (otp) => {
-        console.log(otp);
-
         try {
-            const verify = await axios.post(url + "/api/users/forgetpassword", { email });
-            if (verify.data.status === 200) {
-                toast.success("Email sent successfully");
-                navigate('/verifyOtp');
+            if (!otp) {
+                toast.error("Please enter OTP");
+                return;
+            }
+
+            const response = await axios.post(`${url}/api/users/verify`, { email, otp });
+
+            if (response.status === 200) {
+                toast.success("OTP verified successfully");
+                navigate('/resetPassword', { state: { token: response.data.token } });
             } else {
-                toast.error("Invalid email");
+                toast.error("Invalid OTP");
             }
 
         } catch (error) {
-            toast.error(error.response.data.message);
+            toast.error(error.response?.data?.message || "Something went wrong");
         }
-    }
+    };
+
 
     return (
         <Row className=''>
