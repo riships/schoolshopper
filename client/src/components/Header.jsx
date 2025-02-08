@@ -5,7 +5,6 @@ import { useAuth } from '../context/AuthContext';
 
 function Header() {
     const auth = useAuth();
-    console.log(auth.user);
     
     return (
         <>

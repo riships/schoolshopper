@@ -8,6 +8,7 @@ import ProtectedRoute from "./context/ProtectedRoute";
 import ForgotPassword from "./components/ForgotPassword";
 import VerifyOtp from "./components/VerifyOtp";
 import ResetPassword from "./components/ResetPassword";
+import Items from "./views/Items";
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
           <Route path="/resetPassword" element={<ResetPassword />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/home" element={<Home />} />
+            <Route path="/items" element={<Items />} />
             <Route path="/profile" element={<Profile />} />
           </Route>
         </Routes>
