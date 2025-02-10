@@ -9,6 +9,7 @@ import ForgotPassword from "./components/ForgotPassword";
 import VerifyOtp from "./components/VerifyOtp";
 import ResetPassword from "./components/ResetPassword";
 import Items from "./views/Items";
+import  "./assets/css/style.css";
 
 
 function App() {

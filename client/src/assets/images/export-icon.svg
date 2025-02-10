@@ -1,0 +1,9 @@
+<svg id="baseline-add_circle_outline-24px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <path id="Path_918" data-name="Path 918" d="M0,0H16V16H0Z" fill="none"/>
+  <g id="Group_259872" data-name="Group 259872" transform="translate(1.335 1.35)">
+    <path id="Path_6349" data-name="Path 6349" d="M716.706,327.313h-10V317.156h5.832v-1.663h-5.832a1.67,1.67,0,0,0-1.666,1.663v9.975a1.67,1.67,0,0,0,1.666,1.663h10a1.669,1.669,0,0,0,1.666-1.663v-5.819h-1.666Z" transform="translate(-705.043 -315.493)" fill="#21263c"/>
+    <path id="Path_6351" data-name="Path 6351" d="M709.043,322.493v1.663h6.665v-1.663Z" transform="translate(-705.711 -316.674)" fill="#21263c"/>
+    <rect id="Rectangle_264" data-name="Rectangle 264" width="6.665" height="1.663" transform="translate(3.332 8.312)" fill="#21263c"/>
+    <path id="Path_978" data-name="Path 978" d="M716.895,317.054v-1.561l2.737,2.732-2.737,2.732v-1.6a4.842,4.842,0,0,0-4.3,1.991A4.96,4.96,0,0,1,716.895,317.054Z" transform="translate(-706.302 -315.493)" fill="#21263c"/>
+  </g>
+</svg>

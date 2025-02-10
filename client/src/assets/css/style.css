@@ -1,0 +1,163 @@
+ul,
+li {
+    list-style-type: none;
+}
+
+
+/* Common Button CSS Starts Here */
+
+.btn-delete {
+    background: #FDECEA !important;
+    border: 1px solid #EA43354D !important;
+}
+
+.btn-primary {
+    background: #408DFB !important;
+    border: 1px solid #408DFB !important;
+}
+
+/* Common Button CSS Ends Here */
+
+
+/* Common Box CSS Starts Here */
+
+.box {
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    box-shadow: 0px 1px 8px #00000014;
+    border: 1px solid #E0E0E0;
+    border-radius: 12px;
+    margin: 3rem;
+    min-height: calc(100vh - 200px);
+}
+
+/* Common Box CSS Ends Here */
+
+/* Common Action Wrapper CSS Starts Here */
+ul.common-action-wrapper {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    padding: 1rem;
+    margin: 0;
+}
+
+ul.common-action-wrapper li {
+    margin: 0 0.3rem;
+}
+
+ul.common-action-wrapper li:first-child {
+    margin-left: 0;
+}
+
+ul.common-action-wrapper li:last-child {
+    margin-right: 0;
+}
+
+.pagination-wrapper {
+    display: flex;
+    align-items: center;
+    font-size: 0.8rem;
+}
+
+.common-button {
+    padding: 0.2rem 1rem;
+    font-size: 0.8rem;
+    background: #F5F5F5 0% 0% no-repeat padding-box;
+    border: 1px solid #E0E0E0;
+    border-radius: 4px;
+    color: #21263C;
+    display: flex;
+    transition: 0.3s all;
+}
+
+.common-button:hover {
+    box-shadow: 0px 0px 6px #83838333;
+}
+
+.common-button img {
+    margin-right: 5px;
+    width: 16px;
+}
+
+.search-field {
+    background: #FAFAFA 0% 0% no-repeat padding-box;
+    border: 1px solid #E0E0E0;
+    padding: 0.2rem 0.7rem;
+    font-size: 0.8rem;
+}
+
+/* Common Action Wrapper CSS Ends Here */
+
+
+/* Common Table CSS Starts Here */
+
+.common-table thead tr th {
+    color: #212529;
+    background: #E8E9EB;
+    text-transform: capitalize;
+    font-weight: 500;
+    font-size: 0.8rem;
+    text-align: left;
+    padding: 0.5rem 1rem;
+    vertical-align: middle;
+}
+
+.common-table thead tr th:last-child,
+.common-table tbody tr td:last-child {
+    text-align: right;
+}
+
+.common-table tbody tr td {
+    border-bottom: 1px solid #f1e9e9;
+    color: #212529;
+    font-size: 0.8rem;
+    text-align: left;
+    padding: 0.5rem 1rem;
+    vertical-align: middle;
+}
+
+.action-button-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.action-button-wrapper button {
+    margin-left: 10px;
+}
+
+/* Common Table CSS Ends Here */
+
+/* Common Filter Modal Css Starts Here */
+
+.modal-header {
+    background: #E8E9EB;
+}
+
+.center-common-modal .modal-title {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    color: #21263C;
+    font-weight: 600;
+}
+
+
+/* Common Filter Modal Css Endss Here */
+
+
+/* Common Form Control Css Starts Here */
+
+    .common-label {
+        color: #212529;
+        font-weight: 500;
+        font-size: 0.8rem;
+    }
+
+    .common-control {
+        color: #838383;
+        font-size: 0.8rem;
+    }
+
+/* Common Form Control Css Endss Here */
