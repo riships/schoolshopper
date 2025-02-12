@@ -1,6 +1,7 @@
 import Item from "../models/item.model.js";
 import ErrorHandler from '../utils/errorHandler.js';
 import StockAdjustment from "../models/stockAdjustment.model.js";
+import Category from "../models/category.model.js";
 
 
 export const createItem = async (req, res, next) => {
@@ -52,7 +53,7 @@ export const getItems = async (req, res, next) => {
 
 export const getItem = async (req, res, next) => {
     try {
-        const item = await Item.findById(req.params.id);
+        const item = await Item.findById({ _id: req.params.id });
         if (!item) {
             return res.status(404).json({ msg: 'Item not found' });
         }
@@ -141,6 +142,41 @@ export const outOfStock = async (req, res, next) => {
             return res.status(400).send({ success: false, message: "Not Item Found" })
         }
         res.status(200).json(lowStockItems);
+    } catch (error) {
+        next(new ErrorHandler(error.message, 500));
+    }
+}
+
+export const addCategories = async (req, res, next) => {
+    try {
+        const { category_name, sub_categories } = req.body;
+        const { userId } = req.user;
+        const categoryExist = await Category.find({ name: category_name });
+        if (categoryExist.length > 0) {
+            return res.status(400).send({
+                success: false,
+                message: "Category already exist"
+            })
+        }
+        const newCategory = new Category({
+            category_name,
+            sub_categories,
+            createBy: userId,
+        });
+        await newCategory.save();
+        res.status(201).json({ success: true, message: "Category added successfully" })
+    } catch (error) {
+        next(new ErrorHandler(error.message, 500));
+    }
+}
+
+
+export const getCategories = async (req, res, next) => {
+    try {
+        const categories = await Category.find().select('-sub_categories');
+        const sub_categories = await Category.find().select('sub_categories');
+
+        res.status(200).json({ success: true, categories, sub_categories });
     } catch (error) {
         next(new ErrorHandler(error.message, 500));
     }
