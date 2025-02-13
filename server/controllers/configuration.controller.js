@@ -1,0 +1,1 @@
+import organizationModel from "../models/organization.model";

@@ -36,11 +36,12 @@ const AuthProvider = ({ children }) => {
                     secure: true,
                     sameSite: "Strict"
                 });
+
             setUser(response.data.user)
             return response.data.success;
         } catch (error) {
-            toast.error(error.response.data.message)
-            return error.response.data.success;
+            toast.error(error.response.data.message || "Internal Server Error");
+            return false;
         }
     }
 
@@ -56,7 +57,7 @@ const AuthProvider = ({ children }) => {
                 });
             setUser(response.data.user)
         } catch (error) {
-            toast.error(error.response.data.message);
+            toast.error(error.response.data.message || "Internal Server Error");
         }
     }
 

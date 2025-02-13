@@ -49,10 +49,11 @@ const userSchema = new mongoose.Schema({
         default: Date.now
     },
     updatedAt: {
-        type: Date
+        type: Date,
+        default: Date.now
     },
     deletedAt: {
-        type: Date
+        type: Date,
     },
     deleted: {
         type: Boolean,

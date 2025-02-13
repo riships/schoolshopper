@@ -6,7 +6,7 @@ function Home() {
 
     return (
         <>
-            {/* <h1>Welcome {auth.user?.name}!</h1> */}
+            <h1>Welcome {auth.user?.name}!</h1>
             <button onClick={() => auth.logOut()} className="btn-submit">
                 logout
             </button>
