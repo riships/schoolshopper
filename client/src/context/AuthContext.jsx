@@ -36,7 +36,9 @@ const AuthProvider = ({ children }) => {
                     secure: true,
                     sameSite: "Strict"
                 });
-            setUser(response.data.user)
+            if (response.data.user) {
+                setUser(response.data.user)
+            }
             return response.data.success;
         } catch (error) {
             toast.error(error.response.data.message)
@@ -54,7 +56,10 @@ const AuthProvider = ({ children }) => {
                     },
                     withCredentials: true
                 });
-            setUser(response.data.user)
+            if (response.data.user) {
+                setUser(response.data.user)
+            }
+
         } catch (error) {
             toast.error(error.response.data.message);
         }
