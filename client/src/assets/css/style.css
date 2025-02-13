@@ -3,6 +3,14 @@ li {
     list-style-type: none;
 }
 
+.mx-n-16 {
+    margin-left:-16px;
+    margin-right:-16px;
+}
+
+.ms-n-16 {
+    margin-left:-16px;
+}
 
 /* Common Button CSS Starts Here */
 
@@ -21,12 +29,48 @@ li {
 
 /* Common Box CSS Starts Here */
 
+.content-wrapper {
+    margin: 3rem;
+}
+
+.common-breadcrum {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+    text-wrap: nowrap;
+}
+
+.common-breadcrum > li {
+    position: relative !important;
+    padding-left: 15px !important;
+    font-size: 1.085714rem !important;
+    font-weight: 500;
+    line-height: 1;
+}
+
+.common-breadcrum > li > a {
+    text-decoration: none;
+}
+
+.common-breadcrum > li:not(:first-child)::before {
+    content: url(../images/greater-then-arrow.svg);
+    position: absolute !important;
+    left: 0;
+    color: black !important;
+    font-size: 1.2857142857rem !important;
+    font-weight: 700;
+    bottom: 1px;
+}
+
+
 .box {
     background: #FFFFFF 0% 0% no-repeat padding-box;
     box-shadow: 0px 1px 8px #00000014;
     border: 1px solid #E0E0E0;
     border-radius: 12px;
-    margin: 3rem;
     min-height: calc(100vh - 200px);
 }
 
@@ -156,8 +200,280 @@ ul.common-action-wrapper li:last-child {
     }
 
     .common-control {
-        color: #838383;
+        color: #838383 !important;
+        font-size: 0.8rem !important;
+    }
+
+    .form-gap {
+        margin-bottom: 1rem;
+    }
+
+    .common-form-wrapper .form-gap:last-child {
+        margin-bottom: 0;
+    }
+
+    .custom-selectpicker {
         font-size: 0.8rem;
+        color:#838383 !important
+    }
+
+    .custom-selectpicker .select__control {
+        min-height: 32px;
+    }
+
+    .custom-selectpicker .select__indicator {
+        padding:4px;
+    }
+
+    .custom-selectpicker .select__indicator-separator  {
+        width:0;
+    }
+
+    .custom-selectpicker .select__input-container {
+        color:#212529;
     }
 
 /* Common Form Control Css Endss Here */
+
+/* ============ Common Seperator CSS Starts Here ============== */
+
+.common-seperator {
+    background: #EEEEEE;
+    border-bottom: 1px solid #C9C9C9;
+    min-height: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    margin-bottom: 1rem;
+    list-style-type: none;
+}
+
+.common-seperator .seperator-main-heading {
+    color: #212529;
+    font-size: 0.942857rem;
+    font-weight: 500;
+}
+
+/* ============ Common Seperator CSS Ends Here ============== */
+
+/*Common Radio Button And Checkbox Design Css Start Here*/
+
+.btn-radio-group {
+    border: 1px solid #D5D5D4;
+    border-radius: 5px;
+    position: relative;
+    padding: 0;
+    margin-top: 0;
+}
+
+.btn-radio-group > label {
+    position: absolute;
+    top: -10px;
+    left: 6px;
+    background: #fff;
+    padding: 0 5px;
+}
+
+.boxed1 label {
+    display: inline-block;
+    padding: 5px 10px;
+    width: 100%;
+    transition: all 0.3s;
+    border: 1px solid #8D909933;
+    border-radius: 4px;
+    text-align: left;
+    background-color: #7A86A508;
+    color: #202124;
+    font-size: 0.8rem;
+}
+
+.btn-radio-group .boxed1 {
+    align-items: center;
+    justify-content: space-between;
+    --bs-gutter-x: 0;
+}
+
+.btn-radio-group .input_02_radio {
+    margin-bottom: 0 !important;
+    position: relative;
+}
+
+.btn-radio-group .boxed1 label {
+    background-color: transparent;
+    padding-left: 30px;
+    border-color: transparent;
+    position: relative;
+}
+
+.btn-radio-group-image.btn-radio-group .boxed1 label {
+    top: 0px;
+    padding: 5.2px 10px;
+    text-align: center;
+}
+
+.btn-radio-group-image.btn-radio-group .boxed1 label img {
+    width:20px;
+    margin-right:3px;
+}
+
+.btn-radio-group .boxed1 input[type="radio"], .btn-radio-group .boxed1 input[type="checkbox"] {
+    position: absolute;
+    right: auto;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.btn-radio-group .boxed1 input[type="radio"]:checked + label {
+    background-color: transparent;
+    border-color: transparent;
+    /*color: #5b5b5b;*/
+}
+
+.btn-radio-group-image.btn-radio-group .boxed1 input[type="radio"]:checked + label {
+    background-color: #3e85f0;
+    border-color: transparent;
+    color: #fff;
+}
+
+.btn-radio-group-image.btn-radio-group .boxed1 input[type="radio"]:checked + label img {
+    filter: brightness(0) invert(1);
+}
+
+/*Common Radio Button And Checkbox Design Css End Here*/
+
+/* Common Toggle On/Off Button Css Start Here */
+
+.toggle-button-cover {
+    position: relative;
+}
+
+.button-cover {
+    margin-left: 20px;
+    background-color: #fff;
+    box-shadow: 0 10px 20px -8px #c5d6d6;
+    border-radius: 4px;
+}
+
+.button-cover:before {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    color: #d7e3e3;
+    font-size: 12px;
+    line-height: 1;
+    padding: 5px;
+}
+
+.button-cover,
+.knobs,
+.layer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.common-checkbox-toggle {
+    position: relative;
+    /*top: 50%;*/
+    width: 48px;
+    height: 22px;
+    /*margin: 0 auto 0 auto;*/
+    overflow: hidden;
+    /*transform: translate(0px, -50%);*/
+}
+
+.common-checkbox-toggle.r,
+.common-checkbox-toggle.r .layer {
+    border-radius: 100px;
+}
+
+.common-checkbox-toggle.b2 {
+    border-radius: 20px;
+}
+
+.checkbox-toggle-btn {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0 !important;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 3;
+}
+
+.knobs {
+    z-index: 2;
+}
+
+.layer {
+    width: 100%;
+    background-color: #5b5b5bb5;
+    transition: 0.3s ease all;
+    z-index: 1;
+}
+
+.fa-search:before {
+    font-family: 'FontAwesome';
+}
+
+/* Button 13 */
+
+.common-checkbox-toggle .knobs:before,
+.common-checkbox-toggle .knobs:after,
+.common-checkbox-toggle .knobs span {
+    position: absolute;
+    top: 2px;
+    width: 20px;
+    height: 17px;
+    font-size: 9px;
+    font-weight: 600;
+    text-align: center;
+    line-height: 10px;
+    padding: 6px 0px;
+    border-radius: 2px;
+    transition: 0.3s ease all;
+}
+
+.common-checkbox-toggle .knobs:before,
+.common-checkbox-toggle .knobs:after {
+    color: #fff;
+    z-index: 1;
+}
+
+.common-checkbox-toggle .knobs:before {
+    content: 'YES';
+    left: 3px;
+}
+
+.common-checkbox-toggle .knobs:after {
+    content: 'NO';
+    right: 3px;
+}
+
+.common-checkbox-toggle .knobs span {
+    width: 18px;
+    height: 18px;
+    left: 3px;
+    background-color: #fff;
+    z-index: 2;
+    border-radius: 50px;
+}
+
+.common-checkbox-toggle .checkbox-toggle-btn:checked + .knobs span {
+    left: 27px;
+    background-color: #fff;
+    top: 2px;
+}
+
+.common-checkbox-toggle .checkbox-toggle-btn:checked ~ .layer {
+    background-color: #3e85f0;
+}
+
+
+/* Common Toggle On/Off Button Css End Here */

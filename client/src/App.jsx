@@ -9,6 +9,7 @@ import ForgotPassword from "./components/ForgotPassword";
 import VerifyOtp from "./components/VerifyOtp";
 import ResetPassword from "./components/ResetPassword";
 import Items from "./views/Items";
+import AddProduct from "./views/AddProduct";
 import  "./assets/css/style.css";
 
 
@@ -25,6 +26,7 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/home" element={<Home />} />
             <Route path="/items" element={<Items />} />
+            <Route path="/add-product" element={<AddProduct />} />
             <Route path="/profile" element={<Profile />} />
           </Route>
         </Routes>
