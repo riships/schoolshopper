@@ -8,11 +8,11 @@ import ProtectedRoute from "./context/ProtectedRoute";
 import ForgotPassword from "./components/ForgotPassword";
 import VerifyOtp from "./components/VerifyOtp";
 import ResetPassword from "./components/ResetPassword";
-import Items from "./views/Items";
+import Items from "./views/inventory/Items";
 import AddProduct from "./views/AddProduct";
 import "./assets/css/style.css";
 import OrganizationDetails from "./views/configuration/OrganizationDetails";
-import Inventory from "./views/configuration/Inventory";
+import Inventory from "./views/inventory/Inventory";
 
 
 function App() {

@@ -1,19 +1,19 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import {useNavigate} from "react-router-dom";
-import { Table, Button, Modal, Form , Row, Col} from 'react-bootstrap';
+import { useNavigate } from "react-router-dom";
+import { Table, Button, Modal, Form, Row, Col } from 'react-bootstrap';
 import Select from 'react-select';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 const url = import.meta.env.VITE_API_URL;
-import viewIcon from '../assets/images/view-icon.svg';
-import actionIcon from '../assets/images/action-icon.svg';
-import prevIcon from '../assets/images/prev-icon.svg';
-import nextIcon from '../assets/images/next-icon.svg';
-import filterIcon from '../assets/images/filter-icon.svg';
-import addIcon from '../assets/images/add-icon.svg';
-import deleteIcon from '../assets/images/delete-icon.svg';
-import exportIcon from '../assets/images/export-icon.svg';
-import columnIcon from '../assets/images/column-icon.svg';
+import viewIcon from '../../assets/images/view-icon.svg';
+import actionIcon from '../../assets/images/action-icon.svg';
+import prevIcon from '../../assets/images/prev-icon.svg';
+import nextIcon from '../../assets/images/next-icon.svg';
+import filterIcon from '../../assets/images/filter-icon.svg';
+import addIcon from '../../assets/images/add-icon.svg';
+import deleteIcon from '../../assets/images/delete-icon.svg';
+import exportIcon from '../../assets/images/export-icon.svg';
+import columnIcon from '../../assets/images/column-icon.svg';
 
 const Items = () => {
     const auth = useAuth();
@@ -27,17 +27,17 @@ const Items = () => {
         { value: 'chocolate', label: 'Chocolate' },
         { value: 'strawberry', label: 'Strawberry' },
         { value: 'vanilla', label: 'Vanilla' },
-      ];
+    ];
 
 
-      const [selectedOption, setSelectedOption] = useState(null);
+    const [selectedOption, setSelectedOption] = useState(null);
 
-      const redirectToProduct = useNavigate(); 
+    const redirectToProduct = useNavigate();
 
-      const navigateToProduct = () => {
+    const navigateToProduct = () => {
         redirectToProduct("/add-product")
-      }
-      
+    }
+
 
 
     useEffect(() => {
@@ -78,7 +78,7 @@ const Items = () => {
                         <ul className="common-action-wrapper">
                             <li>
                                 <button type="button" className="common-button" onClick={handleShow} >
-                                <img src={filterIcon} alt="filterf-icon" /> Filters
+                                    <img src={filterIcon} alt="filterf-icon" /> Filters
                                 </button>
 
                                 <Modal className='center-common-modal' show={show} onHide={handleClose}>
@@ -102,7 +102,7 @@ const Items = () => {
                                                 <Col md={12}>
                                                     <Row>
                                                         <Col md={12}>
-                                                        <Form.Label className='common-label'>Price Range</Form.Label>
+                                                            <Form.Label className='common-label'>Price Range</Form.Label>
                                                         </Col>
                                                         <Col md={6} className='form-gap'>
                                                             <Form.Group className='common-form-group'>
@@ -127,10 +127,10 @@ const Items = () => {
 
                                     </Modal.Body>
                                     <Modal.Footer>
-                                        <button type="button" className='common-button'  onClick={handleClose}>
+                                        <button type="button" className='common-button' onClick={handleClose}>
                                             Close
                                         </button>
-                                        <button type="button" className='common-button btn-primary text-white' onClick={handleClose}>
+                                        <button type="button" className='text-white common-button btn-primary' onClick={handleClose}>
                                             Apply
                                         </button>
                                     </Modal.Footer>
@@ -141,7 +141,7 @@ const Items = () => {
                                 <input className="search-field" type="text" placeholder="Search" />
                             </li>
                             <li className="ms-auto">
-                                <button type="button" onClick={navigateToProduct} variant="" className="common-button btn-add btn-primary text-white"> <img src={addIcon} alt="add-icon" />Add</button>
+                                <button type="button" onClick={navigateToProduct} variant="" className="text-white common-button btn-add btn-primary"> <img src={addIcon} alt="add-icon" />Add</button>
                             </li>
                             <li>
                                 <button type="button" variant="" className="common-button btn-delete"><img src={deleteIcon} alt="delete-icon" /> Delete</button>
@@ -183,7 +183,7 @@ const Items = () => {
                                                 <tr key={_id}>
                                                     <td><input type="checkbox" /></td>
                                                     <td>
-                                                        <p className="mb-0 text-dark fw-medium">{item_name}</p>
+                                                        <p className="mb-0 fw-medium text-dark">{item_name}</p>
                                                         <p className="mb-0 text-secondary">{item_hsn}</p>
                                                     </td>
                                                     <td>{item_category}</td>
