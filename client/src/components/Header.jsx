@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router";
 import { Form } from 'react-bootstrap';
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import { useAuth } from '../context/AuthContext';
@@ -11,15 +12,60 @@ import profileIcon from '../assets/images/profile-icon.svg';
 import passwordIcon from '../assets/images/change-pass-icon.svg';
 import profilePhoneIcon from '../assets/images/profile-phone.svg';
 import profileMailIcon from '../assets/images/profile-mail-icon.svg';
+import menuItems from "../utils/headerAction";
 
 
 function Header() {
     const auth = useAuth();
-    const [profileIsActive, setProfileIsIsActive] = useState(false);
+    const [profileIsActive, setProfileIsActive] = useState(false);
+    const dropdownRef = useRef(null);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [filteredItems, setFilteredItems] = useState([]);
 
     const profiletoggleClass = () => {
-        setProfileIsIsActive(!profileIsActive);
+        setProfileIsActive(!profileIsActive);
     };
+
+    const handleSearch = () => {
+        const filtered = [];
+
+        menuItems.forEach((item) => {
+            const isMainMatch = item.title.toLowerCase().includes(searchQuery);
+            const filteredSubMenu = item.subMenu?.filter((sub) =>
+                sub.title.toLowerCase().includes(searchQuery)
+            ) || [];
+            if (isMainMatch) {
+                filtered.push({ ...item, isSubMenu: false });
+            }
+            filteredSubMenu.forEach((sub) => {
+                filtered.push({ ...sub, parentTitle: item.title, isSubMenu: true });
+            });
+        });
+
+        setFilteredItems(filtered);
+        console.log(searchQuery, filtered);
+    };
+
+
+    useEffect(() => {
+        handleSearch();
+    }, [searchQuery]);
+
+
+
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setProfileIsActive(false);
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     return (
         <>
@@ -32,8 +78,29 @@ function Header() {
                                 <div className="search-are">
                                     <div className="header-searchbar">
                                         <img src={searchIcon} alt="Search Icon" className='search-icon' />
-                                        <input type="text" placeholder="Search here..." className='header-search' />
+                                        <input onKeyUp={(event) => setSearchQuery(event.target.value.toLowerCase())} type="text" placeholder="Search here..." className='header-search' />
                                     </div>
+                                    {searchQuery != '' ?
+                                        <div className="searchbar-container">
+                                            <ul>
+                                                {filteredItems.length > 0 ? (
+                                                    filteredItems.map((item, index) => (
+
+                                                        <li key={index}>
+                                                            {
+                                                                item.subMenu && item.subMenu.length > 0
+                                                                    ? <Link to={item.subMenu[0].link}>{item.title}</Link>
+                                                                    : <Link to={item.link}>{item.title}</Link>
+                                                            }
+                                                        </li>
+                                                    ))
+                                                ) : (
+                                                    <li>No matching items found</li>)}
+                                            </ul>
+                                        </div>
+                                        :
+                                        ''
+                                    }
                                 </div>
                             </div>
                             <div className='col-6'>
@@ -42,7 +109,7 @@ function Header() {
                                         <img src={bellIcon} className='bell-icon' alt="Notification Icon" />
                                         <div className='all-notification'></div>
                                     </div>
-                                    <div className='profile-are'>
+                                    <div ref={dropdownRef} className='profile-are'>
                                         <div className="main-profile-tp" onClick={profiletoggleClass}>
                                             <div className='prifile-cont'>
                                                 <h4>{auth.user?.name}</h4>
