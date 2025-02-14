@@ -9,9 +9,13 @@ const ProtectedRoute = () => {
     if (!user.token) return <Navigate to="/" />;
     return (
         <>
-            <Sidebar />
+            {/* <Sidebar /> */}
             <Header />
-            <Outlet />
+            <div className="page-content">
+                <div className="page-content-inner">
+                    <Outlet />
+                </div>
+            </div>
         </>
     );
 };
