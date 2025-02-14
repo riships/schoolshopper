@@ -88,6 +88,9 @@ export const loginUser = async (req, res, next) => {
         if (!user) {
             return res.status(404).send({ success: false, message: 'User not found' });
         }
+        if (!user.verified) {
+            return res.status(404).send({ success: false, message: 'User is not verified' });
+        }
         const isMatch = await user.comparePassword(req.body.password);
         if (!isMatch) {
             return res.status(400).send({ success: false, message: 'Invalid credentials' });
