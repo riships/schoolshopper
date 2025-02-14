@@ -95,24 +95,13 @@ export const loginUser = async (req, res, next) => {
         if (!isMatch) {
             return res.status(400).send({ success: false, message: 'Invalid credentials' });
         }
-        const token = jwt.sign(
-            {
-                userId: user._id,
-                userType: user.role
-            },
+        const token = jwt.sign({
+            userId: user._id,
+            userType: user.role
+        },
             process.env.JWT_SECRET,
-            { expiresIn: '1h' }
-        );
-        const user_details = {
-            id: user?._id,
-            name: user?.name || "N/A",
-            img_url: user?.avatar || "default-avatar.png",
-            bio: user?.bio || "",
-            email: user?.email || "N/A",
-            gender: user?.gender || "N/A",
-            phone: user?.phone || "N/A",
-            dateofbirth: user?.dateofbirth || "N/A",
-        };
+            { expiresIn: '1h' });
+        const user_details = await User.findById({ _id: user._id }).select('-password');
         res.status(200).send({ success: true, message: "Login successfully", token, user: user_details });
     } catch (error) {
         next(new ErrorHandler(error.message, 500));
