@@ -24,7 +24,7 @@ const organizationDetailsSchema = new Schema({
             validator: function (v) {
                 return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(v);
             },
-            message: props => `${props.value} is not a valid emailid`
+            message: props => `${props.value} is not a valid email id`
         },
     },
     currency: {
@@ -64,17 +64,22 @@ const organizationDetailsSchema = new Schema({
         required: true
     },
     socialMedia: {
-        facebook: { type: String, required: false },
-        instagram: { type: String, required: false },
-        twitter: { type: String, required: false },
-        linkedin: { type: String, required: false },
+        facebook: { type: String },
+        instagram: { type: String },
+        twitter: { type: String },
+        linkedin: { type: String }
     },
-},
-    { timestamps: true }
-);
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true
+    },
+    updatedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    }
+}, { timestamps: true });
 
-
-const Organization = mongoose.model('OrganizationDetails', organizationDetailsSchema, 'organization_details');  //export the model
+const Organization = mongoose.model('OrganizationDetails', organizationDetailsSchema, 'organization_details');
 
 export default Organization;
-
