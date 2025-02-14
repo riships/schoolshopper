@@ -29,10 +29,6 @@ li {
 
 /* Common Box CSS Starts Here */
 
-.content-wrapper {
-    margin: 3rem;
-}
-
 .common-breadcrum {
     display: flex;
     justify-content: flex-start;

@@ -64,13 +64,7 @@ const AddProduct = () => {
     const auth = useAuth();
     // let [tableData, setTableData] = useState([]);
 
-    // const categoryOptions = [
-    //     { value: 'chocolate', label: 'Chocolate' },
-    //     { value: 'strawberry', label: 'Strawberry' },
-    //     { value: 'vanilla', label: 'Vanilla' },
-    // ];
-    
-    const [selectedCategoryOptions, setCategoryOptions] = useState([]);
+    const [categoryOptions, setcategoryOptions] = useState([]);
 
     const getCategory = async () => {
         try {
@@ -84,26 +78,17 @@ const AddProduct = () => {
                 }
             );
 
-            const categoryOptions = res.data.categories;
+             let categoryOptionsData = res.data.categories;
+             console.log(res.data);
+             
+            categoryOptionsData = categoryOptionsData.map((ele) => {
+                return {
+                'label': ele.category_name,
+                'value': ele._id,
+                }
+            });
 
-            // categoryOptions = categoryOptions.map((ele,ind)=> {
-            // //    let {category_name, _id} = ele;
-            
-            //    value: ele.category_name,
-            //    label: ele._id
-               
-            // })
-
-            const dd = categoryOptions.map((user) => ({
-                'value': user._id,
-                'label': user.category_name,
-              }));
-              
-            
-            setCategoryOptions(dd)
-            // selectedCategoryOptions.map((ele, ind) => {
-        
-            // })
+            setcategoryOptions(categoryOptionsData);
 
         } catch (error) {
             console.log(error);
@@ -138,9 +123,9 @@ const AddProduct = () => {
                                         <Form.Group className='common-form-group'>
                                             <Form.Label className='common-label'>Category<span className='text-danger'>*</span></Form.Label>
                                             <Select className='custom-selectpicker' classNamePrefix="select"
-                                                defaultValue={selectedCategoryOptions}
-                                                onChange={setCategoryOptions}
-                                                options={selectedCategoryOptions}
+                                                // defaultValue={selectedCategoryOptions}
+                                                // onChange={setSelectedCategoryOptions}
+                                                options={categoryOptions}
                                             />
                                         </Form.Group>
                                     </Col>
@@ -150,7 +135,8 @@ const AddProduct = () => {
                                             <Select className='custom-selectpicker' classNamePrefix="select"
                                                 defaultValue={selectedSubCategoryOptions}
                                                 onChange={setsubCategoryOptions}
-                                                options={selectedCategoryOptions}
+                                                options={selectedSubCategoryOptions}
+                                                isMulti
                                             />
                                         </Form.Group>
                                     </Col>
