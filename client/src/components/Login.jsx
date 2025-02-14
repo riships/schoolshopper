@@ -14,7 +14,7 @@ function Login() {
 
     useEffect(() => {
         if (auth.user) {
-            navigate('/home');
+            navigate('/dashboard');
         }
     }, [auth.user]);
 
@@ -23,7 +23,7 @@ function Login() {
         if (email || password) {
             const login = await auth.loginAction({ email, password });
             if (login) { // Ensure navigation happens only once
-                navigate('/home');
+                navigate('/dashboard');
             }
         } else {
             toast.error('Please fill all fields');
