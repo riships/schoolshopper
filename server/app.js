@@ -7,6 +7,7 @@ import userRouter from './routes/user.routes.js';
 import itemRouter from './routes/item.routes.js';
 import invoiceRouter from './routes/invoice.routes.js';
 import dashboardRouter from './routes/dashboard.routes.js';
+import configurationRouter from './routes/configuration.routes.js';
 import path from 'path';
 const __dirname = path.resolve();
 import cors from 'cors';
@@ -29,6 +30,7 @@ app.use('/api', userRouter);
 app.use('/api', itemRouter);
 app.use('/api', invoiceRouter);
 app.use('/api', dashboardRouter);
+app.use('/api', configurationRouter);
 
 
 

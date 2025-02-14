@@ -9,8 +9,6 @@ const url = import.meta.env.VITE_API_URL;
 const AddProduct = () => {
     const [date, setDate] = useState();
 
-
-
     const subCategoryOptions = [
         { value: 'chocolate', label: 'Chocolate' },
         { value: 'strawberry', label: 'Strawberry' },
@@ -181,7 +179,7 @@ const AddProduct = () => {
                                         </Form.Group>
                                     </Col>
                                     <Col md={12}>
-                                        <ul className="common-seperator ms-n-16">
+                                        <ul className="ms-n-16 common-seperator">
                                             <li><span className="seperator-main-heading">Item Specification</span></li>
                                         </ul>
                                     </Col>
@@ -253,7 +251,7 @@ const AddProduct = () => {
                             </Col>
 
                             <Col md={12}>
-                                <ul className="common-seperator mx-n-16">
+                                <ul className="mx-n-16 common-seperator">
                                     <li><span className="seperator-main-heading">Product Information</span></li>
                                 </ul>
                             </Col>
@@ -264,13 +262,13 @@ const AddProduct = () => {
                                         <Form.Group className='common-form-group'>
                                             <Form.Label className='common-label'>Brand</Form.Label>
                                             <div className="btn-radio-group">
-                                                <Row className="boxed1 row justify-content-start">
-                                                    <Col md="6" className="input_02_radio mb-3">
+                                                <Row className="justify-content-start boxed1 row">
+                                                    <Col md="6" className="mb-3 input_02_radio">
                                                         <input type="radio" id="single_product" name="product" />
                                                         <label htmlFor="single_product"> Single Product </label>
                                                     </Col>
 
-                                                    <Col md="6" className="input_02_radio mb-3">
+                                                    <Col md="6" className="mb-3 input_02_radio">
                                                         <input type="radio" id="multi_product" name="product" />
                                                         <label htmlFor="multi_product">Multi Product</label>
                                                     </Col>
@@ -345,7 +343,7 @@ const AddProduct = () => {
                             <Col md={3} className='form-gap'>
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Opening Stock Rate Per Unit<span className='text-danger'>*</span></Form.Label>
-                                    <div className="common-checkbox-toggle b2 mt-1">
+                                    <div className="mt-1 common-checkbox-toggle b2">
                                         <input type="checkbox" className="checkbox-toggle-btn" value="appointment" />
                                         <div className="knobs"><span></span></div>
                                         <div className="layer"></div>
@@ -356,7 +354,7 @@ const AddProduct = () => {
                             <Col md={3} className='form-gap'>
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Publish Later<span className='text-danger'>*</span></Form.Label>
-                                    <div className="common-checkbox-toggle b2 mt-1">
+                                    <div className="mt-1 common-checkbox-toggle b2">
                                         <input type="checkbox" className="checkbox-toggle-btn" value="appointment" />
                                         <div className="knobs"><span></span></div>
                                         <div className="layer"></div>
