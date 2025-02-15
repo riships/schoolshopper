@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import menuItems from "../utils/headerAction";
 import sidebarLogo from '../assets/images/sidebar-logo.svg';
 
 
 function Sidebar() {
     const [activeIndex, setActiveIndex] = useState(null);
+    const location = useLocation();
 
     const toggleClass = (index) => {
         setActiveIndex(activeIndex === index ? null : index);
@@ -18,14 +19,18 @@ function Sidebar() {
             </div>
             <div className="sidebar-navbar">
                 <ul className="man-navbar">
-                    {menuItems.map((menu, index) => (
-                        <li key={menu.id} className={`nav-item ${menu.subMenu.length ? "has-sub-nav" : ""}`}>
+                    {menuItems.map((menu, index) => {
+
+                        const isSubMenuActive = menu.subMenu.some(sub => sub.link === location.pathname);
+
+
+                        return (<li key={menu.id} className={`nav-item ${menu.subMenu.length ? "has-sub-nav" : ""}`}>
 
                             {menu.subMenu.length > 0 ? (
                                 <>
                                     <a
                                         onClick={() => menu.subMenu.length && toggleClass(index)}
-                                        className={`nav-link-btn ${activeIndex === index ? "active" : ""}`}
+                                        className={`nav-link-btn ${activeIndex === index || isSubMenuActive ? "active" : ""}`}
                                         href={menu.link || "#"}
                                     >
                                         <img src={menu.icon} alt={`${menu.title} Icon`} />
@@ -43,13 +48,14 @@ function Sidebar() {
                                     </ul>
                                 </>
                             ) :
-                                <NavLink className='nav-link-btn' to={menu.link || "#"}>
+                                (<NavLink className='nav-link-btn' to={menu.link || "#"}>
                                     <img src={menu.icon} alt={`${menu.title} Icon`} />
                                     <span>{menu.title}</span>
-                                </NavLink>
+                                </NavLink>)
                             }
                         </li>
-                    ))}
+                        )
+                    })}
                 </ul>
             </div>
         </div>

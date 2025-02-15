@@ -21,10 +21,16 @@ function Header() {
     const dropdownRef = useRef(null);
     const [searchQuery, setSearchQuery] = useState("");
     const [filteredItems, setFilteredItems] = useState([]);
+    const [searhContainer, setSearchContainer] = useState(false);
 
     const profiletoggleClass = () => {
         setProfileIsActive(!profileIsActive);
     };
+
+    const hideSearchContainer = () => {
+        setSearchContainer(false);
+        setSearchQuery('');
+    }
 
     const handleSearch = () => {
         const filtered = [];
@@ -43,12 +49,12 @@ function Header() {
         });
 
         setFilteredItems(filtered);
-        console.log(searchQuery, filtered);
     };
 
 
     useEffect(() => {
         handleSearch();
+        setSearchContainer(true);
     }, [searchQuery]);
 
 
@@ -78,24 +84,24 @@ function Header() {
                                 <div className="search-are">
                                     <div className="header-searchbar">
                                         <img src={searchIcon} alt="Search Icon" className='search-icon' />
-                                        <input onKeyUp={(event) => setSearchQuery(event.target.value.toLowerCase())} type="text" placeholder="Search here..." className='header-search' />
+                                        <input onKeyUp={(event) => setSearchQuery(event.target.value.toLowerCase())} type="text" onChange={(event) => setSearchQuery(event.target.value)} placeholder="Search here..." className='header-search' value={searchQuery} />
                                     </div>
-                                    {searchQuery != '' ?
+                                    {searchQuery != '' && searhContainer ?
                                         <div className="searchbar-container">
-                                            <ul>
+                                            <ul className="custom-scroll">
                                                 {filteredItems.length > 0 ? (
                                                     filteredItems.map((item, index) => (
 
                                                         <li key={index}>
                                                             {
                                                                 item.subMenu && item.subMenu.length > 0
-                                                                    ? <Link to={item.subMenu[0].link}>{item.title}</Link>
-                                                                    : <Link to={item.link}>{item.title}</Link>
+                                                                    ? <Link to={item.subMenu[0].link} onClick={hideSearchContainer}>{item.title}</Link>
+                                                                    : <Link to={item.link} onClick={hideSearchContainer}>{item.title}</Link>
                                                             }
                                                         </li>
                                                     ))
                                                 ) : (
-                                                    <li>No matching items found</li>)}
+                                                    <li><a>No matching items found</a></li>)}
                                             </ul>
                                         </div>
                                         :
