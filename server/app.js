@@ -8,9 +8,11 @@ import itemRouter from './routes/item.routes.js';
 import invoiceRouter from './routes/invoice.routes.js';
 import dashboardRouter from './routes/dashboard.routes.js';
 import configurationRouter from './routes/configuration.routes.js';
+import superAdminRouter from './routes/superAdmin.routes.js';
 import path from 'path';
 const __dirname = path.resolve();
 import cors from 'cors';
+import { authorize, protect } from './middlewares/auth.middleware.js';
 connectDb();
 
 
@@ -26,11 +28,12 @@ app.use(cors({
 
 app.use('/public/uploads/', express.static(path.join(__dirname, '/public/uploads/')));
 
-app.use('/api', userRouter);
-app.use('/api', itemRouter);
-app.use('/api', invoiceRouter);
-app.use('/api', dashboardRouter);
-app.use('/api', configurationRouter);
+app.use('/api/users', userRouter);
+app.use('/api/item', itemRouter);
+app.use('/api/invoice', invoiceRouter);
+app.use('/api/dashboard', dashboardRouter);
+app.use('/api//configuration', configurationRouter);
+app.use('/api/superAdmin', protect, authorize('superAdmin'), superAdminRouter);
 
 
 

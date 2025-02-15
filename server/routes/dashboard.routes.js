@@ -4,7 +4,7 @@ import { authorize, protect } from "../middlewares/auth.middleware.js";
 const router = Router();
 
 
-router.get('/dashboard/salesOverview', salesOverview);
+router.get('/salesOverview', salesOverview);
 
 
 export default router;

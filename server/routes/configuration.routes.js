@@ -4,7 +4,7 @@ import { authorize, protect } from "../middlewares/auth.middleware.js";
 const router = Router();
 
 
-router.post("/configuration/addOrgDetails", protect, authorize('admin'), addOrgDetails);
+router.post("/addOrgDetails", protect, authorize('admin', 'superAdmin'), addOrgDetails);
 
 
 
