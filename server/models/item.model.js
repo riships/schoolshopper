@@ -87,15 +87,10 @@ const itemSchema = mongoose.Schema({
         type: Boolean,
         default: true
     },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
-    updatedAt: {
-        type: Date
-    },
-    deletedAt: {
-        type: Date
+    createdBy: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     },
     deleted: {
         type: Boolean,
@@ -105,11 +100,14 @@ const itemSchema = mongoose.Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    createdBy: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
+    deletedAt: {
+        type: Date,
+        default: Date.now
     },
-});
+},
+    {
+        timestamps: true,
+    });
 
 const Item = mongoose.model('Item', itemSchema, 'items');
 

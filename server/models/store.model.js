@@ -46,14 +46,9 @@ const storeSchema = new Schema({
     store_status: {
         type: Boolean,
         default: true
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
-    updatedAt: {
-        type: Date
     }
+}, {
+    timestamps: true
 });
 
 const Store = mongoose.model('Store', storeSchema, 'store');

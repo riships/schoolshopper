@@ -8,9 +8,11 @@ import ProtectedRoute from "./context/ProtectedRoute";
 import ForgotPassword from "./components/ForgotPassword";
 import VerifyOtp from "./components/VerifyOtp";
 import ResetPassword from "./components/ResetPassword";
-import Items from "./views/Items";
-import AddProduct from "./views/AddProduct";
+import Items from "./views/inventory/Items";
+import AddProduct from "./views/inventory/AddProduct";
 import "./assets/css/style.css";
+import OrganizationDetails from "./views/configuration/OrganizationDetails";
+import Inventory from "./views/inventory/Inventory";
 
 
 function App() {
@@ -25,9 +27,12 @@ function App() {
           <Route path="/resetPassword" element={<ResetPassword />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<Home />} />
-            <Route path="/inventory/item" element={<Items />} />
             <Route path="/add-product" element={<AddProduct />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/inventory" element={<Inventory />}>
+              <Route path="item" element={<Items />} />
+              <Route path="organizationDetails" element={<OrganizationDetails />} />
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>

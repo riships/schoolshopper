@@ -9,6 +9,8 @@ const unitSchema = mongoose.Schema({
         type: String,
         required: true
     }
+}, {
+    timestamps: true
 });
 
 const Unit = mongoose.model('Unit', unitSchema, 'units');
