@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router";
-import { Form } from 'react-bootstrap';
-import { HiMagnifyingGlass } from "react-icons/hi2";
+import { ToastContainer } from 'react-toastify';
 import { useAuth } from '../context/AuthContext';
 import Sidebar from './Sidebar';
 import searchIcon from '../assets/images/search-icon-header.svg';
@@ -43,7 +42,6 @@ function Header() {
         });
 
         setFilteredItems(filtered);
-        console.log(searchQuery, filtered);
     };
 
 
@@ -69,11 +67,12 @@ function Header() {
 
     return (
         <>
+            <ToastContainer />
             <header className="main-header">
                 <div className="header-inn">
                     <Sidebar />
                     <div className="header-right">
-                        <div className='row align-items-center'>
+                        <div className='align-items-center row'>
                             <div className="col-6">
                                 <div className="search-are">
                                     <div className="header-searchbar">
@@ -123,7 +122,7 @@ function Header() {
                                             <div className='profile-dropdown-inner'>
                                                 <div className='inner-head'>
                                                     <div className='profile-img'>
-                                                        <img className='user-image' src={auth.user?.avatar} alt="User Image" />
+                                                        <img className='user-image' src={auth.user?.avatar || defaultAvtar} alt="User Image" />
                                                     </div>
                                                     <div className='prifile-cont'>
                                                         <h4>{auth.user?.name}</h4>

@@ -1,9 +1,10 @@
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import Select from 'react-select';
 import { useEffect, useState } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import axios from 'axios';
-import DatePicker from '../components/DatePicker';
+import DatePicker from '../../components/DatePicker';
+import { formatOptions } from '../../utils/helper';
 const url = import.meta.env.VITE_API_URL;
 
 const AddProduct = () => {
@@ -76,18 +77,8 @@ const AddProduct = () => {
                 }
             );
 
-             let categoryOptionsData = res.data.categories;
-             console.log(res.data);
-             
-            categoryOptionsData = categoryOptionsData.map((ele) => {
-                return {
-                'label': ele.category_name,
-                'value': ele._id,
-                }
-            });
-
+            let categoryOptionsData = await formatOptions(res.data.categories, 'category_name', '_id');
             setcategoryOptions(categoryOptionsData);
-
         } catch (error) {
             console.log(error);
         }

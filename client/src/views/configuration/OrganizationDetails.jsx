@@ -4,71 +4,11 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import axios from 'axios';
 import DatePicker from '../../components/DatePicker';
+import { toast } from 'react-toastify';
 const url = import.meta.env.VITE_API_URL;
 
 const OrganizationDetails = () => {
     const [date, setDate] = useState();
-
-    const subCategoryOptions = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' },
-    ];
-    const [selectedSubCategoryOptions, setsubCategoryOptions] = useState(null);
-
-
-    const taxOptions = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' },
-    ];
-    const [selectedTaxOptions, setTaxOptions] = useState(null);
-
-
-    const genderOptions = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' },
-    ];
-    const [selectedGenderOptions, setGenderOptions] = useState(null);
-
-
-    const brandOptions = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' },
-    ];
-    const [selectedBrandOptions, setBrandOptions] = useState(null);
-
-    const materialOptions = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' },
-    ];
-    const [selectedMaterialOptions, setMaterialOptions] = useState(null);
-
-
-    const unitOptions = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' },
-    ];
-    const [selectedUnitOptions, setUnitOptions] = useState(null);
-
-    useEffect(() => {
-        getCategory();
-    }, [])
-
-    const auth = useAuth();
-    // let [tableData, setTableData] = useState([]);
-
-    // const categoryOptions = [
-    //     { value: 'chocolate', label: 'Chocolate' },
-    //     { value: 'strawberry', label: 'Strawberry' },
-    //     { value: 'vanilla', label: 'Vanilla' },
-    // ];
-
-    const [selectedCategoryOptions, setCategoryOptions] = useState([]);
 
     const getCategory = async () => {
         try {
@@ -83,31 +23,13 @@ const OrganizationDetails = () => {
             );
 
             const categoryOptions = res.data.categories;
-
-            // categoryOptions = categoryOptions.map((ele,ind)=> {
-            // //    let {category_name, _id} = ele;
-
-            //    value: ele.category_name,
-            //    label: ele._id
-
-            // })
-
             const dd = categoryOptions.map((user) => ({
                 'value': user._id,
                 'label': user.category_name,
             }));
-
-
-            setCategoryOptions(dd)
-            // selectedCategoryOptions.map((ele, ind) => {
-
-            // })
-
         } catch (error) {
-            console.log(error);
+            toast.error('Error fetching categories');
         }
-
-
     }
 
     return (
