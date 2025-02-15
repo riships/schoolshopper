@@ -23,7 +23,7 @@ export const deleteMenu = async (req, res, next) => {
 
 export const getMenus = async (req, res, next) => {
     try {
-        const menus = await Menu.find();
+        const menus = await Menu.find().populate('subMenu');
         res.status(200).json({ success: true, data: menus });
     } catch (error) {
         next(new ErrorHandler(error.message, 500));

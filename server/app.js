@@ -33,7 +33,7 @@ app.use('/api/item', itemRouter);
 app.use('/api/invoice', invoiceRouter);
 app.use('/api/dashboard', dashboardRouter);
 app.use('/api//configuration', configurationRouter);
-app.use('/api/superAdmin', protect, authorize('superAdmin'), superAdminRouter);
+app.use('/api/superAdmin', superAdminRouter);
 
 
 
