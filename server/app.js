@@ -9,10 +9,10 @@ import invoiceRouter from './routes/invoice.routes.js';
 import dashboardRouter from './routes/dashboard.routes.js';
 import configurationRouter from './routes/configuration.routes.js';
 import superAdminRouter from './routes/superAdmin.routes.js';
+import reportsRouter from './routes/reports.routes.js';
 import path from 'path';
 const __dirname = path.resolve();
 import cors from 'cors';
-import { authorize, protect } from './middlewares/auth.middleware.js';
 connectDb();
 
 
@@ -34,6 +34,7 @@ app.use('/api/invoice', invoiceRouter);
 app.use('/api/dashboard', dashboardRouter);
 app.use('/api//configuration', configurationRouter);
 app.use('/api/superAdmin', superAdminRouter);
+app.use('/api/reports', reportsRouter);
 
 
 
