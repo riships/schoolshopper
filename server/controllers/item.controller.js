@@ -174,7 +174,10 @@ export const addCategories = async (req, res, next) => {
 export const getCategories = async (req, res, next) => {
     try {
         const categories = await Category.find().select('-sub_categories');
-        const sub_categories = await Category.find().select('sub_categories');
+        let sub_categories = await Category.find().select('sub_categories');
+        sub_categories = sub_categories.map((sub_categorie) => {
+            return  {[sub_categorie._id.toString()]: sub_categorie.sub_categories };
+        })
 
         res.status(200).json({ success: true, categories, sub_categories });
     } catch (error) {

@@ -10,12 +10,12 @@ const url = import.meta.env.VITE_API_URL;
 const AddProduct = () => {
     const [date, setDate] = useState();
 
-    const subCategoryOptions = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' },
-    ];
-    const [selectedSubCategoryOptions, setsubCategoryOptions] = useState(null);
+    // const subCategoryOptions = [
+    //     { value: 'chocolate', label: 'Chocolate' },
+    //     { value: 'strawberry', label: 'Strawberry' },
+    //     { value: 'vanilla', label: 'Vanilla' },
+    // ];
+    // const [selectedSubCategoryOptions, setsubCategoryOptions] = useState(null);
 
 
     const taxOptions = [
@@ -63,7 +63,10 @@ const AddProduct = () => {
     const auth = useAuth();
     // let [tableData, setTableData] = useState([]);
 
-    const [categoryOptions, setcategoryOptions] = useState([]);
+    const [categoryOptions, setCategoryOptions] = useState([]);
+    const [subCategoryOptions, setSubCategoryOptions] = useState([]);
+    const [subCategoryFilterOptions, setSubCategoryFilterOptions] = useState([]);
+    const [selectedOption, setSelectedOption] = useState(null);
 
     const getCategory = async () => {
         try {
@@ -78,13 +81,25 @@ const AddProduct = () => {
             );
 
             let categoryOptionsData = await formatOptions(res.data.categories, 'category_name', '_id');
-            setcategoryOptions(categoryOptionsData);
+            setCategoryOptions(categoryOptionsData);
+            setSubCategoryOptions(res.data.sub_categories)
         } catch (error) {
-            console.log(error);
+            console.log(error?.response?.data?.message);
         }
-
-
     }
+    useEffect(() => {
+        let subOptions = [];
+        subCategoryOptions.forEach((elem) => {
+            if (elem[selectedOption]) {
+                elem[selectedOption].map((elem) => ({
+                    label: elem,
+                    value: elem
+                }));
+                setSubCategoryFilterOptions(subOptions);
+            }
+        });
+    }, [selectedOption])
+
 
     return (
         <>
@@ -113,7 +128,7 @@ const AddProduct = () => {
                                             <Form.Label className='common-label'>Category<span className='text-danger'>*</span></Form.Label>
                                             <Select className='custom-selectpicker' classNamePrefix="select"
                                                 // defaultValue={selectedCategoryOptions}
-                                                // onChange={setSelectedCategoryOptions}
+                                                onChange={(data) => setSelectedOption(data.value)}
                                                 options={categoryOptions}
                                             />
                                         </Form.Group>
@@ -122,9 +137,9 @@ const AddProduct = () => {
                                         <Form.Group className='common-form-group'>
                                             <Form.Label className='common-label'>Sub-Category</Form.Label>
                                             <Select className='custom-selectpicker' classNamePrefix="select"
-                                                defaultValue={selectedSubCategoryOptions}
-                                                onChange={setsubCategoryOptions}
-                                                options={selectedSubCategoryOptions}
+                                                // defaultValue={selectedSubCategoryOptions}
+                                                // onChange={subCategoryOptions}
+                                                options={subCategoryFilterOptions}
                                                 isMulti
                                             />
                                         </Form.Group>
