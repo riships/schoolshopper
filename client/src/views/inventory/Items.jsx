@@ -18,6 +18,15 @@ import columnIcon from '../../assets/images/column-icon.svg';
 const Items = () => {
     const auth = useAuth();
     let [tableData, setTableData] = useState([]);
+    let [filterdata, setFilterdata] = useState([]);
+    const handleInputChange = (e) => {
+        const values = e.target.value;
+        const filteredData = tableData.filter((user) => {
+            const { item_name } = user;
+            return item_name.toLowerCase().includes(values.toLowerCase());
+        });
+        setFilterdata(filteredData)
+    }
 
     const [show, setShow] = useState(false);
     const handleShow = () => { setShow(true) };
@@ -35,7 +44,7 @@ const Items = () => {
     const redirectToProduct = useNavigate();
 
     const navigateToProduct = () => {
-        redirectToProduct("/add-product")
+        redirectToProduct("/inventory/add-product")
     }
 
 
@@ -56,13 +65,11 @@ const Items = () => {
                 }
             );
             let items = res.data.data;
-            console.log(items);
             setTableData(items)
-
+            setFilterdata(items)
         }
         catch (error) {
             console.log(error);
-
         }
     }
 
@@ -138,7 +145,7 @@ const Items = () => {
 
                             </li>
                             <li>
-                                <input className="search-field" type="text" placeholder="Search" />
+                                <input className="search-field" onChange={handleInputChange} type="text" placeholder="Search" />
                             </li>
                             <li className="ms-auto">
                                 <button type="button" onClick={navigateToProduct} variant="" className="text-white common-button btn-add btn-primary"> <img src={addIcon} alt="add-icon" />Add</button>
@@ -177,7 +184,7 @@ const Items = () => {
                                 <tbody>
 
                                     {
-                                        tableData.map((ele, ind) => {
+                                        filterdata.map((ele, ind) => {
                                             const { _id, item_name, item_category, item_opening_stock, item_unit, item_hsn, item_actual_price } = ele;
                                             return (
                                                 <tr key={_id}>
