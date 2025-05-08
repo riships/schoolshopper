@@ -4,9 +4,10 @@ import { useEffect, useReducer } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import axios from 'axios';
 import { formatOptions } from '../../utils/helper';
+import { Country, State, City } from 'country-state-city';
 const url = import.meta.env.VITE_API_URL;
 
-const state = {
+const initialState = {
     vendorName: "",
     contactPersonName: "",
     contactNo: "",
@@ -23,11 +24,14 @@ const state = {
     ifscCode: "",
     bankName: "",
     branchName: "",
+    countries: [],
+    states: [],
+    cities: [],
     panCard: null,
     aadharCard: null,
     gstCertificate: null
 }
-const initState = (state, action) => {
+const reducer = (state, action) => {
     switch (action.type) {
         case 'UPDATE_VENDOR_NAME':
             return { ...state, vendorName: action.payload };
@@ -67,6 +71,12 @@ const initState = (state, action) => {
             return { ...state, aadharCard: action.payload };
         case 'UPDATE_GST_CERTIFICATE':
             return { ...state, gstCertificate: action.payload };
+        case 'UPDATE_CITY_OPTIONS':
+            return { ...state, cities: action.payload };
+        case 'UPDATE_STATE_OPTIONS':
+            return { ...state, states: action.payload };
+        case 'UPDATE_COUNTRY_OPTIONS':
+            return { ...state, countries: action.payload };
         default:
             return state;
     }
@@ -74,30 +84,38 @@ const initState = (state, action) => {
 
 const AddEditVendor = () => {
     const auth = useAuth();
-    const [reducer, setReducer] = useReducer(initState, state);
+    const [reducerState, setReducer] = useReducer(reducer, initialState);
     useEffect(() => {
         const getCityStateCountry = async () => {
             try {
-                let response = await axios.get("https://api.countrystatecity.in/v1/countries",
-                    {
-                        headers: {
-                            'X-CSCAPI-KEY': 'API_KEY'
-                        }
-                    }
+                const countryData = await formatOptions(Country.getAllCountries(), 'name', 'isoCode');
+                setReducer({ type: 'UPDATE_COUNTRY_OPTIONS', payload: countryData });
+
+                if (!reducerState.country) return;
+
+                const stateData = await formatOptions(
+                    State.getStatesOfCountry(reducerState.country),
+                    'name',
+                    'isoCode'
                 );
+                setReducer({ type: 'UPDATE_STATE_OPTIONS', payload: stateData });
 
-                let cityOptionsData = await formatOptions(response.data.cities, 'city_name', '_id');
-                let stateOptionsData = await formatOptions(response.data.states, 'state_name', '_id');
-                let countryOptionsData = await formatOptions(response.data.countries, 'country_name', '_id');
-                setReducer({ type: 'UPDATE_CITY', payload: cityOptionsData });
-                setReducer({ type: 'UPDATE_STATE', payload: stateOptionsData });
-                setReducer({ type: 'UPDATE_COUNTRY', payload: countryOptionsData });
+                if (!reducerState.state) return;
+
+                const cityData = await formatOptions(
+                    City.getCitiesOfState(reducerState.country, reducerState.state),
+                    'name',
+                    'stateCode'
+                );
+                setReducer({ type: 'UPDATE_CITY_OPTIONS', payload: cityData });
             } catch (error) {
-                console.log(error?.response?.data?.message);
+                console.error('Error loading location data:', error);
             }
-        }
+        };
 
-    }, [])
+        getCityStateCountry();
+    }, [reducerState.country, reducerState.state]);
+
 
     const addVendor = async () => {
         try {
@@ -110,14 +128,12 @@ const AddEditVendor = () => {
                     withCredentials: true
                 }
             );
-
-            // let categoryOptionsData = await formatOptions(res.data.categories, 'category_name', '_id');
-            // setCategoryOptions(categoryOptionsData);
-            // setSubCategoryOptions(res.data.sub_categories)
         } catch (error) {
             console.log(error?.response?.data?.message);
         }
     }
+    
+
 
 
     return (
@@ -137,7 +153,7 @@ const AddEditVendor = () => {
                                     <Form.Label className='common-label'>Vendor Name <span style={{ 'fontSize': '0.70rem' }}>(Legal Name)</span><span className='text-danger'>*</span></Form.Label>
                                     <Form.Control className='common-control'
                                         type="text" placeholder="Enter Item Name"
-                                        value={reducer.vendor_name}
+                                        value={reducerState.vendor_name}
                                         onChange={(e) => setReducer({ type: 'UPDATE_VENDOR_NAME', payload: e.target.value })} />
                                 </Form.Group>
                             </Col>
@@ -145,7 +161,7 @@ const AddEditVendor = () => {
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Contact Person Name<span className='text-danger'>*</span></Form.Label>
                                     <Form.Control className='common-control' type="text" placeholder="Enter Contact Person Name"
-                                        value={reducer.contact_person_name}
+                                        value={reducerState.contact_person_name}
                                         onChange={(e) => setReducer({ type: 'UPDATE_CONTACT_PERSON_NAME', payload: e.target.value })}
                                     />
                                 </Form.Group>
@@ -154,7 +170,7 @@ const AddEditVendor = () => {
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Contact No<span className='text-danger'>*</span></Form.Label>
                                     <Form.Control className='common-control' type="number" placeholder="Enter Contact No"
-                                        value={reducer.contact_no}
+                                        value={reducerState.contact_no}
                                         onChange={(e) => setReducer({ type: 'UPDATE_CONTACT_NO', payload: e.target.value })}
                                     />
                                 </Form.Group>
@@ -163,7 +179,7 @@ const AddEditVendor = () => {
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Email ID</Form.Label>
                                     <Form.Control className='common-control' type="email" placeholder="Enter Email ID"
-                                        value={reducer.email_id}
+                                        value={reducerState.email_id}
                                         onChange={(e) => setReducer({ type: 'UPDATE_EMAIL_ID', payload: e.target.value })}
                                     />
                                 </Form.Group>
@@ -172,35 +188,48 @@ const AddEditVendor = () => {
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Address<span className='text-danger'>*</span></Form.Label>
                                     <Form.Control className='common-control' type="text" placeholder="Enter Address"
-                                        value={reducer.address}
+                                        value={reducerState.address}
                                         onChange={(e) => setReducer({ type: 'UPDATE_ADDRESS', payload: e.target.value })}
+                                        isClearable={true}
                                     />
                                 </Form.Group>
                             </Col>
                             <Col md={3} className='form-gap'>
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>City<span className='text-danger'>*</span></Form.Label>
-                                    <Select className='custom-selectpicker' classNamePrefix="select"
-                                        value={reducer.city}
-                                        onChange={(e) => setReducer({ type: 'UPDATE_CITY', payload: e.target.value })}
+                                    <Select className='custom-selectpicker' classNamePrefix="Select City"
+                                        defaultValue={reducerState.city}
+                                        options={reducerState.cities}
+                                        onChange={(e) => { setReducer({ type: 'UPDATE_CITY', payload: e.value }); }}
+                                        isClearable={true}
                                     />
                                 </Form.Group>
                             </Col>
                             <Col md={3} className='form-gap'>
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>State<span className='text-danger'>*</span></Form.Label>
-                                    <Select className='custom-selectpicker' classNamePrefix="select"
-                                        value={reducer.state}
-                                        onChange={(e) => setReducer({ type: 'UPDATE_STATE', payload: e.target.value })}
+                                    <Select className='custom-selectpicker' classNamePrefix="Select State"
+                                        defaultValue={reducerState.state}
+                                        options={reducerState.states}
+                                        onChange={(e) => {
+                                            setReducer({ type: 'UPDATE_STATE', payload: e.value });
+                                            setReducer({ type: 'UPDATE_CITY', payload: '' });
+                                        }}
+                                        isClearable={true}
                                     />
                                 </Form.Group>
                             </Col>
                             <Col md={3} className='form-gap'>
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Country<span className='text-danger'>*</span></Form.Label>
-                                    <Select className='custom-selectpicker' classNamePrefix="select"
-                                        value={reducer.country}
-                                        onChange={(e) => setReducer({ type: 'UPDATE_COUNTRY', payload: e.target.value })}
+                                    <Select className='custom-selectpicker' classNamePrefix="Select"
+                                        defaultValue={reducerState.country}
+                                        options={reducerState.countries}
+                                        onChange={(e) => {
+                                            setReducer({ type: 'UPDATE_COUNTRY', payload: e.value });
+                                            setReducer({ type: 'UPDATE_STATE', payload: '' });
+                                            setReducer({ type: 'UPDATE_CITY', payload: '' });
+                                        }}
                                     />
                                 </Form.Group>
                             </Col>
@@ -208,7 +237,7 @@ const AddEditVendor = () => {
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>PIN/ZIP Code</Form.Label>
                                     <Form.Control className='common-control' type="text" placeholder="Enter PIN/ZIP Code"
-                                        value={reducer.pin_code}
+                                        value={reducerState.pin_code}
                                         onChange={(e) => setReducer({ type: 'UPDATE_PIN_CODE', payload: e.target.value })}
                                     />
                                 </Form.Group>
@@ -217,7 +246,7 @@ const AddEditVendor = () => {
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>GSTIN</Form.Label>
                                     <Form.Control className='common-control' type="text" placeholder="Enter GSTIN"
-                                        value={reducer.gstin}
+                                        value={reducerState.gstin}
                                         onChange={(e) => setReducer({ type: 'UPDATE_GSTIN', payload: e.target.value })}
                                     />
                                 </Form.Group>
@@ -231,7 +260,7 @@ const AddEditVendor = () => {
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Account Name</Form.Label>
                                     <Form.Control className='common-control' type="text" placeholder="Enter Account Name"
-                                        value={reducer.account_name}
+                                        value={reducerState.account_name}
                                         onChange={(e) => setReducer({ type: 'UPDATE_ACCOUNT_NAME', payload: e.target.value })}
                                     />
                                 </Form.Group>
@@ -240,7 +269,7 @@ const AddEditVendor = () => {
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Account No</Form.Label>
                                     <Form.Control className='common-control' type="text" placeholder="Enter Account No"
-                                        value={reducer.account_no}
+                                        value={reducerState.account_no}
                                         onChange={(e) => setReducer({ type: 'UPDATE_ACCOUNT_NO', payload: e.target.value })}
                                     />
                                 </Form.Group>
@@ -249,7 +278,7 @@ const AddEditVendor = () => {
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Re-Enter Account No<span className='text-danger'>*</span></Form.Label>
                                     <Form.Control className='common-control' type="text" placeholder="Re-Enter Account No"
-                                        value={reducer.re_enter_account_no}
+                                        value={reducerState.re_enter_account_no}
                                         onChange={(e) => setReducer({ type: 'UPDATE_RE_ENTER_ACCOUNT_NO', payload: e.target.value })}
                                     />
                                 </Form.Group>
@@ -258,7 +287,7 @@ const AddEditVendor = () => {
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>IFSC Code</Form.Label>
                                     <Form.Control className='common-control' type="text" placeholder="Enter IFSC Code"
-                                        value={reducer.ifsc_code}
+                                        value={reducerState.ifsc_code}
                                         onChange={(e) => setReducer({ type: 'UPDATE_IFSC_CODE', payload: e.target.value })}
                                     />
                                     {/* <span className='find-icon'><img src="/assets/images/find-icon.png" alt="find-icon" /></span> */}
@@ -268,7 +297,7 @@ const AddEditVendor = () => {
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Bank Name</Form.Label>
                                     <Form.Control className='common-control' type="text" placeholder="Enter Bank Name"
-                                        value={reducer.bank_name}
+                                        value={reducerState.bank_name}
                                         onChange={(e) => setReducer({ type: 'UPDATE_BANK_NAME', payload: e.target.value })}
                                     />
                                 </Form.Group>
@@ -277,7 +306,7 @@ const AddEditVendor = () => {
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Branch Name</Form.Label>
                                     <Form.Control className='common-control' type="text" placeholder="Enter Branch Name"
-                                        value={reducer.branch_name}
+                                        value={reducerState.branch_name}
                                         onChange={(e) => setReducer({ type: 'UPDATE_BRANCH_NAME', payload: e.target.value })}
                                     />
                                 </Form.Group>
@@ -292,7 +321,7 @@ const AddEditVendor = () => {
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>PAN Card</Form.Label>
                                     <Form.Control className='common-control' type="file"
-                                        value={reducer.pan_card}
+                                        value={reducerState.pan_card}
                                         onChange={(e) => setReducer({ type: 'UPDATE_PAN_CARD', payload: e.target.value })}
                                     />
                                 </Form.Group>
@@ -301,7 +330,7 @@ const AddEditVendor = () => {
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Aadhar Card</Form.Label>
                                     <Form.Control className='common-control' type="file"
-                                        value={reducer.aadhar_card}
+                                        value={reducerState.aadhar_card}
                                         onChange={(e) => setReducer({ type: 'UPDATE_AADHAR_CARD', payload: e.target.value })}
                                     />
                                 </Form.Group>
@@ -310,7 +339,7 @@ const AddEditVendor = () => {
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>GST Certificate</Form.Label>
                                     <Form.Control className='common-control' type="file"
-                                        value={reducer.gst_certificate}
+                                        value={reducerState.gst_certificate}
                                         onChange={(e) => setReducer({ type: 'UPDATE_GST_CERTIFICATE', payload: e.target.value })}
                                     />
                                 </Form.Group>
