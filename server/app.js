@@ -10,6 +10,7 @@ import dashboardRouter from './routes/dashboard.routes.js';
 import configurationRouter from './routes/configuration.routes.js';
 import superAdminRouter from './routes/superAdmin.routes.js';
 import reportsRouter from './routes/reports.routes.js';
+import vendorRouter from './routes/vendor.routes.js';
 import path from 'path';
 const __dirname = path.resolve();
 import cors from 'cors';
@@ -35,6 +36,7 @@ app.use('/api/dashboard', dashboardRouter);
 app.use('/api//configuration', configurationRouter);
 app.use('/api/superAdmin', superAdminRouter);
 app.use('/api/reports', reportsRouter);
+app.use('/api/vendor', vendorRouter);
 
 
 

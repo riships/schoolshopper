@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { Table, Button, Modal, Form, Row, Col } from 'react-bootstrap';
+import { Table, Modal, Form, Row, Col } from 'react-bootstrap';
 import Select from 'react-select';
 import { useAuth } from '../../context/AuthContext';
 const url = import.meta.env.VITE_API_URL;
@@ -35,7 +35,7 @@ const Items = () => {
     const redirectToProduct = useNavigate();
 
     const navigateToProduct = () => {
-        redirectToProduct("/add-product")
+        redirectToProduct("/inventory/add-product")
     }
 
 
@@ -183,7 +183,7 @@ const Items = () => {
                                                 <tr key={_id}>
                                                     <td><input type="checkbox" /></td>
                                                     <td>
-                                                        <p className="mb-0 fw-medium text-dark">{item_name}</p>
+                                                        <p className="mb-0 text-dark fw-medium">{item_name}</p>
                                                         <p className="mb-0 text-secondary">{item_hsn}</p>
                                                     </td>
                                                     <td>{item_category}</td>
