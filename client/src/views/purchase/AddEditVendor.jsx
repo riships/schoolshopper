@@ -105,7 +105,7 @@ const AddEditVendor = () => {
                 const cityData = await formatOptions(
                     City.getCitiesOfState(reducerState.country, reducerState.state),
                     'name',
-                    'stateCode'
+                    'name'
                 );
                 setReducer({ type: 'UPDATE_CITY_OPTIONS', payload: cityData });
             } catch (error) {
@@ -132,10 +132,6 @@ const AddEditVendor = () => {
             console.log(error?.response?.data?.message);
         }
     }
-    
-
-
-
     return (
         <>
             <div className='content-wrapper'>
@@ -190,7 +186,6 @@ const AddEditVendor = () => {
                                     <Form.Control className='common-control' type="text" placeholder="Enter Address"
                                         value={reducerState.address}
                                         onChange={(e) => setReducer({ type: 'UPDATE_ADDRESS', payload: e.target.value })}
-                                        isClearable={true}
                                     />
                                 </Form.Group>
                             </Col>
@@ -198,10 +193,10 @@ const AddEditVendor = () => {
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>City<span className='text-danger'>*</span></Form.Label>
                                     <Select className='custom-selectpicker' classNamePrefix="Select City"
+                                        value={reducerState.cities.find(option => option.value === reducerState.city) || null}
                                         defaultValue={reducerState.city}
                                         options={reducerState.cities}
                                         onChange={(e) => { setReducer({ type: 'UPDATE_CITY', payload: e.value }); }}
-                                        isClearable={true}
                                     />
                                 </Form.Group>
                             </Col>
@@ -209,13 +204,12 @@ const AddEditVendor = () => {
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>State<span className='text-danger'>*</span></Form.Label>
                                     <Select className='custom-selectpicker' classNamePrefix="Select State"
+                                        value={reducerState.states.find(option => option.value === reducerState.state) || null}
                                         defaultValue={reducerState.state}
                                         options={reducerState.states}
                                         onChange={(e) => {
                                             setReducer({ type: 'UPDATE_STATE', payload: e.value });
-                                            setReducer({ type: 'UPDATE_CITY', payload: '' });
                                         }}
-                                        isClearable={true}
                                     />
                                 </Form.Group>
                             </Col>
@@ -227,8 +221,6 @@ const AddEditVendor = () => {
                                         options={reducerState.countries}
                                         onChange={(e) => {
                                             setReducer({ type: 'UPDATE_COUNTRY', payload: e.value });
-                                            setReducer({ type: 'UPDATE_STATE', payload: '' });
-                                            setReducer({ type: 'UPDATE_CITY', payload: '' });
                                         }}
                                     />
                                 </Form.Group>
