@@ -3,6 +3,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
+import { ToastContainer } from "react-toastify";
 
 const ProtectedRoute = () => {
     const user = useAuth();
@@ -11,6 +12,7 @@ const ProtectedRoute = () => {
         <>
             {/* <Sidebar /> */}
             <Header />
+            <ToastContainer />
             <div className="page-content">
                 <div className="page-content-inner">
                     <Outlet />

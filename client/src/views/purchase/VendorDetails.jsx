@@ -29,12 +29,12 @@ function VendorDetails() {
                     },
                     withCredentials: true
                 });
-                const data = response.data;
-                if (!Array.isArray(data)) {
+                const { vendors } = response.data;
+                if (!Array.isArray(vendors)) {
                     throw new Error('Unexpected response format');
                 }
                 // Filter out items with null or undefined values
-                setTableData(data);
+                setTableData(vendors);
                 setLoading(false);
             } catch (error) {
                 setError(error);
@@ -102,21 +102,20 @@ function VendorDetails() {
                                         </tr>
                                     ) : (
                                         tableData.map((ele, ind) => {
-                                            const { _id, item_name, item_category, item_opening_stock, item_unit, item_hsn, item_actual_price } = ele;
+                                            const { _id, vendor_name, vendor_phone, vendor_email, vendor_address, vendor_gst, item_actual_price } = ele;
                                             return (
                                                 <tr key={_id}>
                                                     <td><input type="checkbox" /></td>
                                                     <td>
-                                                        <p className="mb-0 text-dark fw-medium">{item_name}</p>
-                                                        <p className="mb-0 text-secondary">{item_hsn}</p>
+                                                        <p className="mb-0 text-dark fw-medium">{vendor_name}</p>
                                                     </td>
-                                                    <td>{item_category}</td>
-                                                    <td>{item_opening_stock}</td>
-                                                    <td>{item_unit}</td>
+                                                    <td>{vendor_email}</td>
+                                                    <td>{vendor_email}</td>
+                                                    <td>{vendor_phone}</td>
+                                                    <td>{vendor_address}</td>
                                                     <td>{item_actual_price}</td>
                                                     <td>
                                                         <div className='action-button-wrapper'>
-                                                            <button type="button"><img src={viewIcon} alt="view-icon" /></button>
                                                             <button type="button"><img src={actionIcon} alt="action-icon" /></button>
                                                         </div>
                                                     </td>

@@ -7,9 +7,13 @@ const vendorSchema = mongoose.Schema({
         required: [true, 'Vendor name is required'],
         trim: true
     },
+    contact_person_name: {
+        type: String,
+        required: [true, 'Contact person name is required'],
+        trim: true
+    },
     vendor_email: {
         type: String,
-        required: [true, 'Vendor email is required'],
         trim: true,
         unique: true,
         validate: {
@@ -45,7 +49,7 @@ const vendorSchema = mongoose.Schema({
         type: String,
         trim: true,
     },
-    vendor_zip: {
+    vendor_pin_code: {
         type: String,
         trim: true,
     },
@@ -69,54 +73,22 @@ const vendorSchema = mongoose.Schema({
         type: String,
         trim: true
     },
-    vendor_pan: {
-        type: String,
-        trim: true
-    },
-    vendor_pan_status: {
-        type: String,
-        trim: true
-    },
-    vendor_pan_date: {
-        type: Date,
-        trim: true
-    },
     vendor_pan_image: {
         type: Object,
         trim: true
     },
-    vendor_aadhar: {
-        type: String,
-        trim: true
-    },
-    vendor_aadhar_status: {
-        type: String,
-        trim: true
-    },
-    vendor_aadhar_date: {
-        type: Date,
-        trim: true
-    },
-    vendor_aadhar_image: [{
+    vendor_aadhar_image: {
         type: Object,
         trim: true
-    }],
+    },
     vendor_gst: {
         type: String,
         trim: true
     },
-    vendor_gst_status: {
-        type: String,
-        trim: true
-    },
-    vendor_gst_date: {
-        type: Date,
-        trim: true
-    },
-    vendor_gst_image: [{
+    vendor_gst_image: {
         type: Object,
         trim: true
-    }],
+    },
 
 });
 

@@ -5,6 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 import axios from 'axios';
 import { formatOptions } from '../../utils/helper';
 import { Country, State, City } from 'country-state-city';
+import { toast } from 'react-toastify';
 const url = import.meta.env.VITE_API_URL;
 
 const initialState = {
@@ -117,20 +118,88 @@ const AddEditVendor = () => {
     }, [reducerState.country, reducerState.state]);
 
 
+    const addValidation = () => {
+        let isValid = true;
+        if (!reducerState.vendor_name) {
+            isValid = false;
+            alert("Please enter vendor name");
+        }
+        if (!reducerState.contactPersonName) {
+            isValid = false;
+            alert("Please enter contact person name");
+        }
+        if (!reducerState.contactPersonEmail) {
+            isValid = false;
+            alert("Please enter contact person email");
+        }
+        if (!reducerState.contactNo) {
+            isValid = false;
+            alert("Please enter contact no");
+        }
+        if (!reducerState.address) {
+            isValid = false;
+            alert("Please enter address");
+        }
+        if (!reducerState.city) {
+            isValid = false;
+            alert("Please select city");
+        }
+        if (!reducerState.state) {
+            isValid = false;
+            alert("Please select state");
+        }
+        if (!reducerState.country) {
+            isValid = false;
+            alert("Please select country");
+        }
+        return isValid;
+    }
+
+
     const addVendor = async () => {
+        // addValidation();
+        // if(addValidation() === false) return;
+
+        const formData = new FormData();
+        formData.append('vendor_name', reducerState.vendorName);
+        formData.append('contact_person_name', reducerState.contactPersonName);
+        formData.append('vendor_phone', reducerState.contactNo);
+        formData.append('vendor_email', reducerState.emailId);
+        formData.append('vendor_address', reducerState.address);
+        formData.append('vendor_city', reducerState.city);
+        formData.append('vendor_state', reducerState.state);
+        formData.append('vendor_country', reducerState.country);
+        formData.append('vendor_pin_code', reducerState.pinCode);
+        formData.append('gstin', reducerState.gstin);
+        formData.append('vendor_account_name', reducerState.accountName);
+        formData.append('vendor_account_no', reducerState.accountNo);
+        formData.append('re_enter_account_no', reducerState.reEnterAccountNo);
+        formData.append('vendor_ifsc_code', reducerState.ifscCode);
+        formData.append('vendor_bank_name', reducerState.bankName);
+        formData.append('vendor_branch_name', reducerState.branchName);
+        formData.append('pan_card', reducerState.panCard);
+        formData.append('aadhar_card', reducerState.aadharCard);
+        formData.append('gst_certificate', reducerState.gstCertificate);
         try {
-            let response = await axios.post(url + "/api/item/getCategories",
+            let response = await axios.post(url + "/api/vendor",
+                formData,
                 {
                     headers: {
-                        'Content-Type': 'application/json',
                         'x-auth-token': auth.token || ''
                     },
                     withCredentials: true
                 }
             );
+            console.log(response.data);
         } catch (error) {
+            toast.error(error?.response?.data?.message);
             console.log(error?.response?.data?.message);
         }
+    }
+
+    function handleFileChange(event, field) {
+        const file = event.target.files[0];
+        setReducer({ type: field, payload: file });
     }
     return (
         <>
@@ -313,8 +382,10 @@ const AddEditVendor = () => {
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>PAN Card</Form.Label>
                                     <Form.Control className='common-control' type="file"
+                                        name='pan_card'
+                                        accept="image/*"
                                         value={reducerState.pan_card}
-                                        onChange={(e) => setReducer({ type: 'UPDATE_PAN_CARD', payload: e.target.value })}
+                                        onChange={(e) => handleFileChange(e, 'UPDATE_PAN_CARD')}
                                     />
                                 </Form.Group>
                             </Col>
@@ -322,8 +393,10 @@ const AddEditVendor = () => {
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Aadhar Card</Form.Label>
                                     <Form.Control className='common-control' type="file"
+                                        name='aadhar_card'
+                                        accept="image/*"
                                         value={reducerState.aadhar_card}
-                                        onChange={(e) => setReducer({ type: 'UPDATE_AADHAR_CARD', payload: e.target.value })}
+                                        onChange={(e) => handleFileChange(e, 'UPDATE_AADHAR_CARD')}
                                     />
                                 </Form.Group>
                             </Col>
@@ -331,8 +404,9 @@ const AddEditVendor = () => {
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>GST Certificate</Form.Label>
                                     <Form.Control className='common-control' type="file"
+                                        name='gst_certificate'
                                         value={reducerState.gst_certificate}
-                                        onChange={(e) => setReducer({ type: 'UPDATE_GST_CERTIFICATE', payload: e.target.value })}
+                                        onChange={(e) => handleFileChange(e, 'UPDATE_GST_CERTIFICATE')}
                                     />
                                 </Form.Group>
                             </Col>
