@@ -86,6 +86,7 @@ const reducer = (state, action) => {
 const AddEditVendor = () => {
     const auth = useAuth();
     const [reducerState, setReducer] = useReducer(reducer, initialState);
+    const [validationError, setValidationError] = useState({});
     useEffect(() => {
         const getCityStateCountry = async () => {
             try {
@@ -119,38 +120,37 @@ const AddEditVendor = () => {
 
 
     const addValidation = () => {
-        let isValid = true;
         if (!reducerState.vendor_name) {
-            isValid = false;
-            alert("Please enter vendor name");
+            setValidationError({ vendor_name: "Please enter vendor name" });
+            return false;
         }
         if (!reducerState.contactPersonName) {
-            isValid = false;
-            alert("Please enter contact person name");
+            setValidationError({ contactPersonName: "Please enter contact person name" });
+            return false;
         }
         if (!reducerState.contactPersonEmail) {
-            isValid = false;
-            alert("Please enter contact person email");
+            setValidationError({ contactPersonEmail: "Please enter contact person email" });
+            return false;
         }
         if (!reducerState.contactNo) {
-            isValid = false;
-            alert("Please enter contact no");
+            setValidationError({ contactNo: "Please enter contact number" });
+            return false;
         }
         if (!reducerState.address) {
-            isValid = false;
-            alert("Please enter address");
+            setValidationError({ address: "Please enter address" });
+            return false;
         }
         if (!reducerState.city) {
-            isValid = false;
-            alert("Please select city");
+            setValidationError({ city: "Please enter city" });
+            return false;
         }
         if (!reducerState.state) {
-            isValid = false;
-            alert("Please select state");
+            setValidationError({ state: "Please enter state" });
+            return false;
         }
         if (!reducerState.country) {
-            isValid = false;
-            alert("Please select country");
+            setValidationError({ country: "Please enter country" });
+            return false;
         }
         return isValid;
     }
@@ -190,7 +190,10 @@ const AddEditVendor = () => {
                     withCredentials: true
                 }
             );
-            console.log(response.data);
+            if (response.status === 201) {
+                toast.success(response.data.message);
+                setReducer(initialState);
+            }
         } catch (error) {
             toast.error(error?.response?.data?.message);
             console.log(error?.response?.data?.message);
@@ -220,6 +223,7 @@ const AddEditVendor = () => {
                                         type="text" placeholder="Enter Item Name"
                                         value={reducerState.vendor_name}
                                         onChange={(e) => setReducer({ type: 'UPDATE_VENDOR_NAME', payload: e.target.value })} />
+                                    {validationError.vendor_name && <span className='text-danger'>{validationError.vendor_name}</span>}
                                 </Form.Group>
                             </Col>
                             <Col md={3} className='form-gap'>
@@ -229,6 +233,7 @@ const AddEditVendor = () => {
                                         value={reducerState.contact_person_name}
                                         onChange={(e) => setReducer({ type: 'UPDATE_CONTACT_PERSON_NAME', payload: e.target.value })}
                                     />
+                                    {validationError.contact_person_name && <span className='text-danger'>{validationError.contact_person_name}</span>}
                                 </Form.Group>
                             </Col>
                             <Col md={3} className='form-gap'>
@@ -238,6 +243,7 @@ const AddEditVendor = () => {
                                         value={reducerState.contact_no}
                                         onChange={(e) => setReducer({ type: 'UPDATE_CONTACT_NO', payload: e.target.value })}
                                     />
+                                    {validationError.contact_no && <span className='text-danger'>{validationError.contact_no}</span>}
                                 </Form.Group>
                             </Col>
                             <Col md={3} className='form-gap'>
@@ -247,6 +253,7 @@ const AddEditVendor = () => {
                                         value={reducerState.email_id}
                                         onChange={(e) => setReducer({ type: 'UPDATE_EMAIL_ID', payload: e.target.value })}
                                     />
+                                    {validationError.email_id && <span className='text-danger'>{validationError.email_id}</span>}
                                 </Form.Group>
                             </Col>
                             <Col md={3} className='form-gap'>
@@ -256,6 +263,7 @@ const AddEditVendor = () => {
                                         value={reducerState.address}
                                         onChange={(e) => setReducer({ type: 'UPDATE_ADDRESS', payload: e.target.value })}
                                     />
+                                    {validationError.address && <span className='text-danger'>{validationError.address}</span>}
                                 </Form.Group>
                             </Col>
                             <Col md={3} className='form-gap'>
@@ -267,6 +275,7 @@ const AddEditVendor = () => {
                                         options={reducerState.cities}
                                         onChange={(e) => { setReducer({ type: 'UPDATE_CITY', payload: e.value }); }}
                                     />
+                                    {validationError.city && <span className='text-danger'>{validationError.city}</span>}
                                 </Form.Group>
                             </Col>
                             <Col md={3} className='form-gap'>
@@ -280,6 +289,7 @@ const AddEditVendor = () => {
                                             setReducer({ type: 'UPDATE_STATE', payload: e.value });
                                         }}
                                     />
+                                    {validationError.state && <span className='text-danger'>{validationError.state}</span>}
                                 </Form.Group>
                             </Col>
                             <Col md={3} className='form-gap'>
@@ -292,15 +302,17 @@ const AddEditVendor = () => {
                                             setReducer({ type: 'UPDATE_COUNTRY', payload: e.value });
                                         }}
                                     />
+                                    {validationError.country && <span className='text-danger'>{validationError.country}</span>}
                                 </Form.Group>
                             </Col>
                             <Col md={3} className='form-gap'>
                                 <Form.Group className='common-form-group'>
-                                    <Form.Label className='common-label'>PIN/ZIP Code</Form.Label>
+                                    <Form.Label className='common-label'>PIN/ZIP Code<span className='text-danger'>*</span></Form.Label>
                                     <Form.Control className='common-control' type="text" placeholder="Enter PIN/ZIP Code"
                                         value={reducerState.pin_code}
                                         onChange={(e) => setReducer({ type: 'UPDATE_PIN_CODE', payload: e.target.value })}
                                     />
+                                    {validationError.pin_code && <span className='text-danger'>{validationError.pin_code}</span>}
                                 </Form.Group>
                             </Col>
                             <Col md={3} className='form-gap'>
