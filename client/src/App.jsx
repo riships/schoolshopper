@@ -32,7 +32,14 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/inventory" element={<Inventory />}>
               <Route path="item" element={<Items />} />
-              <Route path="organizationDetails" element={<OrganizationDetails />} />
+              <Route path="add-product" element={<AddProduct />} />
+            </Route>
+            <Route path="/purchase" element={<Inventory />}>
+              <Route path="vendor" element={<VendorDetails />} />
+              <Route path="vendor/add" element={<AddEditVendor />} />
+            </Route>
+            <Route path="/configuration" element={<Configuration />}>
+              <Route path="" />
             </Route>
           </Route>
         </Routes>
