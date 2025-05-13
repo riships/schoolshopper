@@ -18,28 +18,20 @@ import columnIcon from '../../assets/images/column-icon.svg';
 const Items = () => {
     const auth = useAuth();
     let [tableData, setTableData] = useState([]);
-    let [filterdata, setFilterdata] = useState([]);
-    const handleInputChange = (e) => {
-        const values = e.target.value;
-        const filteredData = tableData.filter((user) => {
-            const { item_name } = user;
-            return item_name.toLowerCase().includes(values.toLowerCase());
-        });
-        setFilterdata(filteredData)
-    }
 
     const [show, setShow] = useState(false);
     const handleShow = () => { setShow(true) };
     const handleClose = () => { setShow(false) };
 
-    const options = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' },
-    ];
+    // const options = [
+    //     { value: 'chocolate', label: 'Sabir' },
+    //     { value: 'strawberry', label: 'Strawberry' },
+    //     { value: 'vanilla', label: 'Vanilla' },
+    // ];
 
 
-    const [selectedOption, setSelectedOption] = useState(null);
+    const [options, setOptions] = useState([]);
+    
 
     const redirectToProduct = useNavigate();
 
@@ -47,7 +39,41 @@ const Items = () => {
         redirectToProduct("/inventory/add-product")
     }
 
+    const handleFilter = (event)=> {
+        setSearchInput(event.target.value)
+    }
+    console.log(filteredTableData,"filteredTableData");
 
+    const handleFilteredTableData = ()=> {
+        let data = tableData.filter((product) => product.item_name.toLowerCase().includes(searchInput.toLowerCase()) ||
+                                                 product.item_category.toLowerCase().includes(searchInput.toLocaleLowerCase())
+        )
+        setFilteredTableData(data)
+    }
+
+    const handleModalFilteredData = () => {
+        let applyFilter = tableData.filter((product) => product.item_category.toLowerCase() === selectedOption.toLowerCase() 
+        && 
+        minPriceTextbox ? product.item_actual_price >= minPriceTextbox : true &&
+        maxPriceTextbox ? product.item_actual_price <= maxPriceTextbox : true
+     )
+        setFilteredTableData(applyFilter);
+        setShow(false);
+    }
+
+    // const handleCategoryOption = (event) => {    
+    //     setSelectedOption(event.value)
+    // }
+
+    // let handleApplyFilter = () => {
+    //     let applyFilter = tableData.filter((product) => product.item_category.toLowerCase() === selectedOption.toLowerCase() )
+    //     setFilteredTableData(applyFilter);
+    //     setShow(false);
+    // }
+
+    useEffect(() => {
+        handleFilteredTableData();
+    }, [searchInput])
 
     useEffect(() => {
         getItems();
@@ -65,8 +91,9 @@ const Items = () => {
                 }
             );
             let items = res.data.data;
+            console.log(items);
             setTableData(items)
-            setFilterdata(items)
+
         }
         catch (error) {
             console.log(error);
@@ -100,8 +127,8 @@ const Items = () => {
                                                     <Form.Group className='common-form-group'>
                                                         <Form.Label className='common-label'>Category</Form.Label>
                                                         <Select className='custom-selectpicker' classNamePrefix="select"
-                                                            defaultValue={selectedOption}
-                                                            onChange={setSelectedOption}
+                                                            // defaultValue={selectedOption}
+                                                            onChange={(event)=> setSelectedOption(event.value)}
                                                             options={options}
                                                         />
                                                     </Form.Group>
@@ -113,7 +140,7 @@ const Items = () => {
                                                         </Col>
                                                         <Col md={6} className='form-gap'>
                                                             <Form.Group className='common-form-group'>
-                                                                <Form.Control className='common-control' type="text" placeholder="From Amount">
+                                                                <Form.Control className='common-control' onChange={(event)=> setMinPriceTextbox(event.target.value)} type="text" placeholder="From Amount">
 
                                                                 </Form.Control>
                                                             </Form.Group>
@@ -121,7 +148,7 @@ const Items = () => {
 
                                                         <Col md={6} className='form-gap'>
                                                             <Form.Group className='common-form-group'>
-                                                                <Form.Control className='common-control' type="text" placeholder="To Amount">
+                                                                <Form.Control className='common-control' onChange={(event)=> setMaxPriceTextbox(event.target.value)} type="text" placeholder="To Amount">
 
                                                                 </Form.Control>
                                                             </Form.Group>
@@ -137,7 +164,7 @@ const Items = () => {
                                         <button type="button" className='common-button' onClick={handleClose}>
                                             Close
                                         </button>
-                                        <button type="button" className='text-white common-button btn-primary' onClick={handleClose}>
+                                        <button type="button" className='text-white common-button btn-primary' onClick={handleModalFilteredData}>
                                             Apply
                                         </button>
                                     </Modal.Footer>
@@ -145,7 +172,7 @@ const Items = () => {
 
                             </li>
                             <li>
-                                <input className="search-field" onChange={handleInputChange} type="text" placeholder="Search" />
+                                <input className="search-field" type="text" placeholder="Search" />
                             </li>
                             <li className="ms-auto">
                                 <button type="button" onClick={navigateToProduct} variant="" className="text-white common-button btn-add btn-primary"> <img src={addIcon} alt="add-icon" />Add</button>
@@ -184,7 +211,7 @@ const Items = () => {
                                 <tbody>
 
                                     {
-                                        filterdata.map((ele, ind) => {
+                                        tableData.map((ele, ind) => {
                                             const { _id, item_name, item_category, item_opening_stock, item_unit, item_hsn, item_actual_price } = ele;
                                             return (
                                                 <tr key={_id}>

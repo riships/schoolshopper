@@ -5,17 +5,19 @@ import { useAuth } from '../../context/AuthContext';
 import axios from 'axios';
 import DatePicker from '../../components/DatePicker';
 import { formatOptions } from '../../utils/helper';
+import SingleFileUpload from '../../components/SingleFileUpload';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 const url = import.meta.env.VITE_API_URL;
 
 const AddProduct = () => {
     const [date, setDate] = useState();
 
-    // const subCategoryOptions = [
-    //     { value: 'chocolate', label: 'Chocolate' },
-    //     { value: 'strawberry', label: 'Strawberry' },
-    //     { value: 'vanilla', label: 'Vanilla' },
-    // ];
-    // const [selectedSubCategoryOptions, setsubCategoryOptions] = useState(null);
+    const subCategoryOptions = [
+        { value: 'chocolate', label: 'Chocolate' },
+        { value: 'strawberry', label: 'Strawberry' },
+        { value: 'vanilla', label: 'Vanilla' },
+    ];
+    const [selectedSubCategoryOptions, setsubCategoryOptions] = useState(null);
 
 
     const taxOptions = [
@@ -63,10 +65,7 @@ const AddProduct = () => {
     const auth = useAuth();
     // let [tableData, setTableData] = useState([]);
 
-    const [categoryOptions, setCategoryOptions] = useState([]);
-    const [subCategoryOptions, setSubCategoryOptions] = useState([]);
-    const [subCategoryFilterOptions, setSubCategoryFilterOptions] = useState([]);
-    const [selectedOption, setSelectedOption] = useState(null);
+    const [categoryOptions, setcategoryOptions] = useState([]);
 
     const getCategory = async () => {
         try {
@@ -79,27 +78,17 @@ const AddProduct = () => {
                     withCredentials: true
                 }
             );
+            console.log(res.data);
+
 
             let categoryOptionsData = await formatOptions(res.data.categories, 'category_name', '_id');
-            setCategoryOptions(categoryOptionsData);
-            setSubCategoryOptions(res.data.sub_categories)
+            setcategoryOptions(categoryOptionsData);
         } catch (error) {
             console.log(error?.response?.data?.message);
         }
-    }
-    useEffect(() => {
-        let subOptions = [];
-        subCategoryOptions.forEach((elem) => {
-            if (elem[selectedOption]) {
-                elem[selectedOption].map((elem) => ({
-                    label: elem,
-                    value: elem
-                }));
-                setSubCategoryFilterOptions(subOptions);
-            }
-        });
-    }, [selectedOption])
 
+
+    }
 
     return (
         <>
@@ -117,6 +106,16 @@ const AddProduct = () => {
                                 <Row className='gx-3'>
                                     <Col md={6} className='form-gap'>
                                         <Form.Group className='common-form-group'>
+                                            <Form.Label className='common-label'>Store<span className='text-danger'>*</span></Form.Label>
+                                            <Select className='custom-selectpicker' classNamePrefix="select"
+                                                // defaultValue={categoryOptions[2]}
+                                                onChange={handleCategoryChange}
+                                                options={categoryOptions}
+                                            />
+                                        </Form.Group>
+                                    </Col>
+                                    <Col md={6} className='form-gap'>
+                                        <Form.Group className='common-form-group'>
                                             <Form.Label className='common-label'>Item Name<span className='text-danger'>*</span></Form.Label>
                                             <Form.Control className='common-control' type="text" placeholder="Enter Item Name">
 
@@ -128,7 +127,7 @@ const AddProduct = () => {
                                             <Form.Label className='common-label'>Category<span className='text-danger'>*</span></Form.Label>
                                             <Select className='custom-selectpicker' classNamePrefix="select"
                                                 // defaultValue={selectedCategoryOptions}
-                                                onChange={(data) => setSelectedOption(data.value)}
+                                                // onChange={setSelectedCategoryOptions}
                                                 options={categoryOptions}
                                             />
                                         </Form.Group>
@@ -137,9 +136,9 @@ const AddProduct = () => {
                                         <Form.Group className='common-form-group'>
                                             <Form.Label className='common-label'>Sub-Category</Form.Label>
                                             <Select className='custom-selectpicker' classNamePrefix="select"
-                                                // defaultValue={selectedSubCategoryOptions}
-                                                // onChange={subCategoryOptions}
-                                                options={subCategoryFilterOptions}
+                                                defaultValue={selectedSubCategoryOptions}
+                                                onChange={setsubCategoryOptions}
+                                                options={selectedSubCategoryOptions}
                                                 isMulti
                                             />
                                         </Form.Group>
@@ -170,12 +169,55 @@ const AddProduct = () => {
                                             />
                                         </Form.Group>
                                     </Col>
-                                    <Col md={12}>
+                                    
+                                </Row>
+                            </Col>
+                            <Col md={6} className='form-gap'>
+                                <Row className='gx-3'>
+                                    
+
+                                    
+                                            <Col md={12}>
+                                                <Form.Group className='common-form-group'>
+                                                    <Form.Label className='common-label'>Attachment</Form.Label>
+                                                    <Row className='g-3'>
+                                                        <Col md={6}>
+                                                            <SingleFileUpload  />
+                                                        </Col>
+                                                        <Col md={6}>
+                                                        <Row className='g-3'>
+                                                            <Col md={6}>
+                                                                <SingleFileUpload />
+                                                            </Col>
+                                                            <Col md={6}>
+                                                                <SingleFileUpload />
+                                                            </Col>
+                                                            <Col md={6}>
+                                                                <SingleFileUpload />
+                                                            </Col>
+                                                            <Col md={6}>
+                                                                <SingleFileUpload />
+                                                            </Col>
+                                                        </Row>
+                                                        </Col>
+                                                        <Col md={12} className='mt-2'>
+                                                            <p className='mb-0 text-dark fs-10'>You need to add at least 4 images. Pay attention to the quality of the pictures you add, comply with the background color standards. Pictures must be in certain dimensions. Notice that the product shows all the details</p>
+                                                        </Col>
+                                                    </Row>
+                                                </Form.Group>
+                                            </Col>
+                                            
+                                        
+
+                                </Row>
+                            </Col>
+
+                            <Col md={12}>
                                         <ul className="ms-n-16 common-seperator">
                                             <li><span className="seperator-main-heading">Item Specification</span></li>
                                         </ul>
                                     </Col>
-                                    <Col md={6} className='form-gap'>
+                                    <Col md={3} className='form-gap'>
                                         <Form.Group className='common-form-group'>
                                             <Form.Label className='common-label'>Dimensions (Length X Width X Height)<span className='text-danger'>*</span></Form.Label>
                                             <Form.Control className='common-control' type="text" placeholder="Enter Dimensions (Length X Width X Height)">
@@ -183,7 +225,7 @@ const AddProduct = () => {
                                             </Form.Control>
                                         </Form.Group>
                                     </Col>
-                                    <Col md={6} className='form-gap'>
+                                    <Col md={3} className='form-gap'>
                                         <Form.Group className='common-form-group'>
                                             <Form.Label className='common-label'>Weight (In kg)<span className='text-danger'>*</span></Form.Label>
                                             <Form.Control className='common-control' type="text" placeholder="Enter Weight (In kg)">
@@ -192,7 +234,7 @@ const AddProduct = () => {
                                         </Form.Group>
                                     </Col>
 
-                                    <Col md={6} className='form-gap'>
+                                    <Col md={3} className='form-gap'>
                                         <Form.Group className='common-form-group'>
                                             <Form.Label className='common-label'>Gender</Form.Label>
                                             <Select className='custom-selectpicker' classNamePrefix="select"
@@ -203,7 +245,7 @@ const AddProduct = () => {
                                         </Form.Group>
                                     </Col>
 
-                                    <Col md={6} className='form-gap'>
+                                    <Col md={3} className='form-gap'>
                                         <Form.Group className='common-form-group'>
                                             <Form.Label className='common-label'>Brand</Form.Label>
                                             <Select className='custom-selectpicker' classNamePrefix="select"
@@ -214,11 +256,7 @@ const AddProduct = () => {
                                         </Form.Group>
                                     </Col>
 
-                                </Row>
-                            </Col>
-                            <Col md={6} className='form-gap'>
-                                <Row className='gx-3'>
-                                    <Col md={6} className='form-gap'>
+                                    <Col md={3} className='form-gap'>
                                         <Form.Group className='common-form-group'>
                                             <Form.Label className='common-label'>Material</Form.Label>
                                             <Select className='custom-selectpicker' classNamePrefix="select"
@@ -229,7 +267,7 @@ const AddProduct = () => {
                                         </Form.Group>
                                     </Col>
 
-                                    <Col md={6} className='form-gap'>
+                                    <Col md={3} className='form-gap'>
                                         <Form.Group className='common-form-group'>
                                             <Form.Label className='common-label'>Unit</Form.Label>
                                             <Select className='custom-selectpicker' classNamePrefix="select"
@@ -239,8 +277,6 @@ const AddProduct = () => {
                                             />
                                         </Form.Group>
                                     </Col>
-                                </Row>
-                            </Col>
 
                             <Col md={12}>
                                 <ul className="mx-n-16 common-seperator">
@@ -361,6 +397,7 @@ const AddProduct = () => {
                                     {/* <Form.Control className='common-control pick-date' type="text" placeholder="Enter Amount">
 
                                     </Form.Control> */}
+                                    {/* <MobileDatePicker selectedDate={date} setSelectedDate={setDate} /> */}
                                 </Form.Group>
                             </Col>
 

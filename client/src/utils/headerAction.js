@@ -20,6 +20,7 @@ const menuItems = [
         link: "",
         subMenu: [
             { id: 1, title: "Item", link: "/inventory/item" },
+            { id: 1, title: "Add Item", link: "/inventory/add-product" },
             { id: 2, title: "Item Group", link: "/inventory/item-group" },
             { id: 3, title: "Stock Adjustment", link: "/inventory/stock-adjustment" },
             { id: 4, title: "Stock Alert", link: "/inventory/stock-alert" }
