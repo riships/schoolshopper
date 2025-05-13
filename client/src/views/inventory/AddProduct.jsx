@@ -12,11 +12,13 @@ const url = import.meta.env.VITE_API_URL;
 const AddProduct = () => {
     const [date, setDate] = useState();
 
-    const subCategoryOptions = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' },
-    ];
+
+
+    // const subCategoryOptions = [
+    //     { value: 'chocolate', label: 'Chocolate' },
+    //     { value: 'strawberry', label: 'Strawberry' },
+    //     { value: 'vanilla', label: 'Vanilla' },
+    // ];
     const [selectedSubCategoryOptions, setsubCategoryOptions] = useState(null);
 
 
@@ -63,9 +65,9 @@ const AddProduct = () => {
     }, [])
 
     const auth = useAuth();
-    // let [tableData, setTableData] = useState([]);
-
-    const [categoryOptions, setcategoryOptions] = useState([]);
+    const [categoryOptions, setCategoryOptions] = useState([]);
+    const [subCategoryOptions, setSubCategoryOptions] = useState([]);
+    const [subCategoryFilterOptions, setSubCategoryFilterOptions] = useState([]);
 
     const getCategory = async () => {
         try {
@@ -82,12 +84,22 @@ const AddProduct = () => {
 
 
             let categoryOptionsData = await formatOptions(res.data.categories, 'category_name', '_id');
-            setcategoryOptions(categoryOptionsData);
+            setCategoryOptions(categoryOptionsData);
+            setSubCategoryOptions(res.data.sub_categories);
+            setSubCategoryFilterOptions(res.data.sub_categories);
         } catch (error) {
-            console.log(error?.response?.data?.message);
+            console.log(error);
         }
+    }
 
-
+    async function handleCategoryChange(data) {
+        setSubCategoryFilterOptions(subCategoryOptions);
+        const subCategoryData = subCategoryFilterOptions.filter((subCateg) => subCateg._id === data.value);
+        let subOptions = subCategoryData[0]['sub_categories'].map((elem) => ({
+            label: elem,
+            value: elem
+        }));
+        setSubCategoryOptions(subOptions);
     }
 
     return (
@@ -126,8 +138,8 @@ const AddProduct = () => {
                                         <Form.Group className='common-form-group'>
                                             <Form.Label className='common-label'>Category<span className='text-danger'>*</span></Form.Label>
                                             <Select className='custom-selectpicker' classNamePrefix="select"
-                                                // defaultValue={selectedCategoryOptions}
-                                                // onChange={setSelectedCategoryOptions}
+                                                // defaultValue={categoryOptions[2]}
+                                                onChange={handleCategoryChange}
                                                 options={categoryOptions}
                                             />
                                         </Form.Group>
@@ -138,7 +150,7 @@ const AddProduct = () => {
                                             <Select className='custom-selectpicker' classNamePrefix="select"
                                                 defaultValue={selectedSubCategoryOptions}
                                                 onChange={setsubCategoryOptions}
-                                                options={selectedSubCategoryOptions}
+                                                options={subCategoryOptions}
                                                 isMulti
                                             />
                                         </Form.Group>
@@ -169,114 +181,114 @@ const AddProduct = () => {
                                             />
                                         </Form.Group>
                                     </Col>
-                                    
+
                                 </Row>
                             </Col>
                             <Col md={6} className='form-gap'>
                                 <Row className='gx-3'>
-                                    
 
-                                    
-                                            <Col md={12}>
-                                                <Form.Group className='common-form-group'>
-                                                    <Form.Label className='common-label'>Attachment</Form.Label>
+
+
+                                    <Col md={12}>
+                                        <Form.Group className='common-form-group'>
+                                            <Form.Label className='common-label'>Attachment</Form.Label>
+                                            <Row className='g-3'>
+                                                <Col md={6}>
+                                                    <SingleFileUpload />
+                                                </Col>
+                                                <Col md={6}>
                                                     <Row className='g-3'>
                                                         <Col md={6}>
-                                                            <SingleFileUpload  />
+                                                            <SingleFileUpload />
                                                         </Col>
                                                         <Col md={6}>
-                                                        <Row className='g-3'>
-                                                            <Col md={6}>
-                                                                <SingleFileUpload />
-                                                            </Col>
-                                                            <Col md={6}>
-                                                                <SingleFileUpload />
-                                                            </Col>
-                                                            <Col md={6}>
-                                                                <SingleFileUpload />
-                                                            </Col>
-                                                            <Col md={6}>
-                                                                <SingleFileUpload />
-                                                            </Col>
-                                                        </Row>
+                                                            <SingleFileUpload />
                                                         </Col>
-                                                        <Col md={12} className='mt-2'>
-                                                            <p className='mb-0 text-dark fs-10'>You need to add at least 4 images. Pay attention to the quality of the pictures you add, comply with the background color standards. Pictures must be in certain dimensions. Notice that the product shows all the details</p>
+                                                        <Col md={6}>
+                                                            <SingleFileUpload />
+                                                        </Col>
+                                                        <Col md={6}>
+                                                            <SingleFileUpload />
                                                         </Col>
                                                     </Row>
-                                                </Form.Group>
-                                            </Col>
-                                            
-                                        
+                                                </Col>
+                                                <Col md={12} className='mt-2'>
+                                                    <p className='mb-0 text-dark fs-10'>You need to add at least 4 images. Pay attention to the quality of the pictures you add, comply with the background color standards. Pictures must be in certain dimensions. Notice that the product shows all the details</p>
+                                                </Col>
+                                            </Row>
+                                        </Form.Group>
+                                    </Col>
+
+
 
                                 </Row>
                             </Col>
 
                             <Col md={12}>
-                                        <ul className="ms-n-16 common-seperator">
-                                            <li><span className="seperator-main-heading">Item Specification</span></li>
-                                        </ul>
-                                    </Col>
-                                    <Col md={3} className='form-gap'>
-                                        <Form.Group className='common-form-group'>
-                                            <Form.Label className='common-label'>Dimensions (Length X Width X Height)<span className='text-danger'>*</span></Form.Label>
-                                            <Form.Control className='common-control' type="text" placeholder="Enter Dimensions (Length X Width X Height)">
+                                <ul className="ms-n-16 common-seperator">
+                                    <li><span className="seperator-main-heading">Item Specification</span></li>
+                                </ul>
+                            </Col>
+                            <Col md={3} className='form-gap'>
+                                <Form.Group className='common-form-group'>
+                                    <Form.Label className='common-label'>Dimensions (Length X Width X Height)<span className='text-danger'>*</span></Form.Label>
+                                    <Form.Control className='common-control' type="text" placeholder="Enter Dimensions (Length X Width X Height)">
 
-                                            </Form.Control>
-                                        </Form.Group>
-                                    </Col>
-                                    <Col md={3} className='form-gap'>
-                                        <Form.Group className='common-form-group'>
-                                            <Form.Label className='common-label'>Weight (In kg)<span className='text-danger'>*</span></Form.Label>
-                                            <Form.Control className='common-control' type="text" placeholder="Enter Weight (In kg)">
+                                    </Form.Control>
+                                </Form.Group>
+                            </Col>
+                            <Col md={3} className='form-gap'>
+                                <Form.Group className='common-form-group'>
+                                    <Form.Label className='common-label'>Weight (In kg)<span className='text-danger'>*</span></Form.Label>
+                                    <Form.Control className='common-control' type="text" placeholder="Enter Weight (In kg)">
 
-                                            </Form.Control>
-                                        </Form.Group>
-                                    </Col>
+                                    </Form.Control>
+                                </Form.Group>
+                            </Col>
 
-                                    <Col md={3} className='form-gap'>
-                                        <Form.Group className='common-form-group'>
-                                            <Form.Label className='common-label'>Gender</Form.Label>
-                                            <Select className='custom-selectpicker' classNamePrefix="select"
-                                                defaultValue={selectedGenderOptions}
-                                                onChange={setGenderOptions}
-                                                options={genderOptions}
-                                            />
-                                        </Form.Group>
-                                    </Col>
+                            <Col md={3} className='form-gap'>
+                                <Form.Group className='common-form-group'>
+                                    <Form.Label className='common-label'>Gender</Form.Label>
+                                    <Select className='custom-selectpicker' classNamePrefix="select"
+                                        defaultValue={selectedGenderOptions}
+                                        onChange={setGenderOptions}
+                                        options={genderOptions}
+                                    />
+                                </Form.Group>
+                            </Col>
 
-                                    <Col md={3} className='form-gap'>
-                                        <Form.Group className='common-form-group'>
-                                            <Form.Label className='common-label'>Brand</Form.Label>
-                                            <Select className='custom-selectpicker' classNamePrefix="select"
-                                                defaultValue={selectedBrandOptions}
-                                                onChange={setBrandOptions}
-                                                options={brandOptions}
-                                            />
-                                        </Form.Group>
-                                    </Col>
+                            <Col md={3} className='form-gap'>
+                                <Form.Group className='common-form-group'>
+                                    <Form.Label className='common-label'>Brand</Form.Label>
+                                    <Select className='custom-selectpicker' classNamePrefix="select"
+                                        defaultValue={selectedBrandOptions}
+                                        onChange={setBrandOptions}
+                                        options={brandOptions}
+                                    />
+                                </Form.Group>
+                            </Col>
 
-                                    <Col md={3} className='form-gap'>
-                                        <Form.Group className='common-form-group'>
-                                            <Form.Label className='common-label'>Material</Form.Label>
-                                            <Select className='custom-selectpicker' classNamePrefix="select"
-                                                defaultValue={selectedMaterialOptions}
-                                                onChange={setMaterialOptions}
-                                                options={materialOptions}
-                                            />
-                                        </Form.Group>
-                                    </Col>
+                            <Col md={3} className='form-gap'>
+                                <Form.Group className='common-form-group'>
+                                    <Form.Label className='common-label'>Material</Form.Label>
+                                    <Select className='custom-selectpicker' classNamePrefix="select"
+                                        defaultValue={selectedMaterialOptions}
+                                        onChange={setMaterialOptions}
+                                        options={materialOptions}
+                                    />
+                                </Form.Group>
+                            </Col>
 
-                                    <Col md={3} className='form-gap'>
-                                        <Form.Group className='common-form-group'>
-                                            <Form.Label className='common-label'>Unit</Form.Label>
-                                            <Select className='custom-selectpicker' classNamePrefix="select"
-                                                defaultValue={selectedUnitOptions}
-                                                onChange={setUnitOptions}
-                                                options={unitOptions}
-                                            />
-                                        </Form.Group>
-                                    </Col>
+                            <Col md={3} className='form-gap'>
+                                <Form.Group className='common-form-group'>
+                                    <Form.Label className='common-label'>Unit</Form.Label>
+                                    <Select className='custom-selectpicker' classNamePrefix="select"
+                                        defaultValue={selectedUnitOptions}
+                                        onChange={setUnitOptions}
+                                        options={unitOptions}
+                                    />
+                                </Form.Group>
+                            </Col>
 
                             <Col md={12}>
                                 <ul className="mx-n-16 common-seperator">
