@@ -1,6 +1,6 @@
+import React, { useEffect, useReducer } from 'react';
 import { Form, Row, Col } from 'react-bootstrap';
 import Select from 'react-select';
-import { useEffect, useReducer } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import axios from 'axios';
 import { formatOptions } from '../../utils/helper';
@@ -86,7 +86,7 @@ const reducer = (state, action) => {
 const AddEditVendor = () => {
     const auth = useAuth();
     const [reducerState, setReducer] = useReducer(reducer, initialState);
-    const [validationError, setValidationError] = useState({});
+    const [validationError, setValidationError] = React.useState({});
     useEffect(() => {
         const getCityStateCountry = async () => {
             try {
@@ -119,47 +119,7 @@ const AddEditVendor = () => {
     }, [reducerState.country, reducerState.state]);
 
 
-    const addValidation = () => {
-        if (!reducerState.vendor_name) {
-            setValidationError({ vendor_name: "Please enter vendor name" });
-            return false;
-        }
-        if (!reducerState.contactPersonName) {
-            setValidationError({ contactPersonName: "Please enter contact person name" });
-            return false;
-        }
-        if (!reducerState.contactPersonEmail) {
-            setValidationError({ contactPersonEmail: "Please enter contact person email" });
-            return false;
-        }
-        if (!reducerState.contactNo) {
-            setValidationError({ contactNo: "Please enter contact number" });
-            return false;
-        }
-        if (!reducerState.address) {
-            setValidationError({ address: "Please enter address" });
-            return false;
-        }
-        if (!reducerState.city) {
-            setValidationError({ city: "Please enter city" });
-            return false;
-        }
-        if (!reducerState.state) {
-            setValidationError({ state: "Please enter state" });
-            return false;
-        }
-        if (!reducerState.country) {
-            setValidationError({ country: "Please enter country" });
-            return false;
-        }
-        return isValid;
-    }
-
-
     const addVendor = async () => {
-        // addValidation();
-        // if(addValidation() === false) return;
-
         const formData = new FormData();
         formData.append('vendor_name', reducerState.vendorName);
         formData.append('contact_person_name', reducerState.contactPersonName);
@@ -170,7 +130,7 @@ const AddEditVendor = () => {
         formData.append('vendor_state', reducerState.state);
         formData.append('vendor_country', reducerState.country);
         formData.append('vendor_pin_code', reducerState.pinCode);
-        formData.append('gstin', reducerState.gstin);
+        formData.append('vendor_gst', reducerState.gstin);
         formData.append('vendor_account_name', reducerState.accountName);
         formData.append('vendor_account_no', reducerState.accountNo);
         formData.append('re_enter_account_no', reducerState.reEnterAccountNo);
