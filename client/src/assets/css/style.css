@@ -473,3 +473,116 @@ ul.common-action-wrapper li:last-child {
 
 
 /* Common Toggle On/Off Button Css End Here */
+
+/* Common Single File Upload Css Starts Here */
+
+.common-file-upload {
+    position: relative;
+    border: 2px dashed #ccc;
+    height: 100%;
+}
+
+.image-preview-wrapper, .file-upload-wrapper {
+    position: relative;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: 0.5s all;
+}
+
+.common-file-upload p {
+    font-size: 0.6rem;
+    color: #000;
+}
+
+.common-file-upload .selected-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+.common-file-upload .image-preview-wrapper:hover .removeBtn {
+    display: flex !important;
+}
+
+.common-file-upload .removeBtn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.7rem;
+    gap: 4px;
+    color: #f83d3d;
+    border: 1px solid #f83d3d;
+    padding: 5px 10px;
+    border-radius: 3px;
+    background: #fdf1f1;
+    z-index: 9;
+    min-width: max-content;
+}
+
+.common-file-upload .image-preview-wrapper:hover:after {
+    background: #00000059;
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.common-file-upload.dragging {
+    border-color: #00aaff;
+    background-color: #f0faff;
+}
+
+.common-file-upload input[type="file"] {
+    width: 100%;
+    height: 100%;
+}
+
+/* Common Single File Upload Css End Here */
+
+/* Common Font Size Css Start Here */
+
+.fs-10 {
+  font-size: 0.7142857143rem!important; }
+
+.fs-12 {
+  font-size: 0.8571428571rem!important; }
+
+.fs-13 {
+  font-size: 0.9285714286rem!important; }
+
+.fs-14 {
+  font-size: 1rem!important; }
+
+.fs-15 {
+  font-size: 1.0714285714rem!important; }
+
+.fs-16 {
+  font-size: 1.1428571429rem!important; }
+
+.fs-18 {
+  font-size: 1.2857142857rem!important; }
+
+.fs-20 {
+  font-size: 1.4285714286rem!important; }
+
+.fs-22 {
+  font-size: 1.5714285714rem!important; }
+
+.fs-24 {
+  font-size: 1.7142857143rem!important; }
+
+.fs-26 {
+  font-size: 1.8571428571rem!important; }
+
+.fs-30 {
+  font-size: 2.1428571429rem!important; }
+
+  /* Common Font Size Css End Here */

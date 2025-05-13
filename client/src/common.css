@@ -209,6 +209,7 @@ ul.man-navbar ul.sub-nav a.nav-link-btn {
 header.main-header {
   position: sticky;
   top: 0;
+  z-index: 9;
 }
 
 .page-content-inner {

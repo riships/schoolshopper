@@ -27,10 +27,10 @@ function App() {
           <Route path="/resetPassword" element={<ResetPassword />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<Home />} />
-            <Route path="/add-product" element={<AddProduct />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/inventory" element={<Inventory />}>
               <Route path="item" element={<Items />} />
+              <Route path="add-product" element={<AddProduct />} />
               <Route path="organizationDetails" element={<OrganizationDetails />} />
             </Route>
           </Route>
