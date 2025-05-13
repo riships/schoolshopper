@@ -78,6 +78,29 @@ const reducer = (state, action) => {
             return { ...state, states: action.payload };
         case 'UPDATE_COUNTRY_OPTIONS':
             return { ...state, countries: action.payload };
+        case 'CLEAR_VENDER_FORM':
+            return {
+                ...state,
+                vendorName: "",
+                contactPersonName: "",
+                contactNo: "",
+                emailId: "",
+                address: "",
+                city: "",
+                state: "",
+                country: "",
+                pinCode: "",
+                gstin: "",
+                accountName: "",
+                accountNo: "",
+                reEnterAccountNo: "",
+                ifscCode: "",
+                bankName: "",
+                branchName: "",
+                panCard: null,
+                aadharCard: null,
+                gstCertificate: null
+            };
         default:
             return state;
     }
@@ -151,8 +174,10 @@ const AddEditVendor = () => {
                 }
             );
             if (response.status === 201) {
+                // after save clear all the fields                
                 toast.success(response.data.message);
-                setReducer(initialState);
+                // console.log(reducerState);
+                setReducer({ type: 'CLEAR_VENDER_FORM' });
             }
         } catch (error) {
             toast.error(error?.response?.data?.message);
@@ -181,39 +206,35 @@ const AddEditVendor = () => {
                                     <Form.Label className='common-label'>Vendor Name <span style={{ 'fontSize': '0.70rem' }}>(Legal Name)</span><span className='text-danger'>*</span></Form.Label>
                                     <Form.Control className='common-control'
                                         type="text" placeholder="Enter Item Name"
-                                        value={reducerState.vendor_name}
+                                        value={reducerState.vendorName}
                                         onChange={(e) => setReducer({ type: 'UPDATE_VENDOR_NAME', payload: e.target.value })} />
-                                    {validationError.vendor_name && <span className='text-danger'>{validationError.vendor_name}</span>}
                                 </Form.Group>
                             </Col>
                             <Col md={3} className='form-gap'>
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Contact Person Name<span className='text-danger'>*</span></Form.Label>
                                     <Form.Control className='common-control' type="text" placeholder="Enter Contact Person Name"
-                                        value={reducerState.contact_person_name}
+                                        value={reducerState.contactPersonName}
                                         onChange={(e) => setReducer({ type: 'UPDATE_CONTACT_PERSON_NAME', payload: e.target.value })}
                                     />
-                                    {validationError.contact_person_name && <span className='text-danger'>{validationError.contact_person_name}</span>}
                                 </Form.Group>
                             </Col>
                             <Col md={3} className='form-gap'>
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Contact No<span className='text-danger'>*</span></Form.Label>
                                     <Form.Control className='common-control' type="number" placeholder="Enter Contact No"
-                                        value={reducerState.contact_no}
+                                        value={reducerState.contactNo}
                                         onChange={(e) => setReducer({ type: 'UPDATE_CONTACT_NO', payload: e.target.value })}
                                     />
-                                    {validationError.contact_no && <span className='text-danger'>{validationError.contact_no}</span>}
                                 </Form.Group>
                             </Col>
                             <Col md={3} className='form-gap'>
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Email ID</Form.Label>
                                     <Form.Control className='common-control' type="email" placeholder="Enter Email ID"
-                                        value={reducerState.email_id}
+                                        value={reducerState.emailId}
                                         onChange={(e) => setReducer({ type: 'UPDATE_EMAIL_ID', payload: e.target.value })}
                                     />
-                                    {validationError.email_id && <span className='text-danger'>{validationError.email_id}</span>}
                                 </Form.Group>
                             </Col>
                             <Col md={3} className='form-gap'>
@@ -223,7 +244,6 @@ const AddEditVendor = () => {
                                         value={reducerState.address}
                                         onChange={(e) => setReducer({ type: 'UPDATE_ADDRESS', payload: e.target.value })}
                                     />
-                                    {validationError.address && <span className='text-danger'>{validationError.address}</span>}
                                 </Form.Group>
                             </Col>
                             <Col md={3} className='form-gap'>
@@ -235,7 +255,6 @@ const AddEditVendor = () => {
                                         options={reducerState.cities}
                                         onChange={(e) => { setReducer({ type: 'UPDATE_CITY', payload: e.value }); }}
                                     />
-                                    {validationError.city && <span className='text-danger'>{validationError.city}</span>}
                                 </Form.Group>
                             </Col>
                             <Col md={3} className='form-gap'>
@@ -249,30 +268,28 @@ const AddEditVendor = () => {
                                             setReducer({ type: 'UPDATE_STATE', payload: e.value });
                                         }}
                                     />
-                                    {validationError.state && <span className='text-danger'>{validationError.state}</span>}
                                 </Form.Group>
                             </Col>
                             <Col md={3} className='form-gap'>
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Country<span className='text-danger'>*</span></Form.Label>
                                     <Select className='custom-selectpicker' classNamePrefix="Select"
+                                        value={reducerState.countries.find(option => option.value === reducerState.country) || null}
                                         defaultValue={reducerState.country}
                                         options={reducerState.countries}
                                         onChange={(e) => {
                                             setReducer({ type: 'UPDATE_COUNTRY', payload: e.value });
                                         }}
                                     />
-                                    {validationError.country && <span className='text-danger'>{validationError.country}</span>}
                                 </Form.Group>
                             </Col>
                             <Col md={3} className='form-gap'>
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>PIN/ZIP Code<span className='text-danger'>*</span></Form.Label>
                                     <Form.Control className='common-control' type="text" placeholder="Enter PIN/ZIP Code"
-                                        value={reducerState.pin_code}
+                                        value={reducerState.pinCode}
                                         onChange={(e) => setReducer({ type: 'UPDATE_PIN_CODE', payload: e.target.value })}
                                     />
-                                    {validationError.pin_code && <span className='text-danger'>{validationError.pin_code}</span>}
                                 </Form.Group>
                             </Col>
                             <Col md={3} className='form-gap'>
@@ -302,7 +319,7 @@ const AddEditVendor = () => {
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Account No</Form.Label>
                                     <Form.Control className='common-control' type="text" placeholder="Enter Account No"
-                                        value={reducerState.account_no}
+                                        value={reducerState.accountNo}
                                         onChange={(e) => setReducer({ type: 'UPDATE_ACCOUNT_NO', payload: e.target.value })}
                                     />
                                 </Form.Group>
@@ -311,7 +328,7 @@ const AddEditVendor = () => {
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Re-Enter Account No<span className='text-danger'>*</span></Form.Label>
                                     <Form.Control className='common-control' type="text" placeholder="Re-Enter Account No"
-                                        value={reducerState.re_enter_account_no}
+                                        value={reducerState.reEnterAccountNo}
                                         onChange={(e) => setReducer({ type: 'UPDATE_RE_ENTER_ACCOUNT_NO', payload: e.target.value })}
                                     />
                                 </Form.Group>
@@ -320,7 +337,7 @@ const AddEditVendor = () => {
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>IFSC Code</Form.Label>
                                     <Form.Control className='common-control' type="text" placeholder="Enter IFSC Code"
-                                        value={reducerState.ifsc_code}
+                                        value={reducerState.ifscCode}
                                         onChange={(e) => setReducer({ type: 'UPDATE_IFSC_CODE', payload: e.target.value })}
                                     />
                                     {/* <span className='find-icon'><img src="/assets/images/find-icon.png" alt="find-icon" /></span> */}
@@ -330,7 +347,7 @@ const AddEditVendor = () => {
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Bank Name</Form.Label>
                                     <Form.Control className='common-control' type="text" placeholder="Enter Bank Name"
-                                        value={reducerState.bank_name}
+                                        value={reducerState.bankName}
                                         onChange={(e) => setReducer({ type: 'UPDATE_BANK_NAME', payload: e.target.value })}
                                     />
                                 </Form.Group>
@@ -339,7 +356,7 @@ const AddEditVendor = () => {
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Branch Name</Form.Label>
                                     <Form.Control className='common-control' type="text" placeholder="Enter Branch Name"
-                                        value={reducerState.branch_name}
+                                        value={reducerState.branchName}
                                         onChange={(e) => setReducer({ type: 'UPDATE_BRANCH_NAME', payload: e.target.value })}
                                     />
                                 </Form.Group>
@@ -356,7 +373,7 @@ const AddEditVendor = () => {
                                     <Form.Control className='common-control' type="file"
                                         name='pan_card'
                                         accept="image/*"
-                                        value={reducerState.pan_card}
+                                        value={reducerState.panCard}
                                         onChange={(e) => handleFileChange(e, 'UPDATE_PAN_CARD')}
                                     />
                                 </Form.Group>
@@ -367,7 +384,7 @@ const AddEditVendor = () => {
                                     <Form.Control className='common-control' type="file"
                                         name='aadhar_card'
                                         accept="image/*"
-                                        value={reducerState.aadhar_card}
+                                        value={reducerState.aadharCard}
                                         onChange={(e) => handleFileChange(e, 'UPDATE_AADHAR_CARD')}
                                     />
                                 </Form.Group>
@@ -377,7 +394,7 @@ const AddEditVendor = () => {
                                     <Form.Label className='common-label'>GST Certificate</Form.Label>
                                     <Form.Control className='common-control' type="file"
                                         name='gst_certificate'
-                                        value={reducerState.gst_certificate}
+                                        value={reducerState.gstCertificate}
                                         onChange={(e) => handleFileChange(e, 'UPDATE_GST_CERTIFICATE')}
                                     />
                                 </Form.Group>
