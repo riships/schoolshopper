@@ -102,7 +102,7 @@ function VendorDetails() {
                                         </tr>
                                     ) : (
                                         tableData.map((ele, ind) => {
-                                            const { _id, vendor_name, vendor_phone, vendor_email, vendor_address, vendor_gst, item_actual_price } = ele;
+                                            const { _id, vendor_name, vendor_phone, vendor_email, vendor_address, vendor_gst } = ele;
                                             return (
                                                 <tr key={_id}>
                                                     <td><input type="checkbox" /></td>
@@ -113,7 +113,7 @@ function VendorDetails() {
                                                     <td>{vendor_email}</td>
                                                     <td>{vendor_phone}</td>
                                                     <td>{vendor_address}</td>
-                                                    <td>{item_actual_price}</td>
+                                                    <td>{vendor_gst}</td>
                                                     <td>
                                                         <div className='action-button-wrapper'>
                                                             <button type="button"><img src={actionIcon} alt="action-icon" /></button>

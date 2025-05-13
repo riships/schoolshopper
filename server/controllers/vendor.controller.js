@@ -24,7 +24,12 @@ export const createVendor = async (req, res, next) => {
         }
         for (const field of requiredFields) {
             if (!req.body[field]) {
-                return next(new ErrorHandler(`Please provide ${field.replace(/_/g, ' ')}`, 400));
+                // check if field has value after _ it should be in camel case
+                const fieldName = field
+                    .split('_')
+                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(' ');
+                return next(new ErrorHandler(`Please provide ${fieldName}.`, 400));
             }
         }
 
