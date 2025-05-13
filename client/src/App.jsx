@@ -11,8 +11,10 @@ import ResetPassword from "./components/ResetPassword";
 import Items from "./views/inventory/Items";
 import AddProduct from "./views/inventory/AddProduct";
 import "./assets/css/style.css";
-import OrganizationDetails from "./views/configuration/OrganizationDetails";
 import Inventory from "./views/inventory/Inventory";
+import Configuration from "./views/configuration/Configuration";
+import VendorDetails from "./views/purchase/VendorDetails";
+import AddEditVendor from "./views/purchase/AddEditVendor";
 
 
 function App() {
@@ -30,13 +32,12 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/inventory" element={<Inventory />}>
               <Route path="item" element={<Items />} />
-              <Route path="add-product" element={<AddProduct />} />
               <Route path="organizationDetails" element={<OrganizationDetails />} />
             </Route>
           </Route>
         </Routes>
       </BrowserRouter>
-    </AuthProvider>
+    </AuthProvider >
   )
 }
 

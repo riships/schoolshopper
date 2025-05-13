@@ -1,5 +1,6 @@
 import React from 'react'
 import { useAuth } from '../context/AuthContext'
+import UsersReport from '../views/reports/UsersReport';
 
 function Home() {
     const auth = useAuth();
@@ -10,8 +11,9 @@ function Home() {
             <button onClick={() => auth.logOut()} className="btn-submit">
                 logout
             </button>
+            <UsersReport /> 
         </>
     )
 }
 
-export default Home
+export default Home;

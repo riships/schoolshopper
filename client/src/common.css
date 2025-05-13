@@ -13,6 +13,21 @@
   box-sizing: border-box;
 }
 
+/* This css to remove arrows from the input type number */
+/* starts here */
+/* Chrome, Safari, Edge */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* Ends here */
 html {
   height: 100%;
   width: 100%;
@@ -209,7 +224,6 @@ ul.man-navbar ul.sub-nav a.nav-link-btn {
 header.main-header {
   position: sticky;
   top: 0;
-  z-index: 9;
 }
 
 .page-content-inner {

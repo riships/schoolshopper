@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { Table, Button, Modal, Form, Row, Col } from 'react-bootstrap';
+import { Table, Modal, Form, Row, Col } from 'react-bootstrap';
 import Select from 'react-select';
 import { useAuth } from '../../context/AuthContext';
 const url = import.meta.env.VITE_API_URL;
@@ -18,11 +18,6 @@ import columnIcon from '../../assets/images/column-icon.svg';
 const Items = () => {
     const auth = useAuth();
     let [tableData, setTableData] = useState([]);
-    const [searchInput, setSearchInput] = useState("");
-    const [filteredTableData, setFilteredTableData] = useState([]);
-    const [selectedOption, setSelectedOption] = useState("");
-    const [minPriceTextbox, setMinPriceTextbox] = useState("");
-    const [maxPriceTextbox, setMaxPriceTextbox] = useState("");
 
     const [show, setShow] = useState(false);
     const handleShow = () => { setShow(true) };
@@ -96,34 +91,12 @@ const Items = () => {
                 }
             );
             let items = res.data.data;
-            console.log(res,"new array");
+            console.log(items);
             setTableData(items)
-            setFilteredTableData(items)
-
-            
-            
-
-        //    let formattedOption = items.map((ele)=> ({
-        //         label:ele.item_category,
-        //         value:ele.item_category
-        //     }));
-
-            let formattedOption = items.map((ele) => {
-                return {label:ele.item_category, value:ele.item_category}
-            })
-
-            let uniqueCategory = Array.from(
-                new Map(formattedOption.map((item) => {
-                    return [item.value, item]
-                })).values()
-              );
-
-            setOptions(uniqueCategory);
 
         }
         catch (error) {
             console.log(error);
-
         }
     }
 
@@ -199,7 +172,7 @@ const Items = () => {
 
                             </li>
                             <li>
-                                <input className="search-field" value={searchInput} onChange={handleFilter} type="text" placeholder="Search" />
+                                <input className="search-field" type="text" placeholder="Search" />
                             </li>
                             <li className="ms-auto">
                                 <button type="button" onClick={navigateToProduct} variant="" className="text-white common-button btn-add btn-primary"> <img src={addIcon} alt="add-icon" />Add</button>
@@ -238,13 +211,13 @@ const Items = () => {
                                 <tbody>
 
                                     {
-                                        filteredTableData.map((ele, ind) => {
+                                        tableData.map((ele, ind) => {
                                             const { _id, item_name, item_category, item_opening_stock, item_unit, item_hsn, item_actual_price } = ele;
                                             return (
                                                 <tr key={_id}>
                                                     <td><input type="checkbox" /></td>
                                                     <td>
-                                                        <p className="mb-0 fw-medium text-dark">{item_name}</p>
+                                                        <p className="mb-0 text-dark fw-medium">{item_name}</p>
                                                         <p className="mb-0 text-secondary">{item_hsn}</p>
                                                     </td>
                                                     <td>{item_category}</td>
