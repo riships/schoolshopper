@@ -1,5 +1,5 @@
 import React from 'react'
-import { Table } from 'react-bootstrap';
+import { Dropdown, Table } from 'react-bootstrap';
 import viewIcon from '../../assets/images/view-icon.svg';
 import actionIcon from '../../assets/images/action-icon.svg';
 import addIcon from '../../assets/images/add-icon.svg';
@@ -10,6 +10,7 @@ import nextIcon from '../../assets/images/next-icon.svg';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import CustomDropdown from '../../components/CustomDropdown';
 const apiUrl = import.meta.env.VITE_API_URL;
 
 function VendorDetails() {
@@ -115,9 +116,14 @@ function VendorDetails() {
                                                     <td>{vendor_address}</td>
                                                     <td>{vendor_gst}</td>
                                                     <td>
-                                                        <div className='action-button-wrapper'>
-                                                            <button type="button"><img src={actionIcon} alt="action-icon" /></button>
-                                                        </div>
+                                                        <CustomDropdown
+                                                            options={['Red', 'Green', 'Blue']}
+                                                            onSelect={(val) => console.log(val)}
+                                                            placeholder={<img src={actionIcon} alt="view-icon" />}
+                                                            buttonWidth="150px"
+                                                            menuWidth="300px"
+                                                        />
+
                                                     </td>
                                                 </tr>
                                             )
@@ -126,7 +132,6 @@ function VendorDetails() {
                                 )}
                             </tbody>
                         </Table>
-
                     </div>
                 </div>
             </div>
