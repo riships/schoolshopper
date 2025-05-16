@@ -489,3 +489,22 @@ button.btn-logout {
   background: var(--primary-color);
   color: #fff;
 }
+
+/*  Custom Dropdown CSS  */
+.dropdown-toggle::after {
+  display: none !important;
+  content: "";
+}
+
+.dropdown-toggle{
+  outline: none;
+  border: none;
+}
+.dropdown-toggle:focus{
+  outline: none;
+  border: none;
+}
+
+.dropdown-menu{
+  padding: 0 !important;
+}

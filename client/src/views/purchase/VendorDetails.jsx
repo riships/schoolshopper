@@ -121,7 +121,7 @@ function VendorDetails() {
                                                             onSelect={(val) => console.log(val)}
                                                             placeholder={<img src={actionIcon} alt="view-icon" />}
                                                             buttonWidth="150px"
-                                                            menuWidth="300px"
+                                                            menuWidth="150px"
                                                         />
 
                                                     </td>
