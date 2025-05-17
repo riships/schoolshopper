@@ -496,18 +496,26 @@ button.btn-logout {
   content: "";
 }
 
-.dropdown-toggle{
-  outline: none;
-  border: none;
-}
-.dropdown-toggle:focus{
+.dropdown-toggle {
   outline: none;
   border: none;
 }
 
-.dropdown-menu{
-  padding: 0 !important;
+.dropdown-toggle:focus {
+  outline: none;
+  border: none;
 }
-.dropdown-item{
-    font-size: 0.85rem !important;
+
+.dropdown-menu {
+  padding: 0 !important;
+  border-radius: 4px;
+}
+
+.dropdown-item {
+  font-size: 0.85rem !important;
+  display: flex;
+}
+
+.dropdown-item:not(:last-child) {
+  border-bottom: 1px solid #E0E0E0;
 }

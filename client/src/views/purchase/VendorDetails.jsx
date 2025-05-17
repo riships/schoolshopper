@@ -1,6 +1,7 @@
 import React from 'react'
 import { Dropdown, Table } from 'react-bootstrap';
 import viewIcon from '../../assets/images/view-icon.svg';
+import ledgerIcon from '../../assets/images/ledger.svg'
 import actionIcon from '../../assets/images/action-icon.svg';
 import addIcon from '../../assets/images/add-icon.svg';
 import exportIcon from '../../assets/images/export-icon.svg';
@@ -117,7 +118,7 @@ function VendorDetails() {
                                                     <td>{vendor_gst}</td>
                                                     <td>
                                                         <CustomDropdown
-                                                            options={['Red', 'Green', 'Blue']}
+                                                            options={[{ icon:  ledgerIcon , name: "Ledger", url: "/purchase/vendor/ledgers" }]}
                                                             onSelect={(val) => console.log(val)}
                                                             placeholder={<img src={actionIcon} alt="view-icon" />}
                                                             buttonWidth="150px"
