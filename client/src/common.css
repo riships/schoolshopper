@@ -508,3 +508,6 @@ button.btn-logout {
 .dropdown-menu{
   padding: 0 !important;
 }
+.dropdown-item{
+    font-size: 0.85rem !important;
+}
