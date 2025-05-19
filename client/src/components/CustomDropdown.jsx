@@ -11,7 +11,7 @@ function CustomDropdown({ placeholder, options }) {
                 {options.map((option) => {
                     const { icon, name, url } = option;
                     return (
-                        <Link className='dropdown-item' to={url}><img src={icon ? icon : ""} className='min-w-15 max-w-15' /><span className='ms-10'>{name}</span></Link>
+                        <Link className='dropdown-item' to={url}><img src={icon ? icon : ""} className='me-1 w-[15px]' /><span className='ms-10'>{name}</span></Link>
                     )
                 })}
             </Dropdown.Menu>

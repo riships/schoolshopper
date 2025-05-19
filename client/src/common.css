@@ -507,7 +507,9 @@ button.btn-logout {
 }
 
 .dropdown-menu {
-  padding: 0 !important;
+  width: auto;
+  min-width: max-content;
+  padding: 0 15px 0 0px !important;
   border-radius: 4px;
 }
 
