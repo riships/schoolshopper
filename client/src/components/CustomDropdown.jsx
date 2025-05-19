@@ -19,4 +19,4 @@ function CustomDropdown({ placeholder, options }) {
     )
 }
 
-export default CustomDropdown
+export default CustomDropdown;

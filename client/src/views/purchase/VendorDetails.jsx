@@ -103,8 +103,25 @@ function VendorDetails() {
                                             <td colSpan={8} className='text-center'>No data available</td>
                                         </tr>
                                     ) : (
-                                        tableData.map((ele, ind) => {
+                                        tableData.map((ele) => {
                                             const { _id, vendor_name, vendor_phone, vendor_email, vendor_address, vendor_gst } = ele;
+                                            let options = [
+                                                {
+                                                    icon: ledgerIcon,
+                                                    name: "Ledger",
+                                                    url: "/purchase/vendor/ledgers"
+                                                },
+                                                {
+                                                    icon: editIcon,
+                                                    name: "Edit",
+                                                    url: "/purchase/vendor/edit?id=" + _id
+                                                },
+                                                {
+                                                    icon: viewIcon,
+                                                    name: "Delete",
+                                                    url: "/purchase/vendor/delete?id=" + _id
+                                                }
+                                            ]
                                             return (
                                                 <tr key={_id}>
                                                     <td><input type="checkbox" /></td>
@@ -118,13 +135,9 @@ function VendorDetails() {
                                                     <td>{vendor_gst}</td>
                                                     <td>
                                                         <CustomDropdown
-                                                            options={[{ icon:  ledgerIcon , name: "Ledger", url: "/purchase/vendor/ledgers" }]}
-                                                            onSelect={(val) => console.log(val)}
+                                                            options={options}
                                                             placeholder={<img src={actionIcon} alt="view-icon" />}
-                                                            buttonWidth="150px"
-                                                            menuWidth="150px"
                                                         />
-
                                                     </td>
                                                 </tr>
                                             )
