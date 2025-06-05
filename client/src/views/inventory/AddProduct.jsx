@@ -111,8 +111,6 @@ const AddProduct = () => {
                 </ul>
                 <div className="box">
                     <div className="box-body">
-
-
                         <Row className='mx-2 my-3 gx-3'>
                             <Col md={6}>
                                 <Row className='gx-3'>
@@ -171,65 +169,13 @@ const AddProduct = () => {
                                             </Form.Control>
                                         </Form.Group>
                                     </Col>
-                                    <Col md={6} className='form-gap'>
-                                        <Form.Group className='common-form-group'>
-                                            <Form.Label className='common-label'>Tax</Form.Label>
-                                            <Select className='custom-selectpicker' classNamePrefix="select"
-                                                defaultValue={selectedTaxOptions}
-                                                onChange={setTaxOptions}
-                                                options={taxOptions}
-                                            />
-                                        </Form.Group>
-                                    </Col>
-
-                                </Row>
-                            </Col>
-                            <Col md={6} className='form-gap'>
-                                <Row className='gx-3'>
-
-
-
+                                    
                                     <Col md={12}>
-                                        <Form.Group className='common-form-group'>
-                                            <Form.Label className='common-label'>Attachment</Form.Label>
-                                            <Row className='g-3'>
-                                                <Col md={6}>
-                                                    <SingleFileUpload />
-                                                </Col>
-                                                <Col md={6}>
-                                                    <Row className='g-3'>
-                                                        <Col md={6}>
-                                                            <SingleFileUpload />
-                                                        </Col>
-                                                        <Col md={6}>
-                                                            <SingleFileUpload />
-                                                        </Col>
-                                                        <Col md={6}>
-                                                            <SingleFileUpload />
-                                                        </Col>
-                                                        <Col md={6}>
-                                                            <SingleFileUpload />
-                                                        </Col>
-                                                    </Row>
-                                                </Col>
-                                                <Col md={12} className='mt-2'>
-                                                    <p className='mb-0 text-dark fs-10'>You need to add at least 4 images. Pay attention to the quality of the pictures you add, comply with the background color standards. Pictures must be in certain dimensions. Notice that the product shows all the details</p>
-                                                </Col>
-                                            </Row>
-                                        </Form.Group>
-                                    </Col>
-
-
-
-                                </Row>
-                            </Col>
-
-                            <Col md={12}>
                                 <ul className="ms-n-16 common-seperator">
                                     <li><span className="seperator-main-heading">Item Specification</span></li>
                                 </ul>
                             </Col>
-                            <Col md={3} className='form-gap'>
+                            <Col md={6} className='form-gap'>
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Dimensions (Length X Width X Height)<span className='text-danger'>*</span></Form.Label>
                                     <Form.Control className='common-control' type="text" placeholder="Enter Dimensions (Length X Width X Height)">
@@ -237,7 +183,7 @@ const AddProduct = () => {
                                     </Form.Control>
                                 </Form.Group>
                             </Col>
-                            <Col md={3} className='form-gap'>
+                            <Col md={6} className='form-gap'>
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Weight (In kg)<span className='text-danger'>*</span></Form.Label>
                                     <Form.Control className='common-control' type="text" placeholder="Enter Weight (In kg)">
@@ -246,7 +192,7 @@ const AddProduct = () => {
                                 </Form.Group>
                             </Col>
 
-                            <Col md={3} className='form-gap'>
+                            <Col md={6} className='form-gap'>
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Gender</Form.Label>
                                     <Select className='custom-selectpicker' classNamePrefix="select"
@@ -257,7 +203,7 @@ const AddProduct = () => {
                                 </Form.Group>
                             </Col>
 
-                            <Col md={3} className='form-gap'>
+                            <Col md={6} className='form-gap'>
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Brand</Form.Label>
                                     <Select className='custom-selectpicker' classNamePrefix="select"
@@ -268,7 +214,41 @@ const AddProduct = () => {
                                 </Form.Group>
                             </Col>
 
-                            <Col md={3} className='form-gap'>
+                                </Row>
+                            </Col>
+                            <Col md={6} className=''>
+                                <Row className='gx-3'>
+
+
+
+                                    <Col md={12}>
+                                        <Form.Group className='common-form-group'>
+                                            <Form.Label className='common-label'>Attachment</Form.Label>
+                                            <Row className='g-3'>
+                                                <Col md={6} className='large-file'>
+                                                    <SingleFileUpload customHeight={'268px'} />
+                                                </Col>
+                                                <Col md={6}>
+                                                    <Row className='g-3'>
+                                                        <Col md={6}>
+                                                            <SingleFileUpload customHeight={'126px'} />
+                                                        </Col>
+                                                        <Col md={6}>
+                                                            <SingleFileUpload customHeight={'126px'} />
+                                                        </Col>
+                                                        <Col md={6}>
+                                                            <SingleFileUpload customHeight={'126px'} />
+                                                        </Col>
+                                                        <Col md={6}>
+                                                            <SingleFileUpload customHeight={'126px'} />
+                                                        </Col>
+                                                    </Row>
+                                                </Col>
+                                                <Col md={12} className='mt-2'>
+                                                    <p className='mb-0 text-dark fs-10'>You need to add at least 4 images. Pay attention to the quality of the pictures you add, comply with the background color standards. Pictures must be in certain dimensions. Notice that the product shows all the details</p>
+                                                </Col>
+                                                
+                            <Col md={6} className='form-gap'>
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Material</Form.Label>
                                     <Select className='custom-selectpicker' classNamePrefix="select"
@@ -279,7 +259,7 @@ const AddProduct = () => {
                                 </Form.Group>
                             </Col>
 
-                            <Col md={3} className='form-gap'>
+                            <Col md={6} className='form-gap'>
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Unit</Form.Label>
                                     <Select className='custom-selectpicker' classNamePrefix="select"
@@ -289,6 +269,17 @@ const AddProduct = () => {
                                     />
                                 </Form.Group>
                             </Col>
+                                            </Row>
+                                        </Form.Group>
+                                    </Col>
+
+
+
+                                </Row>
+                            </Col>
+
+                            
+
 
                             <Col md={12}>
                                 <ul className="mx-n-16 common-seperator">
