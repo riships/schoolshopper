@@ -291,7 +291,7 @@ const AddProduct = () => {
                                 <Row>
                                     <Col md={3} className='form-gap'>
                                         <Form.Group className='common-form-group'>
-                                            <Form.Label className='common-label'>Brand</Form.Label>
+                                            <Form.Label className='common-label'>Product Type<span class="text-danger">*</span></Form.Label>
                                             <div className="btn-radio-group">
                                                 <Row className="justify-content-start boxed1 row">
                                                     <Col md="6" className="mb-3 input_02_radio">
