@@ -224,6 +224,7 @@ ul.man-navbar ul.sub-nav a.nav-link-btn {
 header.main-header {
   position: sticky;
   top: 0;
+  z-index: 9;
 }
 
 .page-content-inner {
@@ -489,3 +490,32 @@ button.btn-logout {
   background: var(--primary-color);
   color: #fff;
 }
+
+/* Common Date Picker and Time Picker CSS Starts Here */
+
+  .MuiOutlinedInput-notchedOutline {
+    border-color: #dee2e6 !important;
+    border-radius: 5px !important;
+  }
+
+  .MuiInputBase-input {
+    height: auto !important;
+    padding: .375rem .75rem !important;
+    font-size: 0.8rem !important;
+}
+
+.picker-control {
+    display: block !important;
+}
+
+.MuiInputBase-root {
+  width:100%;
+}
+
+.picker-icon {
+    float: right;
+    margin-top: -1.6rem;
+    margin-right: 0.5rem;
+}
+
+/* Common Date Picker and Time Picker CSS Ends Here */
