@@ -55,7 +55,7 @@ export const getItem = async (req, res, next) => {
     try {
         const item = await Item.findById({ _id: req.params.id });
         if (!item) {
-            return res.status(404).json({ msg: 'Item not found' });
+            return next(new ErrorHandler('Item not found', 404));
         }
         res.status(200).json({ success: true, item })
     } catch (error) {
@@ -67,7 +67,7 @@ export const updateItem = async (req, res, next) => {
     try {
         let item = await Item.findById(req.params.id);
         if (!item) {
-            return res.status(404).json({ msg: 'Item not found' });
+            return next(new ErrorHandler('Item not found', 404));
         }
         item = await Item.findByIdAndUpdate(req.params.id, req.body, {
             new: true,
@@ -84,7 +84,7 @@ export const deleteItem = async (req, res, next) => {
     try {
         let item = await Item.findById(req.params.id);
         if (!item) {
-            return res.status(404).json({ msg: 'Item not found' });
+            return next(new ErrorHandler('Item not found', 404));
         }
         res.status(200).json({ success: true, msg: 'Item deleted' });
     } catch (error) {
@@ -127,7 +127,7 @@ export const lowStock = async (req, res, next) => {
     try {
         const lowStockItems = await Item.find({ item_stock: { $gt: 0, $lte: 5 } });
         if (lowStockItems.length === 0 || !lowStockItems) {
-            return res.status(400).send({ success: false, message: "Not Item Found" })
+            return next(new ErrorHandler('Not Item Found', 404));
         }
         res.status(200).json(lowStockItems);
     } catch (error) {
@@ -139,7 +139,7 @@ export const outOfStock = async (req, res, next) => {
     try {
         const lowStockItems = await Item.find({ item_stock: { $lte: 0 } });
         if (lowStockItems.length === 0 || !lowStockItems) {
-            return res.status(400).send({ success: false, message: "Not Item Found" })
+            return next(new ErrorHandler('Not Item Found', 404));
         }
         res.status(200).json(lowStockItems);
     } catch (error) {
@@ -153,10 +153,7 @@ export const addCategories = async (req, res, next) => {
         const { userId } = req.user;
         const categoryExist = await Category.find({ name: category_name });
         if (categoryExist.length > 0) {
-            return res.status(400).send({
-                success: false,
-                message: "Category already exist"
-            })
+            return next(new ErrorHandler('Category already exists', 400));
         }
         const newCategory = new Category({
             category_name,
@@ -176,7 +173,7 @@ export const getCategories = async (req, res, next) => {
         const categories = await Category.find().select('-sub_categories');
         let sub_categories = await Category.find().select('sub_categories');
         sub_categories = sub_categories.map((sub_categorie) => {
-            return  {[sub_categorie._id.toString()]: sub_categorie.sub_categories };
+            return { [sub_categorie._id.toString()]: sub_categorie.sub_categories };
         })
 
         res.status(200).json({ success: true, categories, sub_categories });

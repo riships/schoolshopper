@@ -14,6 +14,7 @@ import vendorRouter from './routes/vendor.routes.js';
 import path from 'path';
 const __dirname = path.resolve();
 import cors from 'cors';
+import { errorMiddleware } from './utils/errorHandler.js';
 connectDb();
 
 
@@ -39,13 +40,6 @@ app.use('/api/reports', reportsRouter);
 app.use('/api/vendor', vendorRouter);
 
 
-
-const errorMiddleware = (err, req, res, next) => {
-    res.status(err.statusCode || 500).json({
-        success: false,
-        message: err.message || 'Internal Server Error'
-    });
-};
 
 app.use(errorMiddleware);
 
