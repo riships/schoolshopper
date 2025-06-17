@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18" height="18" viewBox="0 0 18 18">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_231756" data-name="Rectangle 231756" width="18" height="18" transform="translate(1585 1025)" fill="#fff" stroke="#707070" stroke-width="1"/>
+    </clipPath>
+  </defs>
+  <g id="Mask_Group_219698" data-name="Mask Group 219698" transform="translate(-1585 -1025)" clip-path="url(#clip-path)">
+    <path id="calendar-day" d="M4.667,7H3.5A1.168,1.168,0,0,0,2.333,8.167V9.333A1.168,1.168,0,0,0,3.5,10.5H4.667A1.168,1.168,0,0,0,5.833,9.333V8.167A1.168,1.168,0,0,0,4.667,7ZM3.5,9.333V8.167H4.667V9.333Zm7.583-8.167H10.5V.583a.583.583,0,0,0-1.167,0v.583H4.667V.583A.583.583,0,1,0,3.5.583v.583H2.917A2.92,2.92,0,0,0,0,4.083v7A2.92,2.92,0,0,0,2.917,14h8.167A2.92,2.92,0,0,0,14,11.083v-7A2.92,2.92,0,0,0,11.083,1.167ZM2.917,2.333h8.167a1.752,1.752,0,0,1,1.75,1.75v.583H1.167V4.083A1.752,1.752,0,0,1,2.917,2.333Zm8.167,10.5H2.917a1.752,1.752,0,0,1-1.75-1.75V5.833H12.833v5.25A1.752,1.752,0,0,1,11.083,12.833Z" transform="translate(1587 1027)" fill="#838383"/>
+  </g>
+</svg>
