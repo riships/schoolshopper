@@ -49,6 +49,10 @@ const itemSchema = mongoose.Schema({
         type: String,
         trim: true
     },
+    item_material: {
+        type: String,
+        trim: true
+    },
     item_actual_price: {
         type: Number,
         required: [true, 'Item price cannot be empty'],
