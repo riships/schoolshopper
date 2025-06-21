@@ -22,7 +22,7 @@ const AddProduct = () => {
     const [isChecked, setIsChecked] = useState(false);
     const [isPublishChecked, setIsPublishChecked] = useState(false);
     const [selectedOption, setSelectedOption] = useState('');
-    const [tableRow, setTableRow] = useState([{id:"", name:""}]);
+    const [tableRow, setTableRow] = useState([{ id: "", name: "" }]);
 
 
     // const subCategoryOptions = [
@@ -114,12 +114,12 @@ const AddProduct = () => {
     }
 
     const handleAddRow = () => {
-        const newRow = {id:Date.now(), name:""}
+        const newRow = { id: Date.now(), name: "" }
         setTableRow([...tableRow, newRow])
     }
 
     const handleDeleteRow = (id) => {
-        setTableRow(tableRow.filter((ele)=> {
+        setTableRow(tableRow.filter((ele) => {
             return ele.id !== id
         }))
     }
@@ -191,50 +191,50 @@ const AddProduct = () => {
                                             </Form.Control>
                                         </Form.Group>
                                     </Col>
-                                    
+
                                     <Col md={12}>
-                                <ul className="ms-n-16 common-seperator">
-                                    <li><span className="seperator-main-heading">Item Specification</span></li>
-                                </ul>
-                            </Col>
-                            <Col md={6} className='form-gap'>
-                                <Form.Group className='common-form-group'>
-                                    <Form.Label className='common-label'>Dimensions (Length X Width X Height)<span className='text-danger'>*</span></Form.Label>
-                                    <Form.Control className='common-control' type="text" placeholder="Enter Dimensions (Length X Width X Height)">
+                                        <ul className="ms-n-16 common-seperator">
+                                            <li><span className="seperator-main-heading">Item Specification</span></li>
+                                        </ul>
+                                    </Col>
+                                    <Col md={6} className='form-gap'>
+                                        <Form.Group className='common-form-group'>
+                                            <Form.Label className='common-label'>Dimensions (Length X Width X Height)<span className='text-danger'>*</span></Form.Label>
+                                            <Form.Control className='common-control' type="text" placeholder="Enter Dimensions (Length X Width X Height)">
 
-                                    </Form.Control>
-                                </Form.Group>
-                            </Col>
-                            <Col md={6} className='form-gap'>
-                                <Form.Group className='common-form-group'>
-                                    <Form.Label className='common-label'>Weight (In kg)<span className='text-danger'>*</span></Form.Label>
-                                    <Form.Control className='common-control' type="text" placeholder="Enter Weight (In kg)">
+                                            </Form.Control>
+                                        </Form.Group>
+                                    </Col>
+                                    <Col md={6} className='form-gap'>
+                                        <Form.Group className='common-form-group'>
+                                            <Form.Label className='common-label'>Weight (In kg)<span className='text-danger'>*</span></Form.Label>
+                                            <Form.Control className='common-control' type="text" placeholder="Enter Weight (In kg)">
 
-                                    </Form.Control>
-                                </Form.Group>
-                            </Col>
+                                            </Form.Control>
+                                        </Form.Group>
+                                    </Col>
 
-                            <Col md={6} className='form-gap'>
-                                <Form.Group className='common-form-group'>
-                                    <Form.Label className='common-label'>Gender</Form.Label>
-                                    <Select className='custom-selectpicker' classNamePrefix="select"
-                                        defaultValue={selectedGenderOptions}
-                                        onChange={setGenderOptions}
-                                        options={genderOptions}
-                                    />
-                                </Form.Group>
-                            </Col>
+                                    <Col md={6} className='form-gap'>
+                                        <Form.Group className='common-form-group'>
+                                            <Form.Label className='common-label'>Gender</Form.Label>
+                                            <Select className='custom-selectpicker' classNamePrefix="select"
+                                                defaultValue={selectedGenderOptions}
+                                                onChange={setGenderOptions}
+                                                options={genderOptions}
+                                            />
+                                        </Form.Group>
+                                    </Col>
 
-                            <Col md={6} className='form-gap'>
-                                <Form.Group className='common-form-group'>
-                                    <Form.Label className='common-label'>Brand</Form.Label>
-                                    <Select className='custom-selectpicker' classNamePrefix="select"
-                                        defaultValue={selectedBrandOptions}
-                                        onChange={setBrandOptions}
-                                        options={brandOptions}
-                                    />
-                                </Form.Group>
-                            </Col>
+                                    <Col md={6} className='form-gap'>
+                                        <Form.Group className='common-form-group'>
+                                            <Form.Label className='common-label'>Brand</Form.Label>
+                                            <Select className='custom-selectpicker' classNamePrefix="select"
+                                                defaultValue={selectedBrandOptions}
+                                                onChange={setBrandOptions}
+                                                options={brandOptions}
+                                            />
+                                        </Form.Group>
+                                    </Col>
 
                                 </Row>
                             </Col>
@@ -269,28 +269,28 @@ const AddProduct = () => {
                                                 <Col md={12} className='mt-2'>
                                                     <p className='mb-0 text-dark fs-10'>You need to add at least 4 images. Pay attention to the quality of the pictures you add, comply with the background color standards. Pictures must be in certain dimensions. Notice that the product shows all the details</p>
                                                 </Col>
-                                                
-                            <Col md={6} className='form-gap'>
-                                <Form.Group className='common-form-group'>
-                                    <Form.Label className='common-label'>Material</Form.Label>
-                                    <Select className='custom-selectpicker' classNamePrefix="select"
-                                        defaultValue={selectedMaterialOptions}
-                                        onChange={setMaterialOptions}
-                                        options={materialOptions}
-                                    />
-                                </Form.Group>
-                            </Col>
 
-                            <Col md={6} className='form-gap'>
-                                <Form.Group className='common-form-group'>
-                                    <Form.Label className='common-label'>Unit</Form.Label>
-                                    <Select className='custom-selectpicker' classNamePrefix="select"
-                                        defaultValue={selectedUnitOptions}
-                                        onChange={setUnitOptions}
-                                        options={unitOptions}
-                                    />
-                                </Form.Group>
-                            </Col>
+                                                <Col md={6} className='form-gap'>
+                                                    <Form.Group className='common-form-group'>
+                                                        <Form.Label className='common-label'>Material</Form.Label>
+                                                        <Select className='custom-selectpicker' classNamePrefix="select"
+                                                            defaultValue={selectedMaterialOptions}
+                                                            onChange={setMaterialOptions}
+                                                            options={materialOptions}
+                                                        />
+                                                    </Form.Group>
+                                                </Col>
+
+                                                <Col md={6} className='form-gap'>
+                                                    <Form.Group className='common-form-group'>
+                                                        <Form.Label className='common-label'>Unit</Form.Label>
+                                                        <Select className='custom-selectpicker' classNamePrefix="select"
+                                                            defaultValue={selectedUnitOptions}
+                                                            onChange={setUnitOptions}
+                                                            options={unitOptions}
+                                                        />
+                                                    </Form.Group>
+                                                </Col>
                                             </Row>
                                         </Form.Group>
                                     </Col>
@@ -300,7 +300,7 @@ const AddProduct = () => {
                                 </Row>
                             </Col>
 
-                            
+
 
 
                             <Col md={12}>
@@ -310,25 +310,25 @@ const AddProduct = () => {
                             </Col>
 
                             <Col md={3} className='form-gap'>
-                                        <Form.Group className='common-form-group'>
-                                            <Form.Label className='common-label'>Product Type<span class="text-danger">*</span></Form.Label>
-                                            <div className="btn-radio-group">
-                                                <Row className="justify-content-start boxed1 row">
-                                                    <Col md="6" className="mb-3 input_02_radio">
-                                                        <input type="radio" id="single_product" name="product" value="single" checked={selectedOption === 'single'} onChange={(e) => setSelectedOption(e.target.value)} />
-                                                        <label htmlFor="single_product"> Single Product </label>
-                                                    </Col>
+                                <Form.Group className='common-form-group'>
+                                    <Form.Label className='common-label'>Product Type<span class="text-danger">*</span></Form.Label>
+                                    <div className="btn-radio-group">
+                                        <Row className="justify-content-start boxed1 row">
+                                            <Col md="6" className="mb-3 input_02_radio">
+                                                <input type="radio" id="single_product" name="product" value="single" checked={selectedOption === 'single'} onChange={(e) => setSelectedOption(e.target.value)} />
+                                                <label htmlFor="single_product"> Single Product </label>
+                                            </Col>
 
-                                                    <Col md="6" className="mb-3 input_02_radio">
-                                                        <input type="radio" id="multi_product" name="product" value="multiple" checked={selectedOption === 'multiple'} onChange={(e) => setSelectedOption(e.target.value)} />
-                                                        <label htmlFor="multi_product">Multi Product</label>
-                                                    </Col>
-                                                </Row>
-                                            </div>
-                                        </Form.Group>
-                                    </Col>
+                                            <Col md="6" className="mb-3 input_02_radio">
+                                                <input type="radio" id="multi_product" name="product" value="multiple" checked={selectedOption === 'multiple'} onChange={(e) => setSelectedOption(e.target.value)} />
+                                                <label htmlFor="multi_product">Multi Product</label>
+                                            </Col>
+                                        </Row>
+                                    </div>
+                                </Form.Group>
+                            </Col>
 
-                                    <Col md={3} className='form-gap'>
+                            <Col md={3} className='form-gap'>
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Tax Preferance<span class="text-danger">*</span></Form.Label>
                                     <Select className='custom-selectpicker' classNamePrefix="select"
@@ -351,50 +351,50 @@ const AddProduct = () => {
                             </Col>
 
                             <Col md={3} className='form-gap'>
-                                        <Form.Group className='common-form-group'>
-                                            <Form.Label className='common-label'>Amount With <span class="text-danger">*</span></Form.Label>
-                                            <div className="btn-radio-group">
-                                                <Row className="justify-content-start boxed1 row">
-                                                    <Col md="6" className="mb-3 input_02_radio">
-                                                        <input type="radio" id="single_product" name="product" />
-                                                        <label htmlFor="single_product"> Tax Included </label>
-                                                    </Col>
-
-                                                    <Col md="6" className="mb-3 input_02_radio">
-                                                        <input type="radio" id="multi_product" name="product" />
-                                                        <label htmlFor="multi_product">Tax Excluded</label>
-                                                    </Col>
-                                                </Row>
-                                            </div>
-                                        </Form.Group>
-                                    </Col>
-
-                                    {selectedOption === 'multiple' && (
-                                        <>
-                                            <Col md={12} className='form-gap'>
-                                                <Table striped bordered hover>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>First Name</th>
-        </tr>
-      </thead>
-      <tbody>
-        {
-            tableRow.map((ele,ind)=> {
-                return (
-                    <tr key={ele.id}>
-                        <td><input type="text" className='form-control' value={ele.id} /></td>
-                        <td> {ind === tableRow.length-1 ? <button type='button' onClick={handleAddRow}><img src={addIcon} alt="add icon" /></button> : <button type='button' onClick={() => handleDeleteRow(ele.id)}> <img src={deleteIcon} alt="delete icon" /> </button>}</td>
-                    </tr>
-                )
-            })
-        }
-      </tbody>
-    </Table>
+                                <Form.Group className='common-form-group'>
+                                    <Form.Label className='common-label'>Amount With <span class="text-danger">*</span></Form.Label>
+                                    <div className="btn-radio-group">
+                                        <Row className="justify-content-start boxed1 row">
+                                            <Col md="6" className="mb-3 input_02_radio">
+                                                <input type="radio" id="single_product" name="product" />
+                                                <label htmlFor="single_product"> Tax Included </label>
                                             </Col>
-                                        </>
-                                    )}
+
+                                            <Col md="6" className="mb-3 input_02_radio">
+                                                <input type="radio" id="multi_product" name="product" />
+                                                <label htmlFor="multi_product">Tax Excluded</label>
+                                            </Col>
+                                        </Row>
+                                    </div>
+                                </Form.Group>
+                            </Col>
+
+                            {selectedOption === 'multiple' && (
+                                <>
+                                    <Col md={12} className='form-gap'>
+                                        <Table striped bordered hover>
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>First Name</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {
+                                                    tableRow.map((ele, ind) => {
+                                                        return (
+                                                            <tr key={ele.id}>
+                                                                <td><input type="text" className='form-control' value={ele.id} /></td>
+                                                                <td> {ind === tableRow.length - 1 ? <button type='button' onClick={handleAddRow}><img src={addIcon} alt="add icon" /></button> : <button type='button' onClick={() => handleDeleteRow(ele.id)}> <img src={deleteIcon} alt="delete icon" /> </button>}</td>
+                                                            </tr>
+                                                        )
+                                                    })
+                                                }
+                                            </tbody>
+                                        </Table>
+                                    </Col>
+                                </>
+                            )}
 
                             <Col md={3} className='form-gap'>
                                 <Form.Group className='common-form-group'>
@@ -456,7 +456,6 @@ const AddProduct = () => {
                                     <Form.Control className='common-control' as="textarea" placeholder='Enter Description' rows={4} />
                                 </Form.Group>
                             </Col>
-
                             <Col md={3} className='form-gap'>
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Is Best Seller:</Form.Label>
@@ -467,7 +466,6 @@ const AddProduct = () => {
                                     </div>
                                 </Form.Group>
                             </Col>
-
                             <Col md={9} className='form-gap'>
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Is Featured Product</Form.Label>
@@ -478,7 +476,6 @@ const AddProduct = () => {
                                     </div>
                                 </Form.Group>
                             </Col>
-
                             <Col md={3} className='form-gap'>
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Do you want to publish it on website:</Form.Label>
@@ -489,63 +486,49 @@ const AddProduct = () => {
                                     </div>
                                 </Form.Group>
                             </Col>
-
-                            
-
-                    {isChecked && ( <>
-
-                            <Col md={3} className='form-gap'>
-                                <Form.Group className='common-form-group'>
-                                    <Form.Label className='common-label'>Publish Later:</Form.Label>
-                                    <div className="mt-1 common-checkbox-toggle b2">
-                                        <input type="checkbox" className="checkbox-toggle-btn" checked={isPublishChecked} onChange={(e => setIsPublishChecked(e.target.checked))} value="appointment" />
-                                        <div className="knobs"><span></span></div>
-                                        <div className="layer"></div>
-                                    </div>
-                                </Form.Group>
-                            </Col>
-
-                            {isPublishChecked && (
-                                <>
+                            {isChecked && (<>
                                 <Col md={3} className='form-gap'>
-                                <Form.Group className='common-form-group'>
-                                    <Form.Label className='common-label'>Date<span className='text-danger'>*</span></Form.Label>
-                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                        <MobileDatePicker className='picker-control' defaultValue={dayjs('2022-04-17')} />
-                                        <img className='picker-icon' src={dateIcon} />
-                                    </LocalizationProvider>
-                                </Form.Group>
-                            </Col>
+                                    <Form.Group className='common-form-group'>
+                                        <Form.Label className='common-label'>Publish Later:</Form.Label>
+                                        <div className="mt-1 common-checkbox-toggle b2">
+                                            <input type="checkbox" className="checkbox-toggle-btn" checked={isPublishChecked} onChange={(e => setIsPublishChecked(e.target.checked))} value="appointment" />
+                                            <div className="knobs"><span></span></div>
+                                            <div className="layer"></div>
+                                        </div>
+                                    </Form.Group>
+                                </Col>
+                                {isPublishChecked && (
+                                    <>
+                                        <Col md={3} className='form-gap'>
+                                            <Form.Group className='common-form-group'>
+                                                <Form.Label className='common-label'>Date<span className='text-danger'>*</span></Form.Label>
+                                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                    <MobileDatePicker className='picker-control' defaultValue={dayjs('2022-04-17')} />
+                                                    <img className='picker-icon' src={dateIcon} />
+                                                </LocalizationProvider>
+                                            </Form.Group>
+                                        </Col>
 
-                              <Col md={3} className='form-gap'>
-                                <Form.Group className='common-form-group'>
-                                    <Form.Label className='common-label'>Time<span className='text-danger'>*</span></Form.Label>
-                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                        <MobileTimePicker className='picker-control' defaultValue={dayjs('2022-04-17T15:30')} />
-                                        <img className='picker-icon' src={timeIcon} />
-                                    </LocalizationProvider>
-                                    
-                                </Form.Group>
-                            </Col>
-                                </>
-                            )}
+                                        <Col md={3} className='form-gap'>
+                                            <Form.Group className='common-form-group'>
+                                                <Form.Label className='common-label'>Time<span className='text-danger'>*</span></Form.Label>
+                                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                    <MobileTimePicker className='picker-control' defaultValue={dayjs('2022-04-17T15:30')} />
+                                                    <img className='picker-icon' src={timeIcon} />
+                                                </LocalizationProvider>
 
+                                            </Form.Group>
+                                        </Col>
+                                    </>
+                                )}
                             </>
-                               
-)}
-                            
-
+                            )}
                             <Col md={12} className='d-flex justify-content-end gap-2 my-4'>
-                                                            <button variant="secondary" className='common-button'>Cancel</button>
-                                                            <button variant="primary" className='text-white btn-primary common-button' >Save</button>
-                                                        </Col>
-
-
+                                <button variant="secondary" className='common-button'>Cancel</button>
+                                <button variant="primary" className='text-white btn-primary common-button' >Save</button>
+                            </Col>
                         </Row>
-
-
                     </div>
-
                 </div>
             </div>
         </>

@@ -4,13 +4,15 @@ import StockAdjustment from "../models/stockAdjustment.model.js";
 import Category from "../models/category.model.js";
 
 
+
 export const createItem = async (req, res, next) => {
     try {
         const item = new Item({
+            ...req.body,
             item_name: req.body.item_name,
             item_price: Number(req.body.item_price) || 0,
             item_description: req.body.item_description?.trim(),
-            item_image: req.files,  // Assuming item_images is an array of image paths
+            item_images: req.files,
             item_category: req.body.item_category?.trim(),
             item_stock: Number(req.body.item_stock) || 0,
             item_status: req.body.item_status?.trim(),
@@ -29,8 +31,8 @@ export const itemsByGroup = async (req, res, next) => {
         const itemsData = await Item.aggregate([
             {
                 $group: {
-                    _id: "$category",  // Grouping by category
-                    itemsData: { $push: "$$ROOT" } // Pushing entire item documents into an array
+                    _id: "$category",
+                    itemsData: { $push: "$$ROOT" }
                 }
             }
         ]);
@@ -44,8 +46,21 @@ export const itemsByGroup = async (req, res, next) => {
 
 export const getItems = async (req, res, next) => {
     try {
-        const items = await Item.find();
-        res.status(200).json({ success: true, items });
+        const fullUrl = req.protocol + '://' + req.get('host') + "/";
+        const items = await Item.find().lean();;
+        const updatedItems = items.map(item => {
+            const files = item.item_images.map(file => ({
+                url: `${fullUrl}${file.destination}${file.filename}`,
+                filename: file.filename
+            }));
+
+            return {
+                ...item,
+                item_images: files
+            };
+        });
+
+        res.status(200).json({ success: true, items: updatedItems });
     } catch (error) {
         next(new ErrorHandler(error.message, 500));
     }

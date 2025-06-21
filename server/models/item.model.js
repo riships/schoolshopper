@@ -53,12 +53,26 @@ const itemSchema = mongoose.Schema({
         type: String,
         trim: true
     },
-    
-    item_actual_price: {
-        type: Number,
-        required: [true, 'Item price cannot be empty'],
+    isProductSingle: {
+        type: Boolean,
+        default: false
     },
-    item_selling_price: {
+    tax_preference: {
+        type: String,
+        enum: ['Taxable', 'Non-Taxable'],
+        trim: true
+    },
+    tax_rate: {
+        type: String,
+        enum: ['5%', '12%', '18%', '28%'],
+        trim: true,
+        required: [true, 'Tax rate cannot be empty']
+    },
+    is_amount_with_tax: {
+        type: Boolean,
+        default: false
+    },
+    item_actual_price: {
         type: Number,
         required: [true, 'Item price cannot be empty'],
     },
@@ -66,6 +80,14 @@ const itemSchema = mongoose.Schema({
         type: String,
         enum: ['percentage', 'fixed'],
         trim: true
+    },
+    item_selling_price: {
+        type: Number,
+        required: [true, 'Item selling price cannot be empty'],
+    },
+    item_low_stock_alert: {
+        type: Number,
+        default: 0
     },
     item_opening_stock: {
         type: Number,
@@ -75,18 +97,22 @@ const itemSchema = mongoose.Schema({
         type: Number,
         default: 0
     },
-    item_low_stock_alert: {
-        type: Number,
-        default: 0
-    },
-    item_group: {
-        type: Schema.Types.ObjectId,
-        ref: 'Item_Group',
-    },
     item_description: {
         type: String,
         required: [true, 'Item description cannot be empty'],
-        trim: true
+        trim: true,
+    },
+    item_is_best_seller: {
+        type: Boolean,
+        default: false
+    },
+    item_is_featured: {
+        type: Boolean,
+        default: false
+    },
+    item_is_published_in_website: {
+        type: Boolean,
+        default: false
     },
     item_status: {
         type: Boolean,
