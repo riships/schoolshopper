@@ -351,14 +351,6 @@ const AddProduct = () => {
                             </Col>
 
                             <Col md={3} className='form-gap'>
-                                        <Form.Group className='common-form-group'>
-                                            <Form.Label className='common-label'>Amount With <span class="text-danger">*</span></Form.Label>
-                                            <div className="btn-radio-group">
-                                                <Row className="justify-content-start boxed1 row">
-                                                    <Col md="6" className="mb-3 input_02_radio">
-                                                        <input type="radio" id="tax_included" name="product" />
-                                                        <label htmlFor="tax_included"> Tax Included </label>
-                                                    </Col>
                                 <Form.Group className='common-form-group'>
                                     <Form.Label className='common-label'>Amount With <span class="text-danger">*</span></Form.Label>
                                     <div className="btn-radio-group">
@@ -368,21 +360,17 @@ const AddProduct = () => {
                                                 <label htmlFor="single_product"> Tax Included </label>
                                             </Col>
 
-                                                    <Col md="6" className="mb-3 input_02_radio">
-                                                        <input type="radio" id="tax_excluded" name="product" />
-                                                        <label htmlFor="tax_excluded">Tax Excluded</label>
-                                                    </Col>
-                                                </Row>
-                                            </div>
-                                        </Form.Group>
-                                    </Col>
                                             <Col md="6" className="mb-3 input_02_radio">
-                                                <input type="radio" id="multi_product" name="product" />
-                                                <label htmlFor="multi_product">Tax Excluded</label>
+                                                <input type="radio" id="tax_excluded" name="product" />
+                                                <label htmlFor="tax_excluded">Tax Excluded</label>
                                             </Col>
                                         </Row>
                                     </div>
                                 </Form.Group>
+                            </Col>
+                            <Col md="6" className="mb-3 input_02_radio">
+                                <input type="radio" id="multi_product" name="product" />
+                                <label htmlFor="multi_product">Tax Excluded</label>
                             </Col>
 
                             {selectedOption === 'multiple' && (
