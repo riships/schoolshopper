@@ -356,13 +356,13 @@ const AddProduct = () => {
                                             <div className="btn-radio-group">
                                                 <Row className="justify-content-start boxed1 row">
                                                     <Col md="6" className="mb-3 input_02_radio">
-                                                        <input type="radio" id="single_product" name="product" />
-                                                        <label htmlFor="single_product"> Tax Included </label>
+                                                        <input type="radio" id="tax_included" name="product" />
+                                                        <label htmlFor="tax_included"> Tax Included </label>
                                                     </Col>
 
                                                     <Col md="6" className="mb-3 input_02_radio">
-                                                        <input type="radio" id="multi_product" name="product" />
-                                                        <label htmlFor="multi_product">Tax Excluded</label>
+                                                        <input type="radio" id="tax_excluded" name="product" />
+                                                        <label htmlFor="tax_excluded">Tax Excluded</label>
                                                     </Col>
                                                 </Row>
                                             </div>
@@ -373,25 +373,25 @@ const AddProduct = () => {
                                         <>
                                             <Col md={12} className='form-gap'>
                                                 <Table striped bordered hover>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>First Name</th>
-        </tr>
-      </thead>
-      <tbody>
-        {
-            tableRow.map((ele,ind)=> {
-                return (
-                    <tr key={ele.id}>
-                        <td><input type="text" className='form-control' value={ele.id} /></td>
-                        <td> {ind === tableRow.length-1 ? <button type='button' onClick={handleAddRow}><img src={addIcon} alt="add icon" /></button> : <button type='button' onClick={() => handleDeleteRow(ele.id)}> <img src={deleteIcon} alt="delete icon" /> </button>}</td>
-                    </tr>
-                )
-            })
-        }
-      </tbody>
-    </Table>
+                                                    <thead>
+                                                        <tr>
+                                                        <th>#</th>
+                                                        <th>First Name</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {
+                                                            tableRow.map((ele,ind)=> {
+                                                                return (
+                                                                    <tr key={ele.id}>
+                                                                        <td><input type="text" className='form-control' value={ele.id} /></td>
+                                                                        <td> {ind === tableRow.length-1 ? <button type='button' onClick={handleAddRow}><img src={addIcon} alt="add icon" /></button> : <button type='button' onClick={() => handleDeleteRow(ele.id)}> <img src={deleteIcon} alt="delete icon" /> </button>}</td>
+                                                                    </tr>
+                                                                )
+                                                            })
+                                                        }
+                                                    </tbody>
+                                                    </Table>
                                             </Col>
                                         </>
                                     )}
