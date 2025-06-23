@@ -4,13 +4,15 @@ import StockAdjustment from "../models/stockAdjustment.model.js";
 import Category from "../models/category.model.js";
 
 
+
 export const createItem = async (req, res, next) => {
     try {
         const item = new Item({
+            ...req.body,
             item_name: req.body.item_name,
             item_price: Number(req.body.item_price) || 0,
             item_description: req.body.item_description?.trim(),
-            item_image: req.files,  // Assuming item_images is an array of image paths
+            item_images: req.files,
             item_category: req.body.item_category?.trim(),
             item_stock: Number(req.body.item_stock) || 0,
             item_status: req.body.item_status?.trim(),
@@ -29,8 +31,8 @@ export const itemsByGroup = async (req, res, next) => {
         const itemsData = await Item.aggregate([
             {
                 $group: {
-                    _id: "$category",  // Grouping by category
-                    itemsData: { $push: "$$ROOT" } // Pushing entire item documents into an array
+                    _id: "$category",
+                    itemsData: { $push: "$$ROOT" }
                 }
             }
         ]);
@@ -44,8 +46,21 @@ export const itemsByGroup = async (req, res, next) => {
 
 export const getItems = async (req, res, next) => {
     try {
-        const items = await Item.find();
-        res.status(200).json({ success: true, items });
+        const fullUrl = req.protocol + '://' + req.get('host') + "/";
+        const items = await Item.find().lean();;
+        const updatedItems = items.map(item => {
+            const files = item.item_images.map(file => ({
+                url: `${fullUrl}${file.destination}${file.filename}`,
+                filename: file.filename
+            }));
+
+            return {
+                ...item,
+                item_images: files
+            };
+        });
+
+        res.status(200).json({ success: true, items: updatedItems });
     } catch (error) {
         next(new ErrorHandler(error.message, 500));
     }
@@ -55,7 +70,7 @@ export const getItem = async (req, res, next) => {
     try {
         const item = await Item.findById({ _id: req.params.id });
         if (!item) {
-            return res.status(404).json({ msg: 'Item not found' });
+            return next(new ErrorHandler('Item not found', 404));
         }
         res.status(200).json({ success: true, item })
     } catch (error) {
@@ -67,7 +82,7 @@ export const updateItem = async (req, res, next) => {
     try {
         let item = await Item.findById(req.params.id);
         if (!item) {
-            return res.status(404).json({ msg: 'Item not found' });
+            return next(new ErrorHandler('Item not found', 404));
         }
         item = await Item.findByIdAndUpdate(req.params.id, req.body, {
             new: true,
@@ -84,7 +99,7 @@ export const deleteItem = async (req, res, next) => {
     try {
         let item = await Item.findById(req.params.id);
         if (!item) {
-            return res.status(404).json({ msg: 'Item not found' });
+            return next(new ErrorHandler('Item not found', 404));
         }
         res.status(200).json({ success: true, msg: 'Item deleted' });
     } catch (error) {
@@ -127,7 +142,7 @@ export const lowStock = async (req, res, next) => {
     try {
         const lowStockItems = await Item.find({ item_stock: { $gt: 0, $lte: 5 } });
         if (lowStockItems.length === 0 || !lowStockItems) {
-            return res.status(400).send({ success: false, message: "Not Item Found" })
+            return next(new ErrorHandler('Not Item Found', 404));
         }
         res.status(200).json(lowStockItems);
     } catch (error) {
@@ -139,7 +154,7 @@ export const outOfStock = async (req, res, next) => {
     try {
         const lowStockItems = await Item.find({ item_stock: { $lte: 0 } });
         if (lowStockItems.length === 0 || !lowStockItems) {
-            return res.status(400).send({ success: false, message: "Not Item Found" })
+            return next(new ErrorHandler('Not Item Found', 404));
         }
         res.status(200).json(lowStockItems);
     } catch (error) {
@@ -153,10 +168,7 @@ export const addCategories = async (req, res, next) => {
         const { userId } = req.user;
         const categoryExist = await Category.find({ name: category_name });
         if (categoryExist.length > 0) {
-            return res.status(400).send({
-                success: false,
-                message: "Category already exist"
-            })
+            return next(new ErrorHandler('Category already exists', 400));
         }
         const newCategory = new Category({
             category_name,
@@ -176,7 +188,7 @@ export const getCategories = async (req, res, next) => {
         const categories = await Category.find().select('-sub_categories');
         let sub_categories = await Category.find().select('sub_categories');
         sub_categories = sub_categories.map((sub_categorie) => {
-            return  {[sub_categorie._id.toString()]: sub_categorie.sub_categories };
+            return { [sub_categorie._id.toString()]: sub_categorie.sub_categories };
         })
 
         res.status(200).json({ success: true, categories, sub_categories });
