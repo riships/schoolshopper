@@ -1,6 +1,6 @@
 import { Button, Form, Row, Col, Table } from 'react-bootstrap';
 import Select from 'react-select';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useReducer } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import axios from 'axios';
 import DatePicker from '../../components/DatePicker';
@@ -17,19 +17,44 @@ import addIcon from '../../assets/images/addIcon.svg';
 import deleteIcon from '../../assets/images/deleteIcon.svg';
 const url = import.meta.env.VITE_API_URL;
 
+let initialState = {
+    item_name : "",
+    item_category : null,
+    item_subcategory : [],
+    item_sku : "",
+    item_hsn : "",
+    item_dimensions : "",
+    item_weight : "",
+    gender: null,
+    item_brand : "",
+    item_material :"",
+    item_unit :"",
+}
+
+let reducer = (state, action) => {
+    console.log("state", state);
+    console.log("action", action);
+    switch(action.type){
+        case "UPDATE_FIELD" :
+        return {
+            ...state,
+            [action.name]:action.value
+        }
+    }
+}
+ 
+
 const AddProduct = () => {
-    // const [date, setDate] = useState();
+
+    const [formData, dispatch] = useReducer(reducer, initialState);
+    console.log("formData",formData)
+
     const [isChecked, setIsChecked] = useState(false);
     const [isPublishChecked, setIsPublishChecked] = useState(false);
     const [selectedOption, setSelectedOption] = useState('');
     const [tableRow, setTableRow] = useState([{ id: "", name: "" }]);
+    const [subCategoryData, setSubCategoryData] = useState([])
 
-
-    // const subCategoryOptions = [
-    //     { value: 'chocolate', label: 'Chocolate' },
-    //     { value: 'strawberry', label: 'Strawberry' },
-    //     { value: 'vanilla', label: 'Vanilla' },
-    // ];
     const [selectedSubCategoryOptions, setsubCategoryOptions] = useState(null);
 
 
@@ -42,32 +67,30 @@ const AddProduct = () => {
 
 
     const genderOptions = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' },
+        { value: 'male', label: 'Male' },
+        { value: 'female', label: 'Female' },
+        { value: 'other', label: 'Other' },
     ];
     const [selectedGenderOptions, setGenderOptions] = useState(null);
 
 
     const brandOptions = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' },
+        { value: 'puma', label: 'Puma' },
+        { value: 'school', label: 'School' },
     ];
     const [selectedBrandOptions, setBrandOptions] = useState(null);
 
     const materialOptions = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' },
+        { value: 'cotton', label: 'Cottton' },
+        { value: 'rubber', label: 'Rubber' }
     ];
     const [selectedMaterialOptions, setMaterialOptions] = useState(null);
 
 
     const unitOptions = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' },
+        { value: 'piece', label: 'Piece' },
+        { value: 'pair', label: 'Pair' },
+        { value: 'number', label: 'Number' },
     ];
     const [selectedUnitOptions, setUnitOptions] = useState(null);
 
@@ -96,21 +119,32 @@ const AddProduct = () => {
 
             let categoryOptionsData = await formatOptions(res.data.categories, 'category_name', '_id');
             setCategoryOptions(categoryOptionsData);
-            setSubCategoryOptions(res.data.sub_categories);
-            setSubCategoryFilterOptions(res.data.sub_categories);
+            // setSubCategoryOptions(res.data.sub_categories);
+            // setSubCategoryFilterOptions(res.data.sub_categories);
+
+             setSubCategoryData(res.data.sub_categories)
         } catch (error) {
             console.log(error);
         }
     }
 
-    async function handleCategoryChange(data) {
-        setSubCategoryFilterOptions(subCategoryOptions);
-        const subCategoryData = subCategoryFilterOptions.filter((subCateg) => subCateg._id === data.value);
-        let subOptions = subCategoryData[0]['sub_categories'].map((elem) => ({
-            label: elem,
-            value: elem
-        }));
-        setSubCategoryOptions(subOptions);
+    console.log("sub Categoriesssss", subCategoryData)
+
+    async function handleCategoryChange(dataOption) {
+    
+        const result = subCategoryData.find(item => item[dataOption.value]);
+        console.log(result,"reesult")
+
+        const subOptions = result
+            ? result[dataOption.value].map(elem => ({
+                label: elem,
+                value: elem
+                }))
+            : [];
+
+            console.log(subOptions)
+    
+         setSubCategoryOptions(subOptions);
     }
 
     const handleAddRow = () => {
@@ -123,6 +157,50 @@ const AddProduct = () => {
             return ele.id !== id
         }))
     }
+
+    const addItemFunc = async () => {
+        const formData = new FormData();
+        formData.append('item_name', count.item_name);
+
+        try {
+            let response = await axios.post(url + "/api/item/createItem",
+                formData,
+                {
+                    headers: {
+                        'x-auth-token': auth.token || ''
+                    },
+                    withCredentials: true
+                }
+            );
+            if (response.status === 201) {
+                alert("hiii")
+            }
+        } catch (error) {
+            // toast.error(error?.response?.data?.message);
+            // console.log(error?.response?.data?.message);
+            console.log(error)
+        }
+    }
+
+    let handleInputChange = (e) => {
+        dispatch({
+            type:"UPDATE_FIELD",
+            name:e.target.name,
+            value:e.target.value
+        })
+    }
+
+    let handleSelectChange = (e, {name}) => {
+        
+        const labelValue = Array.isArray(e) ? e.map((item) => item.label) : e?.label || "";
+         
+        dispatch({
+            type: "UPDATE_FIELD",
+            name: name,
+            value:labelValue
+        })
+    }
+
 
     return (
         <>
@@ -138,18 +216,8 @@ const AddProduct = () => {
                                 <Row className='gx-3'>
                                     <Col md={6} className='form-gap'>
                                         <Form.Group className='common-form-group'>
-                                            <Form.Label className='common-label'>Store<span className='text-danger'>*</span></Form.Label>
-                                            <Select className='custom-selectpicker' classNamePrefix="select"
-                                                // defaultValue={categoryOptions[2]}
-                                                onChange={handleCategoryChange}
-                                                options={categoryOptions}
-                                            />
-                                        </Form.Group>
-                                    </Col>
-                                    <Col md={6} className='form-gap'>
-                                        <Form.Group className='common-form-group'>
                                             <Form.Label className='common-label'>Item Name<span className='text-danger'>*</span></Form.Label>
-                                            <Form.Control className='common-control' type="text" placeholder="Enter Item Name">
+                                            <Form.Control name="item_name" value={formData.item_name} onChange={handleInputChange} className='common-control' type="text" placeholder="Enter Item Name">
 
                                             </Form.Control>
                                         </Form.Group>
@@ -157,9 +225,12 @@ const AddProduct = () => {
                                     <Col md={6} className='form-gap'>
                                         <Form.Group className='common-form-group'>
                                             <Form.Label className='common-label'>Category<span className='text-danger'>*</span></Form.Label>
-                                            <Select className='custom-selectpicker' classNamePrefix="select"
+                                            <Select name="item_category" className='custom-selectpicker' classNamePrefix="select"
                                                 // defaultValue={categoryOptions[2]}
-                                                onChange={handleCategoryChange}
+                                                onChange={(selectedOption, name) => {
+                                                        handleCategoryChange(selectedOption);
+                                                        handleSelectChange(selectedOption, name);
+                                                    }}
                                                 options={categoryOptions}
                                             />
                                         </Form.Group>
@@ -167,9 +238,12 @@ const AddProduct = () => {
                                     <Col md={6} className='form-gap'>
                                         <Form.Group className='common-form-group'>
                                             <Form.Label className='common-label'>Sub-Category</Form.Label>
-                                            <Select className='custom-selectpicker' classNamePrefix="select"
+                                            <Select name="item_subcategory" className='custom-selectpicker' classNamePrefix="select"
                                                 defaultValue={selectedSubCategoryOptions}
-                                                onChange={setsubCategoryOptions}
+                                                onChange={(selectedOption, name) => {
+                                                    setsubCategoryOptions(selectedOption);
+                                                    handleSelectChange(selectedOption, name)
+                                                }}
                                                 options={subCategoryOptions}
                                                 isMulti
                                             />
@@ -178,7 +252,7 @@ const AddProduct = () => {
                                     <Col md={6} className='form-gap'>
                                         <Form.Group className='common-form-group'>
                                             <Form.Label className='common-label'>Enter SKU<span className='text-danger'>*</span></Form.Label>
-                                            <Form.Control className='common-control' type="text" placeholder="Enter SKU">
+                                            <Form.Control name="item_sku" value={formData.item_sku} onChange={handleInputChange} className='common-control' type="text" placeholder="Enter SKU">
 
                                             </Form.Control>
                                         </Form.Group>
@@ -186,7 +260,7 @@ const AddProduct = () => {
                                     <Col md={6} className='form-gap'>
                                         <Form.Group className='common-form-group'>
                                             <Form.Label className='common-label'>HSN Code<span className='text-danger'>*</span></Form.Label>
-                                            <Form.Control className='common-control' type="text" placeholder="Enter HSN Code">
+                                            <Form.Control name="item_hsn" value={formData.value} onChange={handleInputChange} className='common-control' type="text" placeholder="Enter HSN Code">
 
                                             </Form.Control>
                                         </Form.Group>
@@ -200,7 +274,7 @@ const AddProduct = () => {
                                     <Col md={6} className='form-gap'>
                                         <Form.Group className='common-form-group'>
                                             <Form.Label className='common-label'>Dimensions (Length X Width X Height)<span className='text-danger'>*</span></Form.Label>
-                                            <Form.Control className='common-control' type="text" placeholder="Enter Dimensions (Length X Width X Height)">
+                                            <Form.Control name="item_dimensions" value={formData.item_dimensions} onChange={handleInputChange} className='common-control' type="text" placeholder="Enter Dimensions (Length X Width X Height)">
 
                                             </Form.Control>
                                         </Form.Group>
@@ -208,7 +282,7 @@ const AddProduct = () => {
                                     <Col md={6} className='form-gap'>
                                         <Form.Group className='common-form-group'>
                                             <Form.Label className='common-label'>Weight (In kg)<span className='text-danger'>*</span></Form.Label>
-                                            <Form.Control className='common-control' type="text" placeholder="Enter Weight (In kg)">
+                                            <Form.Control name="item_weight" value={formData.item_weight} onChange={handleInputChange} className='common-control' type="text" placeholder="Enter Weight (In kg)">
 
                                             </Form.Control>
                                         </Form.Group>
@@ -217,9 +291,12 @@ const AddProduct = () => {
                                     <Col md={6} className='form-gap'>
                                         <Form.Group className='common-form-group'>
                                             <Form.Label className='common-label'>Gender</Form.Label>
-                                            <Select className='custom-selectpicker' classNamePrefix="select"
+                                            <Select name="gender" className='custom-selectpicker' classNamePrefix="select" placeholder="Select Gender"
                                                 defaultValue={selectedGenderOptions}
-                                                onChange={setGenderOptions}
+                                                onChange={(selectedOption, name) => {
+                                                    setGenderOptions(selectedOption)
+                                                    handleSelectChange(selectedOption, name) 
+                                                }}
                                                 options={genderOptions}
                                             />
                                         </Form.Group>
@@ -228,9 +305,12 @@ const AddProduct = () => {
                                     <Col md={6} className='form-gap'>
                                         <Form.Group className='common-form-group'>
                                             <Form.Label className='common-label'>Brand</Form.Label>
-                                            <Select className='custom-selectpicker' classNamePrefix="select"
+                                            <Select name="item_brand" className='custom-selectpicker' classNamePrefix="select" placeholder="Select Brand"
                                                 defaultValue={selectedBrandOptions}
-                                                onChange={setBrandOptions}
+                                                onChange={(selectedOption, name) => {
+                                                    setBrandOptions(selectedOption)
+                                                    handleSelectChange(selectedOption, name)
+                                                }}
                                                 options={brandOptions}
                                             />
                                         </Form.Group>
@@ -273,9 +353,12 @@ const AddProduct = () => {
                                                 <Col md={6} className='form-gap'>
                                                     <Form.Group className='common-form-group'>
                                                         <Form.Label className='common-label'>Material</Form.Label>
-                                                        <Select className='custom-selectpicker' classNamePrefix="select"
+                                                        <Select name="item_material" className='custom-selectpicker' classNamePrefix="select" placeholder="Select Material"
                                                             defaultValue={selectedMaterialOptions}
-                                                            onChange={setMaterialOptions}
+                                                            onChange={(selectedOption , name) => {
+                                                                setMaterialOptions(selectedOption);
+                                                                handleSelectChange(selectedOption, name);
+                                                            }}
                                                             options={materialOptions}
                                                         />
                                                     </Form.Group>
@@ -284,9 +367,12 @@ const AddProduct = () => {
                                                 <Col md={6} className='form-gap'>
                                                     <Form.Group className='common-form-group'>
                                                         <Form.Label className='common-label'>Unit</Form.Label>
-                                                        <Select className='custom-selectpicker' classNamePrefix="select"
+                                                        <Select name="item_unit" placeholder="Select Unit" className='custom-selectpicker' classNamePrefix="select"
                                                             defaultValue={selectedUnitOptions}
-                                                            onChange={setUnitOptions}
+                                                            onChange={(selectedOption, name) => {
+                                                                setUnitOptions(selectedOption);
+                                                                handleSelectChange(selectedOption, name);
+                                                            }}
                                                             options={unitOptions}
                                                         />
                                                     </Form.Group>
@@ -368,19 +454,17 @@ const AddProduct = () => {
                                     </div>
                                 </Form.Group>
                             </Col>
-                            <Col md="6" className="mb-3 input_02_radio">
-                                <input type="radio" id="multi_product" name="product" />
-                                <label htmlFor="multi_product">Tax Excluded</label>
-                            </Col>
+                            
 
                             {selectedOption === 'multiple' && (
                                 <>
-                                    <Col md={12} className='form-gap'>
+                                    <Col md={10} className='form-gap'>
                                         <Table striped bordered hover>
                                             <thead>
                                                 <tr>
-                                                    <th>#</th>
-                                                    <th>First Name</th>
+                                                    <th className='fw-medium fs-12'>Item Name</th>
+                                                    <th className='fw-medium fs-12'>Quantity<span className='mandatory-field'>*</span></th>
+                                                    <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -388,7 +472,8 @@ const AddProduct = () => {
                                                     tableRow.map((ele, ind) => {
                                                         return (
                                                             <tr key={ele.id}>
-                                                                <td><input type="text" className='form-control' value={ele.id} /></td>
+                                                                <td><input type="text" className='form-control' value="" placeholder='Enter Item Name' /></td>
+                                                                <td><input type="text" className='form-control' placeholder='Enter Quantity' /></td>
                                                                 <td> {ind === tableRow.length - 1 ? <button type='button' onClick={handleAddRow}><img src={addIcon} alt="add icon" /></button> : <button type='button' onClick={() => handleDeleteRow(ele.id)}> <img src={deleteIcon} alt="delete icon" /> </button>}</td>
                                                             </tr>
                                                         )
@@ -529,7 +614,7 @@ const AddProduct = () => {
                             )}
                             <Col md={12} className='d-flex justify-content-end gap-2 my-4'>
                                 <button variant="secondary" className='common-button'>Cancel</button>
-                                <button variant="primary" className='text-white btn-primary common-button' >Save</button>
+                                <button variant="primary" className='text-white btn-primary common-button' onClick={addItemFunc} >Save</button>
                             </Col>
                         </Row>
                     </div>
