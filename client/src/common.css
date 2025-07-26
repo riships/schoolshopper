@@ -491,6 +491,38 @@ button.btn-logout {
   color: #fff;
 }
 
+/*  Custom Dropdown CSS  */
+.dropdown-toggle::after {
+  display: none !important;
+  content: "";
+}
+
+.dropdown-toggle {
+  outline: none;
+  border: none;
+}
+
+.dropdown-toggle:focus {
+  outline: none;
+  border: none;
+}
+
+.dropdown-menu {
+  width: auto;
+  min-width: max-content;
+  padding: 0 !important;
+  border-radius: 4px;
+}
+
+.dropdown-item {
+  font-size: 0.85rem !important;
+  display: flex;
+}
+
+.dropdown-item:not(:last-child) {
+  border-bottom: 1px solid #E0E0E0;
+}
+
 /* Common Date Picker and Time Picker CSS Starts Here */
 
   .MuiOutlinedInput-notchedOutline {

@@ -15,6 +15,7 @@ import Inventory from "./views/inventory/Inventory";
 import Configuration from "./views/configuration/Configuration";
 import VendorDetails from "./views/purchase/VendorDetails";
 import AddEditVendor from "./views/purchase/AddEditVendor";
+import Ledgers from "./views/purchase/Ledgers";
 
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
             <Route path="/purchase" element={<Inventory />}>
               <Route path="vendor" element={<VendorDetails />} />
               <Route path="vendor/add" element={<AddEditVendor />} />
+              <Route path="vendor/ledgers" element={<Ledgers />} />
             </Route>
             <Route path="/configuration" element={<Configuration />}>
               <Route path="" />

@@ -3,7 +3,7 @@ import fs from "fs";
 
 // Create the uploads directory if it doesn't exist
 const dir = 'public/uploads/';
-if (!fs.existsSync(dir)){
+if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
 }
 

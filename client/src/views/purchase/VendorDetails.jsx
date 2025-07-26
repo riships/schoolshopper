@@ -1,6 +1,7 @@
 import React from 'react'
-import { Table } from 'react-bootstrap';
+import { Dropdown, Table } from 'react-bootstrap';
 import viewIcon from '../../assets/images/view-icon.svg';
+import ledgerIcon from '../../assets/images/ledger.svg'
 import actionIcon from '../../assets/images/action-icon.svg';
 import addIcon from '../../assets/images/add-icon.svg';
 import exportIcon from '../../assets/images/export-icon.svg';
@@ -10,6 +11,7 @@ import nextIcon from '../../assets/images/next-icon.svg';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import CustomDropdown from '../../components/CustomDropdown';
 const apiUrl = import.meta.env.VITE_API_URL;
 
 function VendorDetails() {
@@ -101,8 +103,25 @@ function VendorDetails() {
                                             <td colSpan={8} className='text-center'>No data available</td>
                                         </tr>
                                     ) : (
-                                        tableData.map((ele, ind) => {
+                                        tableData.map((ele) => {
                                             const { _id, vendor_name, vendor_phone, vendor_email, vendor_address, vendor_gst } = ele;
+                                            let options = [
+                                                {
+                                                    icon: ledgerIcon,
+                                                    name: "Ledger",
+                                                    url: "/purchase/vendor/ledgers"
+                                                },
+                                                {
+                                                    icon: editIcon,
+                                                    name: "Edit",
+                                                    url: "/purchase/vendor/edit?id=" + _id
+                                                },
+                                                {
+                                                    icon: viewIcon,
+                                                    name: "Delete",
+                                                    url: "/purchase/vendor/delete?id=" + _id
+                                                }
+                                            ]
                                             return (
                                                 <tr key={_id}>
                                                     <td><input type="checkbox" /></td>
@@ -115,9 +134,10 @@ function VendorDetails() {
                                                     <td>{vendor_address}</td>
                                                     <td>{vendor_gst}</td>
                                                     <td>
-                                                        <div className='action-button-wrapper'>
-                                                            <button type="button"><img src={actionIcon} alt="action-icon" /></button>
-                                                        </div>
+                                                        <CustomDropdown
+                                                            options={options}
+                                                            placeholder={<img src={actionIcon} alt="view-icon" />}
+                                                        />
                                                     </td>
                                                 </tr>
                                             )
@@ -126,7 +146,6 @@ function VendorDetails() {
                                 )}
                             </tbody>
                         </Table>
-
                     </div>
                 </div>
             </div>

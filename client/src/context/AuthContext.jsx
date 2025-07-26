@@ -59,6 +59,9 @@ const AuthProvider = ({ children }) => {
             if (response.data.user) {
                 setUser(response.data.user)
             }
+            if (response.status === 401) {
+                logOut();
+            }
 
         } catch (error) {
             toast.error(error.response.data.message || "Internal Server Error");
