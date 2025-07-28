@@ -2,7 +2,7 @@ import React, { useState, useCallback } from "react";
 import deleteIcon from '../assets/images/delete-icon.svg';
 import uploadIcon from '../assets/images/upload-icon.svg';
 
-const SingleFileUpload = ({ customHeight }) => {
+const SingleFileUpload = ({ customHeight, index, dispatch }) => {
     const [image, setImage] = useState(null);
     const [preview, setPreview] = useState(null);
     const [isDragging, setIsDragging] = useState(false);
@@ -12,6 +12,7 @@ const SingleFileUpload = ({ customHeight }) => {
         if (file && file.type.startsWith("image/")) {
             setImage(file);
             setPreview(URL.createObjectURL(file));
+            dispatch({ type: "SET_FILE", index, file });
         }
     };
 
@@ -42,6 +43,7 @@ const SingleFileUpload = ({ customHeight }) => {
     const handleRemoveImage = () => {
         setImage(null);
         setPreview(null);
+        dispatch({ type: "SET_FILE", index, file: null });
     };
 
     return (

@@ -18,17 +18,17 @@ import deleteIcon from '../../assets/images/deleteIcon.svg';
 const url = import.meta.env.VITE_API_URL;
 
 let initialState = {
-    item_name : "",
-    item_category : null,
-    item_subcategory : [],
-    item_sku : "",
-    item_hsn : "",
-    item_dimensions : "",
-    item_weight : "",
+    item_name: "",
+    item_category: null,
+    item_subcategory: [],
+    item_sku: "",
+    item_hsn: "",
+    item_dimensions: "",
+    item_weight: "",
     gender: '',
-    item_brand : "",
-    item_material :"",
-    item_unit :"",
+    item_brand: "",
+    item_material: "",
+    item_unit: "",
     product_type: false,
     tax_preferance: '',
     tax_rate: '',
@@ -46,55 +46,62 @@ let initialState = {
     is_publish_later: false,
     date: null,
     time: null,
-    tableRow: [{id:"", pro_item_name:"", pro_quantity: ""}]
+    tableRow: [{ id: "", pro_item_name: "", pro_quantity: "" }],
+    photos: [null, null, null, null, null]
 }
 
 let reducer = (state, action) => {
+    debugger
     console.log("state", state);
     console.log("action", action);
-    switch(action.type){
-        case "UPDATE_FIELD" :
-        return {
-            ...state,
-            [action.name]:action.value
-        }
-
-        case "ADD_ROW" :
+    switch (action.type) {
+        case "UPDATE_FIELD":
             return {
                 ...state,
-                    tableRow: [
-                        ...state.tableRow,
-                        { id: Date.now(), pro_item_name: "", pro_quantity: "" }
-                    ]
+                [action.name]: action.value
             }
 
-            case "DELETE_ROW":
-      return {
-        ...state,
-        tableRow: state.tableRow.filter((ele) => ele.id !== action.id)
-      };
+        case "ADD_ROW":
+            return {
+                ...state,
+                tableRow: [
+                    ...state.tableRow,
+                    { id: Date.now(), pro_item_name: "", pro_quantity: "" }
+                ]
+            }
 
-                case "UPDATE_ROW":
-                return {
-                    ...state,
-                    tableRow: state.tableRow.map((row) =>
+        case "DELETE_ROW":
+            return {
+                ...state,
+                tableRow: state.tableRow.filter((ele) => ele.id !== action.id)
+            };
+
+        case "UPDATE_ROW":
+            return {
+                ...state,
+                tableRow: state.tableRow.map((row) =>
                     row.id === action.id
                         ? { ...row, [action.name]: action.value }
                         : row
-                    )
-                };
-                 default:
-      return state;
+                )
+            };
+
+        case "SET_FILE":
+            const updated = [...state.photos];
+            updated[action.index] = action.file;
+            return { ...state, photos: updated };
+
+        default:
+            return state;
 
 
     }
 }
- 
+
 
 const AddProduct = () => {
 
     const [formData, dispatch] = useReducer(reducer, initialState);
-    console.log("formData",formData)
 
     const [isChecked, setIsChecked] = useState(false);
     const [isPublishChecked, setIsPublishChecked] = useState(false);
@@ -111,10 +118,10 @@ const AddProduct = () => {
     ];
 
     const taxRateOptions = [
-        {value: '5', label: '5%'},
-        {value: '12', label: '12%'},
-        {value: '18', label: '18%'},
-        {value: '28', label: '28%'}
+        { value: '5', label: '5%' },
+        { value: '12', label: '12%' },
+        { value: '18', label: '18%' },
+        { value: '28', label: '28%' }
     ];
 
     const [selectedTaxOptions, setTaxOptions] = useState(null);
@@ -177,29 +184,31 @@ const AddProduct = () => {
     }
 
     async function handleCategoryChange(dataOption) {
-    
+
         const result = subCategoryData.find(item => item[dataOption.value]);
-        console.log(result,"reesult")
+        console.log(result, "reesult")
 
         const subOptions = result
             ? result[dataOption.value].map(elem => ({
                 label: elem,
                 value: elem
-                }))
+            }))
             : [];
 
-            console.log(subOptions)
-    
-         setSubCategoryOptions(subOptions);
+        console.log(subOptions)
+
+        setSubCategoryOptions(subOptions);
     }
 
     const handleAddRow = () => {
-        dispatch({type: "ADD_ROW"});
+        dispatch({ type: "ADD_ROW" });
     }
 
     const handleDeleteRow = (id) => {
-        dispatch({type:"DELETE_ROW", id})
+        dispatch({ type: "DELETE_ROW", id })
     }
+
+
 
     const addItemFunc = async () => {
         const formDataVar = new FormData();
@@ -232,6 +241,7 @@ const AddProduct = () => {
         formDataVar.append('date', formData.date);
         formDataVar.append('time', formData.time);
         formDataVar.append('table_row', formData.tableRow);
+        formDataVar.append('photos', formData.photos.filter(photo => photo != null))
 
         try {
             let response = await axios.post(url + "/api/item/createItem",
@@ -244,7 +254,7 @@ const AddProduct = () => {
                 }
             );
             if (response.status === 201) {
-                console.log(formDataVar,"formDataVar Neww")
+                console.log(formDataVar, "formDataVar Neww")
             }
         } catch (error) {
             // toast.error(error?.response?.data?.message);
@@ -253,48 +263,53 @@ const AddProduct = () => {
         }
     }
 
-    let     handleInputChange = (e) => {
-        let {name, type, checked, value} = e.target;
-        dispatch({
-            type:"UPDATE_FIELD",
-            name:name,
-            value:type === 'checkbox' ? checked : value
-        })
-    }
-
-    let handleSelectChange = (e, {name}) => {
-        
-        const labelValue = Array.isArray(e) ? e.map((item) => item.label) : e?.label || "";
-         
+    let handleInputChange = (e) => {
+        let { name, type, checked, value } = e.target;
         dispatch({
             type: "UPDATE_FIELD",
             name: name,
-            value:labelValue
+            value: type === 'checkbox' ? checked : value
+        })
+    }
+
+    let handleSelectChange = (e, { name }) => {
+
+        const labelValue = Array.isArray(e) ? e.map((item) => item.label) : e?.label || "";
+
+        dispatch({
+            type: "UPDATE_FIELD",
+            name: name,
+            value: labelValue
         })
 
     }
 
     let handleDateTimePicker = (e, field) => {
-        console.log(e,"pankaj");
-        console.log(field,"gautam");
+        console.log(e, "pankaj");
+        console.log(field, "gautam");
 
         dispatch({
             type: "UPDATE_FIELD",
-            name:field,
-            value:e
+            name: field,
+            value: e
         })
     }
 
     const handleRowInputChange = (e, rowId) => {
-  const { name, value } = e.target;
+        const { name, value } = e.target;
 
-  dispatch({
-    type: "UPDATE_ROW",
-    id: rowId,
-    name,
-    value
-  });
-};
+        dispatch({
+            type: "UPDATE_ROW",
+            id: rowId,
+            name,
+            value
+        });
+    };
+
+    const handleFileChange = (index, file) => {
+        debugger
+        dispatch({ type: "SET_FILE", index, file });
+    };
 
 
     return (
@@ -323,9 +338,9 @@ const AddProduct = () => {
                                             <Select name="item_category" className='custom-selectpicker' classNamePrefix="select"
                                                 // defaultValue={categoryOptions[2]}
                                                 onChange={(selectedOption, name) => {
-                                                        handleCategoryChange(selectedOption);
-                                                        handleSelectChange(selectedOption, name);
-                                                    }}
+                                                    handleCategoryChange(selectedOption);
+                                                    handleSelectChange(selectedOption, name);
+                                                }}
                                                 options={categoryOptions}
                                             />
                                         </Form.Group>
@@ -390,7 +405,7 @@ const AddProduct = () => {
                                                 defaultValue={selectedGenderOptions}
                                                 onChange={(selectedOption, name) => {
                                                     setGenderOptions(selectedOption)
-                                                    handleSelectChange(selectedOption, name) 
+                                                    handleSelectChange(selectedOption, name)
                                                 }}
                                                 options={genderOptions}
                                             />
@@ -423,21 +438,21 @@ const AddProduct = () => {
                                             <Form.Label className='common-label'>Attachment</Form.Label>
                                             <Row className='g-3'>
                                                 <Col md={6} className='large-file'>
-                                                    <SingleFileUpload customHeight={'268px'} />
+                                                    <SingleFileUpload index={0} dispatch={dispatch} customHeight={'268px'} />
                                                 </Col>
                                                 <Col md={6}>
                                                     <Row className='g-3'>
                                                         <Col md={6}>
-                                                            <SingleFileUpload customHeight={'126px'} />
+                                                            <SingleFileUpload index={1} dispatch={dispatch} customHeight={'126px'} />
                                                         </Col>
                                                         <Col md={6}>
-                                                            <SingleFileUpload customHeight={'126px'} />
+                                                            <SingleFileUpload index={2} dispatch={dispatch} customHeight={'126px'} />
                                                         </Col>
                                                         <Col md={6}>
-                                                            <SingleFileUpload customHeight={'126px'} />
+                                                            <SingleFileUpload index={3} dispatch={dispatch} customHeight={'126px'} />
                                                         </Col>
                                                         <Col md={6}>
-                                                            <SingleFileUpload customHeight={'126px'} />
+                                                            <SingleFileUpload index={4} dispatch={dispatch} customHeight={'126px'} />
                                                         </Col>
                                                     </Row>
                                                 </Col>
@@ -450,7 +465,7 @@ const AddProduct = () => {
                                                         <Form.Label className='common-label'>Material</Form.Label>
                                                         <Select name="item_material" className='custom-selectpicker' classNamePrefix="select" placeholder="Select Material"
                                                             defaultValue={selectedMaterialOptions}
-                                                            onChange={(selectedOption , name) => {
+                                                            onChange={(selectedOption, name) => {
                                                                 setMaterialOptions(selectedOption);
                                                                 handleSelectChange(selectedOption, name);
                                                             }}
@@ -553,7 +568,7 @@ const AddProduct = () => {
                                     </>
                                 )
                             }
-                            
+
 
                             {formData.product_type === 'multiple' && (
                                 <>
@@ -569,7 +584,7 @@ const AddProduct = () => {
                                             <tbody>
                                                 {
                                                     formData.tableRow.map((ele, ind) => {
-                                                        console.log(ele,"elem")
+                                                        console.log(ele, "elem")
                                                         return (
                                                             <tr key={ele.id}>
                                                                 <td><input type="text" name="pro_item_name" onChange={(e) => handleRowInputChange(e, ele.id)} className='form-control' value={formData.pro_item_name} placeholder='Enter Item Name' /></td>
@@ -677,45 +692,45 @@ const AddProduct = () => {
                                     </div>
                                 </Form.Group>
                             </Col>
-                            { formData.is_publish && (
+                            {formData.is_publish && (
                                 <>
-                                <Col md={3} className='form-gap'>
-                                    <Form.Group className='common-form-group'>
-                                        <Form.Label className='common-label'>Publish Later:</Form.Label>
-                                        <div className="mt-1 common-checkbox-toggle b2">
-                                            <input type="checkbox" name="is_publish_later" className="checkbox-toggle-btn" checked={formData.is_publish_later} onChange={handleInputChange} />
-                                            <div className="knobs"><span></span></div>
-                                            <div className="layer"></div>
-                                        </div>
-                                    </Form.Group>
-                                </Col>
-                                {
-                                    formData.is_publish_later && (
-                                        <>
-                                            <Col md={3} className='form-gap'>
-                                                <Form.Group className='common-form-group'>
-                                                    <Form.Label className='common-label'>Date<span className='text-danger'>*</span></Form.Label>
-                                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                                        <MobileDatePicker name="date" value={formData.date} className='picker-control' onChange={(e) => {handleDateTimePicker(e, 'date')}} defaultValue={dayjs('2022-04-17')} />
-                                                        <img className='picker-icon' src={dateIcon} />
-                                                    </LocalizationProvider>
-                                                </Form.Group>
-                                            </Col>
+                                    <Col md={3} className='form-gap'>
+                                        <Form.Group className='common-form-group'>
+                                            <Form.Label className='common-label'>Publish Later:</Form.Label>
+                                            <div className="mt-1 common-checkbox-toggle b2">
+                                                <input type="checkbox" name="is_publish_later" className="checkbox-toggle-btn" checked={formData.is_publish_later} onChange={handleInputChange} />
+                                                <div className="knobs"><span></span></div>
+                                                <div className="layer"></div>
+                                            </div>
+                                        </Form.Group>
+                                    </Col>
+                                    {
+                                        formData.is_publish_later && (
+                                            <>
+                                                <Col md={3} className='form-gap'>
+                                                    <Form.Group className='common-form-group'>
+                                                        <Form.Label className='common-label'>Date<span className='text-danger'>*</span></Form.Label>
+                                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                            <MobileDatePicker name="date" value={formData.date} className='picker-control' onChange={(e) => { handleDateTimePicker(e, 'date') }} defaultValue={dayjs('2022-04-17')} />
+                                                            <img className='picker-icon' src={dateIcon} />
+                                                        </LocalizationProvider>
+                                                    </Form.Group>
+                                                </Col>
 
-                                            <Col md={3} className='form-gap'>
-                                                <Form.Group className='common-form-group'>
-                                                    <Form.Label className='common-label'>Time<span className='text-danger'>*</span></Form.Label>
-                                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                                        <MobileTimePicker name="time" value={formData.time} className='picker-control' onChange={(e) => handleDateTimePicker(e, 'time')} defaultValue={dayjs('2022-04-17T15:30')} />
-                                                        <img className='picker-icon' src={timeIcon} />
-                                                    </LocalizationProvider>
+                                                <Col md={3} className='form-gap'>
+                                                    <Form.Group className='common-form-group'>
+                                                        <Form.Label className='common-label'>Time<span className='text-danger'>*</span></Form.Label>
+                                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                            <MobileTimePicker name="time" value={formData.time} className='picker-control' onChange={(e) => handleDateTimePicker(e, 'time')} defaultValue={dayjs('2022-04-17T15:30')} />
+                                                            <img className='picker-icon' src={timeIcon} />
+                                                        </LocalizationProvider>
 
-                                                </Form.Group>
-                                            </Col>
-                                        </>
-                                )
-                                }
-                            </>
+                                                    </Form.Group>
+                                                </Col>
+                                            </>
+                                        )
+                                    }
+                                </>
                             )
                             }
                             <Col md={12} className='d-flex justify-content-end gap-2 my-4'>
