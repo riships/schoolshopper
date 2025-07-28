@@ -14,6 +14,7 @@ import addIcon from '../../assets/images/add-icon.svg';
 import deleteIcon from '../../assets/images/delete-icon.svg';
 import exportIcon from '../../assets/images/export-icon.svg';
 import columnIcon from '../../assets/images/column-icon.svg';
+import noDataEmptyUI from '../../assets/images/no-data-empty-ui.svg';
 
 const Items = () => {
     const auth = useAuth();
@@ -96,7 +97,6 @@ const Items = () => {
                 }
             );
             let items = res.data.data;
-            console.log(res, "new array");
             setTableData(items)
             setFilteredTableData(items)
 
@@ -126,6 +126,9 @@ const Items = () => {
 
         }
     }
+
+    console.log(filteredTableData,"filteredTableData sabir");
+    
 
     return (
         <>
@@ -222,7 +225,9 @@ const Items = () => {
                             </li>
                         </ul>
 
-                        <div className="table-responsive">
+                        {
+                            filteredTableData.length > 0 ?  
+                             <div className="table-responsive">
                             <Table className="common-table">
                                 <thead>
                                     <tr>
@@ -264,7 +269,15 @@ const Items = () => {
 
                                 </tbody>
                             </Table>
+                        </div> 
+                        : 
+                        <div className='common-table-empty-ui-wrapper align-items-center d-flex flex-column gap-3 justify-content-center position-absolute start-50 text-center top-50 translate-middle-x translate-middle-y'>
+                            <img src={noDataEmptyUI} alt="Empty UI" />
+                            <p className='fs-14 text-dark'>No Item Found</p>
                         </div>
+                        }
+
+                       
 
                     </div>
 
